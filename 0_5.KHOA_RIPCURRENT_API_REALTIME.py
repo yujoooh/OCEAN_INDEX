@@ -44,15 +44,12 @@ while ii <= RIP_LEN-1 :
 		BEACH = READ2[ii].get('beach_name').replace("중문 해수욕장", "중문색달해수욕장")	
 	else :
 		BEACH = READ2[ii].get('beach_name').replace(" ", "")	#해수욕장
-		print(READ2[ii].get('beach_name'))
-		print(BEACH)
 	LEVEL = READ2[ii].get('score_msg')						#단계               
 	SCORE = READ2[ii].get('score')							#지수           
 	print(DY, BEACH, LEVEL, SCORE)
 	data1.append([DY, BEACH, LEVEL, SCORE])
 	ii = ii + 1
-print(today+hr)
-print(DY)
+
 with open(dir1+'/KHOA_RIPCURRENT_LEVEL_'+today+hr+'.csv','w',encoding='utf8') as file:
 	file.write('Date_time,beach,level,score\n')
 	for i in data1:

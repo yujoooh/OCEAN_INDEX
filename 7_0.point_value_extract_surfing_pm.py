@@ -87,27 +87,31 @@ for LIST in INDEX_LIST:
 		else:
 			SST = -999
 		print(NAME, SST)
-        
-		if WHDIR1 != '-999.0' :
+	        
+		if WHDIR1 != '-999' :
 			WHDIR = float(WHDIR1)
 			WHDIR = -WHDIR -90
 			if WHDIR <0:
 				# print('변환잘되고 있음')
 				WHDIR += 360
+				if WHDIR <0:
+					WHDIR += 360
 			
-		elif WHDIR2 != '-999.0' :
+		elif WHDIR2 != '-999' :
 			WHDIR = float(WHDIR2)
 			WHDIR = -WHDIR -90
 			if WHDIR <0:
 				# print('변환잘되고 있음')
 				WHDIR += 360
+				if WHDIR <0:
+					WHDIR += 360				
 		else:
 			WHDIR = -999
 		print(NAME, WHDIR)
 
 		if RPEAK1 != '-999.0' :
 			RPEAK = RPEAK1
-		elif RPEAK != '-999.0' :
+		elif RPEAK2 != '-999.0' :
 			RPEAK = RPEAK2
 		else:
 			RPEAK = -999

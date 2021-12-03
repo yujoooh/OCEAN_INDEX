@@ -100,8 +100,8 @@ while ii <= INF_LEN-1 :
 	REF_AGY3=DEV[23]; REF_STN_SST1=DEV[24]; REF_AGY4=DEV[25]; REF_STN_SST2=DEV[26]
 
 	if yesterday[4:6] == '01' or yesterday[4:6] =='02' or yesterday[4:6] =='03' or yesterday[4:6] =='11' or yesterday[4:6] =='12' : 
-		M_WIND_S = Statistic().min_max_ave('KHOA', 'daily', WIND, WRF_X, WRF_Y, 0)
-		M_TEMP_S = Statistic().min_max_ave('KHOA', 'daily', TEMP, WRF_X, WRF_Y, 0)
+		M_WIND_S = Statistic().min_max_ave('KHOA', 'ampm', WIND, WRF_X, WRF_Y, 0)
+		M_TEMP_S = Statistic().min_max_ave('KHOA', 'ampm', TEMP, WRF_X, WRF_Y, 0)
 
 		jj = 1 ; hr1=0 
 		while jj < len(OBS_COM):
@@ -181,13 +181,13 @@ while ii <= INF_LEN-1 :
 					O_SST2.append(-999); jj = jj - 1
 				hr4 = int(hr4) + 1
 			jj = jj + 1
-			if hr4 == 24 : break	
+			if hr4 == 24 : break			
 
-		if(len(O_SST2) < 24) :
-			jj = len(O_SST2)-1
-			while jj < 24 :
-				O_SST2.append(-999)
-				jj += 1
+		if len(O_WHT1) == 0 : O_WHT1.append([-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999])
+		if len(O_WHT2) == 0 : O_WHT2.append([-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999])
+		if len(O_SST1) == 0 : O_SST1.append([-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999])
+		if len(O_SST2) == 0 : O_SST2.append([-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999,-999])                        
+		
 		#관측자료 최대/최소/평균값 산정 및 참고지점 1,2순위의 자료 유무 판단.. 전체 없을 시 -999로
 		#if len(O_WHT1[9:19]) == 0 or O_WHT1[9:19].count(-999) == 10 or len(O_WHT1) == 0:
 		if len(O_WHT1[9:19]) == 0 or O_WHT1[9:13].count(-999) == 4 or O_WHT1[12:19].count(-999) == 6 or O_WHT1[9:19].count(-999) == 10 :
@@ -197,9 +197,9 @@ while ii <= INF_LEN-1 :
 				print(NAME, REF_STN_WAVE2,"WAVE REF1/REF2 all data missing")
 				WAVE_S = [-999,-999,-999,-999,-999,-999]
 			else:
-				WAVE_S = Statistic2().min_max_ave('daily',O_WHT2,9)
+				WAVE_S = Statistic2().min_max_ave('ampm',O_WHT2,9)
 		else:
-			WAVE_S = Statistic2().min_max_ave('daily',O_WHT1,9)
+			WAVE_S = Statistic2().min_max_ave('ampm',O_WHT1,9)
 		
 		if len(O_SST1[9:19]) == 0 or O_SST1[9:13].count(-999) == 4 or O_SST1[12:19].count(-999) == 6 or O_SST1[9:19].count(-999) == 10 :
 			print(NAME, REF_STN_SST1,"SST REF1 all data missing")
@@ -207,22 +207,23 @@ while ii <= INF_LEN-1 :
 				print(NAME, REF_STN_SST2,"SST REF1/REF2 all data missing")
 				SST_S = [-999,-999,-999,-999,-999,-999]
 			else:
-				SST_S = Statistic2().min_max_ave('daily',O_SST2,9)
+				SST_S = Statistic2().min_max_ave('ampm',O_SST2,9)
 		else:
-			SST_S = Statistic2().min_max_ave('daily',O_SST1,9)
+			SST_S = Statistic2().min_max_ave('ampm',O_SST1,9)
 
 
 		#VARS_S ampm [0:am_min 1:am_max, 2:am_ave, 3:pm_min, 4:pm_max, 5:pm_ave] ; VARS_S daily [0:min 1:max, 2:ave]
 		#print(STN, AREA, W_AREA, NAME,round(WAVE_S[0],1), round(WAVE_S[2],1), round(WAVE_S[1],1))
-		DAY1.append([STN, AREA, W_AREA, NAME, yesterday, FISH_NAME, FISH_TYPE, YESTERDAY_MUL, round(WAVE_S[0],1), round(WAVE_S[2],1), round(WAVE_S[1],1), int(round(SST_S[0])), int(round(SST_S[2])), int(round(SST_S[1])), int(round(M_TEMP_S[0])), int(round(M_TEMP_S[2])), int(round(M_TEMP_S[1])), int(round(M_WIND_S[0])), int(round(M_WIND_S[2])), int(round(M_WIND_S[1]))])
+		DAY1.append([STN, AREA, W_AREA, NAME, yesterday, 'AM', FISH_NAME, FISH_TYPE, YESTERDAY_MUL, round(WAVE_S[0],1), round(WAVE_S[2],1), round(WAVE_S[1],1), int(round(SST_S[0])), int(round(SST_S[2])), int(round(SST_S[1])), int(round(M_TEMP_S[0])), int(round(M_TEMP_S[2])), int(round(M_TEMP_S[1])), int(round(M_WIND_S[0])), int(round(M_WIND_S[2])), int(round(M_WIND_S[1]))])
+		DAY1.append([STN, AREA, W_AREA, NAME, yesterday, 'PM', FISH_NAME, FISH_TYPE, YESTERDAY_MUL, round(WAVE_S[3],1), round(WAVE_S[5],1), round(WAVE_S[4],1), int(round(SST_S[3])), int(round(SST_S[5])), int(round(SST_S[4])), int(round(M_TEMP_S[3])), int(round(M_TEMP_S[5])), int(round(M_TEMP_S[4])), int(round(M_WIND_S[3])), int(round(M_WIND_S[5])), int(round(M_WIND_S[4]))])
 		O_SST1.clear() ;O_SST2.clear() ; O_WHT1.clear(); O_WHT2.clear()
 	
 	else :
 		if FISH_TYPE == 'GR' or FISH_TYPE =='GP':
 			MSG = 'No service this season ... GR and GP'
 		else :
-			M_WIND_S = Statistic().min_max_ave('KHOA', 'daily', WIND, WRF_X, WRF_Y, 0)
-			M_TEMP_S = Statistic().min_max_ave('KHOA', 'daily', TEMP, WRF_X, WRF_Y, 0)
+			M_WIND_S = Statistic().min_max_ave('KHOA', 'ampm', WIND, WRF_X, WRF_Y, 0)
+			M_TEMP_S = Statistic().min_max_ave('KHOA', 'ampm', TEMP, WRF_X, WRF_Y, 0)
 
 			jj = 1 ; hr1=0 
 			while jj < len(OBS_COM):
@@ -298,9 +299,9 @@ while ii <= INF_LEN-1 :
 					print(NAME, REF_STN_WAVE2,"WAVE REF1/REF2 all data missing")
 					WAVE_S = [-999,-999,-999,-999,-999,-999]
 				else:
-					WAVE_S = Statistic2().min_max_ave('daily',O_WHT2,9)
+					WAVE_S = Statistic2().min_max_ave('ampm',O_WHT2,9)
 			else:
-				WAVE_S = Statistic2().min_max_ave('daily',O_WHT1,9)
+				WAVE_S = Statistic2().min_max_ave('ampm',O_WHT1,9)
 		
 			if len(O_SST1[9:19]) == 0 or O_SST1[9:13].count(-999) == 4 or O_SST1[12:19].count(-999) == 6 or O_SST1[9:19].count(-999) == 10 :
 				print(NAME, REF_STN_SST1,"SST REF1 all data missing")
@@ -308,12 +309,13 @@ while ii <= INF_LEN-1 :
 					print(NAME, REF_STN_SST2,"SST REF1/REF2 all data missing")
 					SST_S = [-999,-999,-999,-999,-999,-999]
 				else:
-					SST_S = Statistic2().min_max_ave('daily',O_SST2,9)
+					SST_S = Statistic2().min_max_ave('ampm',O_SST2,9)
 			else:
-				SST_S = Statistic2().min_max_ave('daily',O_SST1,9)
+				SST_S = Statistic2().min_max_ave('ampm',O_SST1,9)
 	
 			#VARS_S ampm [0:am_min 1:am_max, 2:am_ave, 3:pm_min, 4:pm_max, 5:pm_ave] ; VARS_S daily [0:min 1:max, 2:ave]
-			DAY1.append([STN, AREA, W_AREA, NAME, yesterday, FISH_NAME, FISH_TYPE, YESTERDAY_MUL, round(WAVE_S[0],1), round(WAVE_S[2],1), round(WAVE_S[1],1), int(round(SST_S[0])), int(round(SST_S[2])), int(round(SST_S[1])), int(round(M_TEMP_S[0])), int(round(M_TEMP_S[2])), int(round(M_TEMP_S[1])), int(round(M_WIND_S[0])), int(round(M_WIND_S[2])), int(round(M_WIND_S[1]))])
+			DAY1.append([STN, AREA, W_AREA, NAME, yesterday, 'AM', FISH_NAME, FISH_TYPE, YESTERDAY_MUL, round(WAVE_S[0],1), round(WAVE_S[2],1), round(WAVE_S[1],1), int(round(SST_S[0])), int(round(SST_S[2])), int(round(SST_S[1])), int(round(M_TEMP_S[0])), int(round(M_TEMP_S[2])), int(round(M_TEMP_S[1])), int(round(M_WIND_S[0])), int(round(M_WIND_S[2])), int(round(M_WIND_S[1]))])
+			DAY1.append([STN, AREA, W_AREA, NAME, yesterday, 'PM', FISH_NAME, FISH_TYPE, YESTERDAY_MUL, round(WAVE_S[3],1), round(WAVE_S[5],1), round(WAVE_S[4],1), int(round(SST_S[3])), int(round(SST_S[5])), int(round(SST_S[4])), int(round(M_TEMP_S[3])), int(round(M_TEMP_S[5])), int(round(M_TEMP_S[4])), int(round(M_WIND_S[3])), int(round(M_WIND_S[5])), int(round(M_WIND_S[4]))])
 			O_SST1.clear() ;O_SST2.clear() ; O_WHT1.clear(); O_WHT2.clear()
 	ii = ii + 1
 
@@ -329,27 +331,27 @@ while ii <= len(DAY1)-1 :
 	#print(ii)
                     #0   1     2      3       4           5          6           7            8          9         10         11         12      13         14       15          16           17       18         19    
     #DAY3.append([STN, AREA, W_AREA, NAME, afterday2, FISH_NAME, FISH_TYPE, AFTERDAY2_MUL, WAVE_S[0], WAVE_S[2], WAVES_[1], SST_S[0], SST_S[2], SST_S[1], TEMP_S[0], TEMP_S[2], TEMP_S[1], WIND_S[0], WIND_S[2], WIND_S[1]])
-	TIDE_SCRE = IndexScore().tide_score(DAY1[ii][6],DAY1[ii][7])
-	WAVE_SCRE = IndexScore().wave_score(round(float(DAY1[ii][10]),1))
-	SST_SCRE = IndexScore().sst_score(DAY1[ii][6],DAY1[ii][12])
-	TEMP_SCRE = IndexScore().temp_score(DAY1[ii][15])
-	WIND_SCRE = IndexScore().wind_score(DAY1[ii][19])
+	TIDE_SCRE = IndexScore().tide_score(DAY1[ii][7],DAY1[ii][8])
+	WAVE_SCRE = IndexScore().wave_score(round(float(DAY1[ii][11]),1))
+	SST_SCRE = IndexScore().sst_score(DAY1[ii][7],DAY1[ii][13])
+	TEMP_SCRE = IndexScore().temp_score(DAY1[ii][16])
+	WIND_SCRE = IndexScore().wind_score(DAY1[ii][20])
 	WARN_SCRE = IndexScore().warn_score('-')
 	TOTAL_SCRE1 = IndexScore().total_score(TIDE_SCRE, WAVE_SCRE, SST_SCRE, TEMP_SCRE, WIND_SCRE, WARN_SCRE)[0] # forecast score(no rain, no warning)
 
     #              0    1       2      3       4           5          6           7            8          9         10         11         12      13         14       15          16           17       18         19         20     21          22          23            24         25    
     #DAY3.append([STN, AREA, W_AREA, NAME, afterday2, FISH_NAME, FISH_TYPE, AFTERDAY2_MUL, TIDE_SCRE, WAVE_S[0], WAVE_S[2], WAVES_[1], WAVE_SCRE, SST_S[0], SST_S[2], SST_S[1],SST_SCRE, TEMP_S[0], TEMP_S[2], TEMP_S[1],TEMP_SCRE, WIND_S[0], WIND_S[2], WIND_S[1]], WIND_SCRE, TOTAL_SCRE1])
-	DAY1[ii].insert(8,TIDE_SCRE) ; DAY1[ii].insert(12,WAVE_SCRE) ; DAY1[ii].insert(16,SST_SCRE); DAY1[ii].insert(20,TEMP_SCRE) ; DAY1[ii].insert(24,WIND_SCRE) ; DAY1[ii].insert(25,TOTAL_SCRE1)
+	DAY1[ii].insert(9,TIDE_SCRE) ; DAY1[ii].insert(13,WAVE_SCRE) ; DAY1[ii].insert(17,SST_SCRE); DAY1[ii].insert(21,TEMP_SCRE) ; DAY1[ii].insert(25,WIND_SCRE) ; DAY1[ii].insert(26,TOTAL_SCRE1)
 	ii = ii + 1
 
 #[Output Data] ========================================================================================
 OUT_FNAME1=dir1+'/SFEQ_INDEX_OBS_1QC_'+today+'.csv'
 with open(OUT_FNAME1,'w',encoding='utf8') as file:
-	file.write('생산일,코드,권역,지역,예측일자,어종,어종타입,물때,물때점수,최소파고,평균파고,최대파고,파고점수,최소수온,평균수온,최대수온,수온점수,최저기온,평균기온,최대기온,기온점수,최소풍속,평균풍속,최대풍속,풍속점수,총점수\n',)
+	file.write('생산일,코드,권역,지역,예측일자,시간,어종,어종타입,물때,물때점수,최소파고,평균파고,최대파고,파고점수,최소수온,평균수온,최대수온,수온점수,최저기온,평균기온,최대기온,기온점수,최소풍속,평균풍속,최대풍속,풍속점수,총점수\n',)
 	ii = 0
 	while ii <= len(DAY1)-1 :
 		#[전체 데이터 Writing]
-		file.write(f'{today},{DAY1[ii][0]},{DAY1[ii][1]},{DAY1[ii][3]},{DAY1[ii][4]},{DAY1[ii][5]},{DAY1[ii][6]},{DAY1[ii][7]},{DAY1[ii][8]},{DAY1[ii][9]:2.1f},{DAY1[ii][10]:2.1f},{DAY1[ii][11]:2.1f},{DAY1[ii][12]},{DAY1[ii][13]},{DAY1[ii][14]},{DAY1[ii][15]},{DAY1[ii][16]},{DAY1[ii][17]},{DAY1[ii][18]},{DAY1[ii][19]},{DAY1[ii][20]},{DAY1[ii][21]},{DAY1[ii][22]},{DAY1[ii][23]},{DAY1[ii][24]},{DAY1[ii][25]:4.2f}\n')
+		file.write(f'{today},{DAY1[ii][0]},{DAY1[ii][1]},{DAY1[ii][3]},{DAY1[ii][4]},{DAY1[ii][5]},{DAY1[ii][6]},{DAY1[ii][7]},{DAY1[ii][8]},{DAY1[ii][9]},{DAY1[ii][10]:2.1f},{DAY1[ii][11]:2.1f},{DAY1[ii][12]:2.1f},{DAY1[ii][13]},{DAY1[ii][14]},{DAY1[ii][15]},{DAY1[ii][16]},{DAY1[ii][17]},{DAY1[ii][18]},{DAY1[ii][19]},{DAY1[ii][20]},{DAY1[ii][21]},{DAY1[ii][22]},{DAY1[ii][23]},{DAY1[ii][24]},{DAY1[ii][25]},{DAY1[ii][26]:4.2f}\n')
 		ii = ii + 1
 
 print("#SFEQ OBS_INDEX 1QC CREAT Complete==========")

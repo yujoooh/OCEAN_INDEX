@@ -31,6 +31,7 @@ KHOA_OBS = [LST for LST in KHOA_OBS_DATA.read().split()]
 KHOA_LEN = len(KHOA_OBS)
 
 
+
 #for 문으로 다른 지수의 관측자료도 반복적으로 추출하도록 수정
 #[READ Info Data] ========================================================================================
 INDEX_LIST = ['SK']

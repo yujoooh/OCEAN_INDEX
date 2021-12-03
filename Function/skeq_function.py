@@ -18,10 +18,10 @@ class IndexScore:
 
 	def wind_score(self,value):
 		if   value == -999 : score = 0
-		elif value <= 2    : score = 5
-		elif value <= 5    : score = 4
-		elif value <= 9    : score = 3
-		elif value <= 14   : score = 2
+		elif value < 2    : score = 5
+		elif value < 5    : score = 4
+		elif value < 9    : score = 3
+		elif value < 14   : score = 2
 		else               : score = 1
 		return score
 

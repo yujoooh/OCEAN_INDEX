@@ -82,9 +82,9 @@ POINT_INF = open('./Info/SK_Point_Info.csv','r',encoding='utf8')
 INF = [str(INFO) for INFO in POINT_INF.read().split()]
 INF_LEN = len(INF)
 
-WEB_INF = open('./Info/WEB_SKEC_Info.csv','r',encoding='utf8')
-WINF = [str(INFO) for INFO in WEB_INF.read().split()]
-WINF_LEN = len(WINF)
+#WEB_INF = open('./Info/WEB_SKEC_Info.csv','r',encoding='utf8')
+#WINF = [str(INFO) for INFO in WEB_INF.read().split()]
+#WINF_LEN = len(WINF)
 
 #[KMA CITY and WARNING data read]=========================================================================
 if not os.path.exists(dir1+'/SK_CITY_time.csv'): # 동네예보 수집 에러에 따른 자료 미생성시 그냥 예측자료 사용
@@ -109,7 +109,7 @@ while ii <= INF_LEN-1 :
 	STN = DEV[0] ; AREA = DEV[1] ; NAME = DEV[2] ; LON = DEV[3] ; LAT = DEV[4]
 	ROMS_X = int(DEV[5]) ; ROMS_Y = int(DEV[6]) ; WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8])
 	WW3_X = int(DEV[9]) ; WW3_Y = int(DEV[10]) ; CWW3_X = int(DEV[11]) ; CWW3_Y = int(DEV[12]) ; CWW3_LOC = int(DEV[13]) 
-	RWW3_X = int(DEV[14]) ; RWW3_Y = int(DEV[15]) ; W_AREA1 = DEV[18] ;W_AREA2 = DEV[19] ;W_AREA3 = DEV[20] ; W_AREA4 = DEV[21] 
+	RWW3_X = int(DEV[14]) ; RWW3_Y = int(DEV[15]) ; W_AREA = DEV[18] ; W_AREA2 = DEV[28] ; W_AREA3 = DEV[29] ; W_AREA4 = DEV[30]
 
 	jj = 0
 	while jj <= 158:
@@ -147,7 +147,8 @@ while ii <= INF_LEN-1 :
 		if dy_lunar + 7 > 15 and dy_lunar + 7 <= 30 : MUL = dy_lunar + 7 - 15
 		if dy_lunar + 7 > 30 : MUL = dy_lunar + 7 - 30
 		#------------------------------------------------------------------------------------------
-		COM_TIME.append([STN, AREA, W_AREA1,W_AREA2,W_AREA3,W_AREA4, NAME, afterday, hr, round(float(TEMP_S),1), round(float(WIND_S),1), round(float(WIND_DIR),1), round(float(SST_S),1), round(float(WAVE_S),1), round(float(CURRENT_S),1), int(MUL)])
+		#                 0     1       2       3       4       5       6       7       8       9                       10                      11                      12                      13                      14                      15
+		COM_TIME.append([STN, AREA, W_AREA, W_AREA2, W_AREA3, W_AREA4, NAME, afterday, hr, round(float(TEMP_S),1), round(float(WIND_S),1), round(float(WIND_DIR),1), round(float(SST_S),1), round(float(WAVE_S),1), round(float(CURRENT_S),1), int(MUL)])
 		jj = jj + 3 #24시간 간격으로 일괄 계산
 	ii = ii + 1
 #for PP in COM_TIME : print(PP)
@@ -157,31 +158,27 @@ ii = 0
 COM_TIME_LEN = len(COM_TIME)
 #print(COM_TIME_LEN, CITY_LEN)
 while ii < COM_TIME_LEN : 
+	
 	if CITY_LEN == 0 :
-		#STN, AREA, W_AREA1,W_AREA2,W_AREA3,W_AREA4, NAME, afterday, hr, TEMP_S, WIND_S, WIND_DIR, SST_S, WAVE_S, CURRENT_S,MUL
-		COM_TIME[ii].insert(16,float(1)) # SKY [맑음:1, 구름많음:3, 흐림:4]
-		COM_TIME[ii].insert(17,float(0)) # RAIN AMOUNT
-		COM_TIME[ii].insert(18,float(0)) # RAIN AMOUNT_ACCUMULATE
-		COM_TIME[ii].insert(19,float(0)) # RAIN PROBABILITY
-		COM_TIME[ii].insert(20,float(0)) # RELATIVE HUMEDITY
-		COM_TIME[ii].insert(21,'-')    # SEA_WARNING
+		COM_TIME[ii].insert(16,float(1))    # SKY [맑음:1, 구름많음:3, 흐림:4]
+		COM_TIME[ii].insert(17,float(0))    # RAIN AMOUNT
+		COM_TIME[ii].insert(18,float(0)) # RAIN PROBABILITY
+		COM_TIME[ii].insert(19,float(0)) # RELATIVE HUMEDITY
+		COM_TIME[ii].insert(20,'-')    # SEA_WARNING
 	else :
 		jj = 1
 		while jj < CITY_LEN :
 			DEV = CITY[jj].split(',')
-			STN = DEV[0] ; NAME = DEV[1] ; DATE = DEV[2] ; HOUR = DEV[3]; SKY = DEV[6] ; RAIN_AMT = DEV[7] ; RAIN_ACC = DEV[8] ; RAIN_PROB = DEV[9] ; REL_HU = DEV[10]
+			STN = DEV[0] ; NAME = DEV[1] ; DATE = DEV[2] ; HOUR = DEV[3]; SKY = DEV[6] ; RAIN_AMT = DEV[7] ; RAIN_PROB = DEV[8] ; REL_HU = DEV[9]
 			if COM_TIME[ii][0] == STN and COM_TIME[ii][7] == DATE and COM_TIME[ii][8] == str(HOUR):
 				COM_TIME[ii].insert(16,float(SKY))       # SKY [맑음:1, 구름많음:3, 흐림:4]
 				COM_TIME[ii].insert(17,float(RAIN_AMT))  # RAIN AMOUNT
-				COM_TIME[ii].insert(18,float(RAIN_ACC))  # RAIN AMOUNT_ACCUMULATE
-				COM_TIME[ii].insert(19,float(RAIN_PROB)) # RAIN PROBABILITY
-				COM_TIME[ii].insert(20,float(REL_HU))    # RELATIVE HUMEDITY
-				COM_TIME[ii].insert(21,'-')       # SEA_WARNING
+				COM_TIME[ii].insert(18,float(RAIN_PROB)) # RAIN PROBABILITY
+				COM_TIME[ii].insert(19,float(REL_HU))    # RELATIVE HUMEDITY
+				COM_TIME[ii].insert(20,'-')       # SEA_WARNING
 				break
 			jj = jj + 1
 	ii = ii + 1
-
-#print(COM_TIME[ii][1], COM_TIME[ii][2], COM_TIME[ii][3], COM_TIME[ii][4], COM_TIME[ii][5], COM_TIME[ii][6], COM_TIME[ii][7], COM_TIME[ii][8])
 #for PP in COM_TIME : print(PP)
 
 #[KMA WARNING INFORAMTION : special weather report]=====================================================================================================
@@ -189,7 +186,7 @@ ii = 0
 while ii < COM_TIME_LEN :
 #while ii < 2 :
 	if WARN_LEN == 0 : 
-		COM_TIME[ii][21] = '-'
+		COM_TIME[ii][20] = '-'
 	else : 
 		jj = 1
 		while jj < WARN_LEN : 
@@ -207,15 +204,14 @@ while ii < COM_TIME_LEN :
 			if WARN_TYPE == 'YD2' : WARN_TYPE = 'YD'
 			if WARN_TYPE == 'HW2' : WARN_TYPE = 'HW'	
 			#[해상특보적용]------------------------------------------------------------------------------------------
-			if COM_TIME[ii][7] < WARN_EDAY and COM_TIME[ii][7] >= WARN_SDAY and (COM_TIME[ii][2] == WARN_AREA or COM_TIME[ii][3] == WARN_AREA or COM_TIME[ii][4] == WARN_AREA or COM_TIME[ii][5] == WARN_AREA) : # [해상특보] 해제예고 일보다 전날일 경우 일괄적용
-				COM_TIME[ii][21] = WARN_TYPE
+			if COM_TIME[ii][7] < WARN_EDAY and COM_TIME[ii][7] >= WARN_SDAY and (COM_TIME[ii][2] == WARN_AREA or COM_TIME[ii][3] == WARN_AREA or COM_TIME[ii][4] == WARN_AREA or COM_TIME[ii][5] == WARN_AREA): # [해상특보] 해제예고 일보다 전날일 경우 일괄적용
+				COM_TIME[ii][20] = WARN_TYPE
 				jj = WARN_LEN
-				
 			elif COM_TIME[ii][7] == WARN_EDAY and COM_TIME[ii][7] >= WARN_SDAY and (COM_TIME[ii][2] == WARN_AREA or COM_TIME[ii][3] == WARN_AREA or COM_TIME[ii][4] == WARN_AREA or COM_TIME[ii][5] == WARN_AREA) : # 해제예고일과 같을 경우 AM이면 오전만 적용, PM이면 오전/오후 모두적용
 				if WARN_EHR == 'AM' and (COM_TIME[ii][8] == '00' or COM_TIME[ii][8] == '03' or COM_TIME[ii][8] == '06' or COM_TIME[ii][8] == '09' or COM_TIME[ii][8] == '12') : 
-					COM_TIME[ii][21] = WARN_TYPE
+					COM_TIME[ii][20] = WARN_TYPE
 				elif WARN_EHR == 'PM' and (COM_TIME[ii][8] == '00' or COM_TIME[ii][8] == '03' or COM_TIME[ii][8] == '06' or COM_TIME[ii][8] == '09' or COM_TIME[ii][8] == '12' or COM_TIME[ii][8] == '15' or COM_TIME[ii][8] == '18' or COM_TIME[ii][8] == '21') : 
-					COM_TIME[ii][21] = WARN_TYPE
+					COM_TIME[ii][20] = WARN_TYPE
 				jj = WARN_LEN
 			else : 
 				jj = jj + 1
@@ -225,13 +221,14 @@ while ii < COM_TIME_LEN :
 					#print(COM_TIME[ii][4], 'warning does not exist...')
 	ii = ii + 1
 COM_TIME_DF = pd.DataFrame(COM_TIME)
-COM_TIME_DF.columns = ['STN','AREA','SEA_WARN1','SEA_WARN2','SEA_WARN3','SEA_WARN4','NAME','DATE','HR','TEMP','WSPD','WDIR','SST','WAVE','CURRENT','MUL','SKY','RAIN','RAIN_ACC','RAIN_PROB','REL_HU','WARN1']
+COM_TIME_DF.columns = ['STN','AREA','SEA_WARN1','SEA_WARN2','SEA_WARN3','SEA_WARN4','NAME','DATE','HR','TEMP','WSPD','WDIR','SST','WAVE','CURRENT','MUL','SKY','RAIN','RAIN_PROB','REL_HU','WARN1']
 #print(COM_TIME_DF)
+
 FINAL = []
 #ii = 1
 #while ii <= WINF_LEN-1 : # 선박별로 할 필요가 없어서 변경, 항로별로 1개씩만 있으면 됨
 	#DEV = WINF[ii].split(',') ; STN = DEV[0]; SHIP = DEV[3]
-STATION = ['SK1','SK2','SK3','SK4','SK5','SK6','SK7','SK8','SK9','SK10','SK11','SK12','SK13','SK14','SK16','SK17','SK18','SK19','SK20','SK21','SK22','SK23','SK24','SK25','SK26','SK27','SK28']
+STATION = ['SK1','SK2','SK3','SK4','SK5','SK6','SK7','SK8','SK9','SK10','SK11','SK12','SK13','SK14','SK16','SK17','SK18','SK19','SK20','SK21','SK22','SK23']
 for STN in STATION : 
 	DATE = [today, afterday1, afterday2, afterday3, afterday4, afterday5, afterday6]
 	for DY in DATE :
@@ -243,7 +240,7 @@ for STN in STATION :
 			SEA_WARN1 = list(set(LIST2['SEA_WARN1'].values.tolist())) ; SEA_WARN1 = SEA_WARN1[0]
 			SEA_WARN2 = list(set(LIST2['SEA_WARN2'].values.tolist())) ; SEA_WARN2 = SEA_WARN2[0]
 			SEA_WARN3 = list(set(LIST2['SEA_WARN3'].values.tolist())) ; SEA_WARN3 = SEA_WARN3[0]
-			SEA_WARN4 = list(set(LIST2['SEA_WARN4'].values.tolist())) ; SEA_WARN4 = SEA_WARN4[0]
+			SEA_WARN4 = list(set(LIST2['SEA_WARN4'].values.tolist())) ; SEA_WARN4 = SEA_WARN4[0]			
 			NAME = list(set(LIST2['NAME'].values.tolist())) ; NAME = NAME[0]
 			WARN1 = list(set(LIST2['WARN1'].values.tolist())) # 해상특보 종류
 			if '-' in WARN1 : WARN1.remove('-') # 중복제거
@@ -251,14 +248,14 @@ for STN in STATION :
 			WARN1_COM = '·'.join(WARN1)
 			TEMP_MAX = LIST2['TEMP'].max() ; WSPD_MAX = LIST2['WSPD'].max() ; WDIR_MAX = LIST2['WDIR'].max()
 			SST_MAX = LIST2['SST'].max() ;	WAVE_MAX = LIST2['WAVE'].max() ; CURRENT_MAX = LIST2['CURRENT'].max()
-			MUL_MAX = LIST2['MUL'].max() ; SKY_MAX = LIST2['SKY'].max() ; RAIN_MAX = LIST2['RAIN'].max() ; RAIN_ACC_MAX = LIST2['RAIN_ACC'].max()
+			MUL_MAX = LIST2['MUL'].max() ; SKY_MAX = LIST2['SKY'].max() ; RAIN_MAX = LIST2['RAIN'].max()
 			RAIN_PROB_MAX = LIST2['RAIN_PROB'].max() ; REL_HU_MAX = LIST2['REL_HU'].max()
 			#print(STN, AREA, SEA_WARN, NAME, SHIP, DY, HR, TEMP_MAX, WSPD_MAX, WDIR_MAX, SST_MAX, WAVE_MAX, CURRENT_MAX, MUL_MAX, SKY_MAX, RAIN_MAX, RAIN_PROB_MAX, REL_HU_MAX, WARN1_COM)
 			#FINAL.append([STN, AREA, SEA_WARN, NAME, SHIP, DY, HR, TEMP_MAX, WSPD_MAX, WDIR_MAX, SST_MAX, WAVE_MAX, CURRENT_MAX, MUL_MAX, SKY_MAX, RAIN_MAX, RAIN_PROB_MAX, REL_HU_MAX, WARN1_COM])
-			FINAL.append([STN, AREA, SEA_WARN1, SEA_WARN2, SEA_WARN3, SEA_WARN4, NAME, DY, HR, TEMP_MAX, WSPD_MAX, WDIR_MAX, SST_MAX, WAVE_MAX, CURRENT_MAX, MUL_MAX, SKY_MAX, RAIN_MAX, RAIN_ACC_MAX, RAIN_PROB_MAX, REL_HU_MAX, WARN1_COM])
+			FINAL.append([STN, AREA, SEA_WARN1, SEA_WARN2, SEA_WARN3, SEA_WARN4, NAME, DY, HR, TEMP_MAX, WSPD_MAX, WDIR_MAX, SST_MAX, WAVE_MAX, CURRENT_MAX, MUL_MAX, SKY_MAX, RAIN_MAX, RAIN_PROB_MAX, REL_HU_MAX, WARN1_COM])
 	#ii = ii + 1
 FINAL_DF = pd.DataFrame(FINAL)
-FINAL_DF.columns = ['STN','AREA','SEA_WARN1','SEA_WARN2','SEA_WARN3','SEA_WARN4','NAME','DATE','HR','TEMP','WSPD','WDIR','SST','WAVE','CURRENT','MUL','SKY','RAIN','RAIN_ACC','RAIN_PROB','REL_HU','WARN1']
+FINAL_DF.columns = ['STN','AREA','SEA_WARN1','SEA_WARN2','SEA_WARN3','SEA_WARN4','NAME','DATE','HR','TEMP','WSPD','WDIR','SST','WAVE','CURRENT','MUL','SKY','RAIN','RAIN_PROB','REL_HU','WARN1']
 #FINAL_DF.columns = ['STN','AREA','SEA_WARN','NAME','SHIP','DATE','HR','TEMP','WSPD','WDIR','SST','WAVE','CURRENT','MUL','SKY','RAIN','RAIN_PROB','REL_HU','WARN1']
 #print(FINAL_DF)
 

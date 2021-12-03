@@ -18,9 +18,10 @@ today = str(datetime.today().strftime('%Y%m%d'))
 afterday1 = (date.today() + timedelta(1)).strftime('%Y%m%d')
 afterday2 = (date.today() + timedelta(2)).strftime('%Y%m%d')
 
-#today = str(date(2019,11,7).strftime('%Y%m%d'))
-#afterday1 = (date(2019,11,7) + timedelta(1)).strftime('%Y%m%d')
-#afterday2 = (date(2019,11,7) + timedelta(2)).strftime('%Y%m%d')
+##[Manual Set]==================================================================================================
+#today = '20210907'
+#afterday1 = '20210908'
+#afterday2 = '20210909'
 
 dir1 ='./Result/'+today
 
@@ -43,6 +44,15 @@ content1 = [ str(INFO) for INFO in file1.read().split()]
 
 con = cx_Oracle.connect(DBID, DBPWD, DBINFO)
 cur = con.cursor()
+
+#[중기예보 자료 삭제]===================================================================
+conn = cx_Oracle.connect(DBID, DBPWD, DBINFO)
+cursor = conn.cursor()
+sql = f"delete from WEB_SKEQ_SCRE@svclink.nori.go.kr where PRED_TYPE='DY' "
+cursor.execute(sql)
+cursor.close()
+conn.commit()
+conn.close()
 
 #[UPLOAD MDCDB]===================================================================
 ii = 1

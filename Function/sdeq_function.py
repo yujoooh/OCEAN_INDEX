@@ -104,7 +104,7 @@ class IndexScore:
 		return score
 		
 	def rain_score(self,value):
-		if   value == 0  : score = 5
+		if   value < 1  : score = 5
 		elif value <= 5  : score = 3
 		elif value <= 10 : score = 2
 		else             : score = 1
@@ -112,7 +112,7 @@ class IndexScore:
 
 	def warn_score(self,value):
 		#if   value == '-' :	score = 5
-		if   value.strip() == '-' or value.strip() == 'WW' :	score = 5
+		if   value.strip() == '-' or value.strip() == 'WW1' or value.strip() == 'WW2' or value.strip() == 'WW3' :	score = 5
 		else             : score = 1
 		return score
 

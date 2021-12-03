@@ -25,12 +25,9 @@ h = 0
 #[REALTIME DATA DOWNLOAD]================================================================================================
 if not os.path.exists('./Result/'+today+'/OBS_DAILY/OBS_KHOA_'+yesterday+'.txt'): os.system(r'"C:\Program Files (x86)\GnuWin32\bin\wget.exe" -P ./Result/'+today+'/OBS_DAILY/ http://10.27.90.53:8080/opendap/external/FORECAST_QUOTIENT/OBS/OBS_KHOA_'+yesterday+'.txt')
 
-print(os.path.exists('./Result/'+today+'/OBS_DAILY/OBS_KHOA_'+yesterday+'.txt'))
-print(os.system(r'"C:\Program Files (x86)\GnuWin32\bin\wget.exe" -P ./Result/'+today+'/OBS_DAILY/ http://10.27.90.53:8080/opendap/external/FORECAST_QUOTIENT/OBS/OBS_KHOA_'+yesterday+'.txt'))
-
 
 #[Info Data Read]=========================================================================================
-OBS_INF = open('../Source/Info/KHOA_OBS_INFO.csv','r',encoding='utf8')
+OBS_INF = open('./Info/KHOA_OBS_INFO.csv','r',encoding='utf8')
 OBS_STN = [str(INFO) for INFO in OBS_INF.read().split()]
 print(len(OBS_STN), len(OBS_STN)-1)
 #ii = 1

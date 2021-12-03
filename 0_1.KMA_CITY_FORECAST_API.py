@@ -79,7 +79,8 @@ elif CHECK3 == '00' :
 		hr = 9
 	
 	#[INFO FILE NAME READ]
-	INDEX_LIST = ['SP','SK','SF','SS','SD','TL']
+	#INDEX_LIST = ['SP','SK','SF','SS','SD','TL']
+	INDEX_LIST = ['SD']		
 	for LIST in INDEX_LIST:
 		#[READ each Info Data] ========================================================================================
 		POINT_INF = open('./Info/'+LIST+'_Point_Info.csv','r',encoding='utf8')
@@ -97,7 +98,8 @@ elif CHECK3 == '00' :
 
 			#-----------------------------------[동네예보 자료수집]----------------------------------------------------
 			CURL2 = CITY_URL + API_KEY +"&numOfRows=809&pageNo=1&dataType=JSON"+"&base_date=" + yesterday + "&base_time=2300&nx=" + str(CITY_X) + "&ny=" + str(CITY_Y) #어제 20시 예보자료, 금일 00시 03시 자료 수집을 위함
-			# print(CURL2)
+			#print(CURL2)
+
 			CPAGE2 = urllib.request.urlopen(CURL2)
 			CREAD2 = CPAGE2.read() ; 	CJSON2 = json.loads(CREAD2)
 			READ5 = CJSON2.get('response')#.decode('euc-kr').encode('utf-8')
@@ -105,7 +107,6 @@ elif CHECK3 == '00' :
 			READ7 = READ6.get('items')
 			READ8 = READ7.get('item')
 			CITY_LEN2 = len(READ8)
-
 
 			#[COM00 : 00시~05시, COM06:06시~08시, COM09:09시~12시, COM13:13시~18시, COM19:19시~23시]
 			DAY1_RAIN_COM00 = 0 ; DAY1_RAIN_COM06 = 0 ; DAY1_RAIN_COM09 = 0 ; DAY1_RAIN_COM13 = 0 ;	DAY1_RAIN_COM19 = 0 
@@ -141,8 +142,15 @@ elif CHECK3 == '00' :
 					DATE2 = READ8[jj].get('fcstDate')
 					TIME2 = READ8[jj].get('fcstTime')
 					RAIN_AMT2 = READ8[jj].get('fcstValue')
+					#print(RAIN_AMT2)
 					if RAIN_AMT2 == "강수없음" :
 						RAIN_AMT2 = '0.0'
+
+					elif RAIN_AMT2 == "50mm이상" :
+						RAIN_AMT2 = '50.0'
+
+					elif RAIN_AMT2 == "1.0mm 미만" :
+						RAIN_AMT2 = '0.5'						
 					else :
 						RAIN_AMT2 = RAIN_AMT2.replace('mm','')
 						RAIN_AMT2 = RAIN_AMT2.replace('~',',')
@@ -261,6 +269,12 @@ elif CHECK3 == '00' :
 						RAIN_AMT = READ4[jjj].get('fcstValue')
 						if RAIN_AMT == "강수없음" :
 							RAIN_AMT = '0.0'
+
+						elif RAIN_AMT == "50mm이상" :
+							RAIN_AMT = '50.0'
+
+						elif RAIN_AMT == "1.0mm 미만" :
+							RAIN_AMT = '0.5'							
 						else :
 							RAIN_AMT = RAIN_AMT.replace('mm','')
 							RAIN_AMT = RAIN_AMT.replace('~',',')

@@ -1,5 +1,6 @@
 #[Geosystem Research : Department of Marine Forecast ]
 #[Created by C.K. Park on 2018.10.23] edit 2019.04
+import os
 import sys
 import json
 import re
@@ -26,7 +27,7 @@ HR = str(datetime.today().strftime("%H"))
 
 #[폴더]
 dir1 = './Result/'+today
-
+if not os.path.exists(dir1): os.makedirs(dir1)
 #[KMA API KEY and URL]] ==================================================================================================
 API_KEY = "SKRp1p8kIX9Nx%2FG9VonGemNtI09JHVLPcgGtTTiH72auPDE5aVx8iwHLydskKf9zTKj9I2dDniDwuKjovXXdFA%3D%3D"
 #API_KEY = "SKRp1p8kIX9Nx%2FG9VonGemNtI09JHVLPcgGtTTiH72auPDE5aVx8iwHLydskKf9zTKj9I2dDniDwuKjovXXdFA=="

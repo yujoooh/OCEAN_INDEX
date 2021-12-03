@@ -16,5 +16,5 @@ python 7_1.SR_INDEX_FCST_PM.py  >> %logfile%
 python 7_2.SR_INDEX_SERVICE_PM.py  >> %logfile%
 python 7_1.SR_INDEX_FCST_MID.py  >> %logfile%
 python 7_3.SR_INDEX_TOTAL.py  >> %logfile%
-rem python 7_5.SR_DB_UPLOAD.py  >> %logfile%
+python 7_5.SR_DB_UPLOAD.py  >> %logfile%
 echo '===[SR Collection Complete]==================================================' >> %logfile%

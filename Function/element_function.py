@@ -58,12 +58,14 @@ class Element_extract:
 						if '-' in WARN1_P : WARN1_P.remove('-') # 중복제거
 						if '-' in WARN1_D : WARN1_D.remove('-') # 중복제거
 						if '-' in WARN2_A : WARN2_A.remove('-') # 중복제거
+						if '-' in WARN2_P : WARN2_P.remove('-') # 중복제거						
 						if '-' in WARN2_D : WARN2_D.remove('-') # 중복제거
 
 						if 'DR' in WARN1_A : WARN1_A.remove('DR') # 건조주의보는 지수영향X, 시계열만 표출
 						if 'DR' in WARN1_P : WARN1_P.remove('DR') # 건조주의보는 지수영향X, 시계열만 표출
 						if 'DR' in WARN1_D : WARN1_D.remove('DR') # 건조주의보는 지수영향X, 시계열만 표출
 						if 'DR' in WARN2_A : WARN2_A.remove('DR') # 건조주의보는 지수영향X, 시계열만 표출
+						if 'DR' in WARN2_P : WARN2_P.remove('DR') # 건조주의보는 지수영향X, 시계열만 표출						
 						if 'DR' in WARN2_D : WARN2_D.remove('DR') # 건조주의보는 지수영향X, 시계열만 표출
 
 						if len(WARN1_A) == 0 : WARN1_A = '-'
@@ -100,7 +102,7 @@ class Element_extract:
 				WEIGHT_CURR = NUM_CURRENT / FCST_NUM * 100 #유속 가중치(최대점수)
 				ADD_CARNIVAL = NUM_CARNIVAL * 2.0          #축제수(추가점수)  가중치 변경하면서 조정 필요
 
-				#print(WEIGHT_SKY, WEIGHT_TEMP, WEIGHT_WSPD, WEIGHT_SST, WEIGHT_WAVE, WEIGHT_MUL, WEIGHT_CURR)
+				#print(WEIGHT_TEMP, WEIGHT_WSPD, WEIGHT_SST, WEIGHT_WAVE, WEIGHT_MUL, WEIGHT_CURR, WEIGHT_SKY)
 				if DY == today or DY == afterday1 or DY == afterday2 : TIME = ['AM','PM']
 				if DY == afterday3 or DY == afterday4 or DY == afterday5 or DY == afterday6 : TIME = ['DY']
 				for TM in TIME : 

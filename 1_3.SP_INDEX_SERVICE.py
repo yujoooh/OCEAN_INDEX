@@ -350,8 +350,8 @@ while kk < int((SPEQ_LEN-1)*6/10):
 						Diff_SST = 0
 						obj_SST = "fcst"                        
 					else:
-						Diff_SST = abs(round(float(apply1[nn-1][3]) - float(fdata[kk][3]),2))
-						#print(apply1[nn][0],fdata[kk],Diff_SST)
+						Diff_SST = abs(round(float(apply1[nn][3]) - float(fdata[kk][3]),2))
+					#print(apply1[nn][3], fdata[kk][3], Diff_SST)												
 					if odata1[mm][3] == '서해':
 						if Diff_SST > WEST_RMSE_SST:
 							apply_SST = round(float(odata1[mm][1]),2)
@@ -387,16 +387,16 @@ while kk < int((SPEQ_LEN-1)*6/10):
 	
 				apply_WHT = round(float(fdata[kk][4]),2)
 				obj_WHT = "fcst"
-	
-				#print([Diff_Point,fdata[kk][1],obj_SST,apply_SST,obj_WHT,apply_WHT])
 				apply1.append([Diff_Point,fdata[kk][1],obj_SST,apply_SST,obj_WHT,apply_WHT])
+				#print([Diff_Point,fdata[kk][1],obj_SST,apply_SST,obj_WHT,apply_WHT])								
 	
 			else:
-				if fdata[kk][1] == afterday2 and fdata[kk][2] == "AM":
+				if fdata[kk][1] == afterday2 and apply1[nn][1]== afterday1 and fdata[kk][2] == "AM":
 					if odata1[mm][1] == '-999.0':
 						Diff_SST = 0
 					else:
-						Diff_SST = abs(round(float(apply1[nn-1][3]) - float(fdata[kk][3]),2))
+						Diff_SST = abs(round(float(apply1[nn][3]) - float(fdata[kk][3]),2))
+					#print(apply1[nn][3], fdata[kk][3], Diff_SST)																		
 	
 					if odata1[mm][3] == '서해':
 						if Diff_SST > WEST_RMSE_SST:
@@ -423,27 +423,56 @@ while kk < int((SPEQ_LEN-1)*6/10):
 							obj_SST = "fcst"
 					
 			
-				if fdata[kk][1] == afterday2 and fdata[kk][2] == "PM":                
-					if odata2[ll][1] == '-999.0':
-						Diff_SST = 0                   
+				elif fdata[kk][1] == afterday2 and apply1[nn][1]== afterday1 and fdata[kk][2] == "PM":
+					if odata2[mm][1] == '-999.0':
+						Diff_SST = 0
 					else:
-						Diff_SST = abs(round(float(apply1[nn-1][3]) - float(fdata[kk][3]),2))
+						Diff_SST = abs(round(float(apply1[nn][3]) - float(fdata[kk][3]),2))
+					#print(apply1[nn][3], fdata[kk][3], Diff_SST)																		                                        
+					if odata2[ll][3] == '서해':
+						if obj_SST == "fcst" :
+							apply_SST = round(float(fdata[kk][3]),2)
+							obj_SST = "fcst"
+						elif obj_SST == "obs" : 
+							if Diff_SST > WEST_RMSE_SST:
+								apply_SST =round(float(odata2[ll][1]),2)
+								obj_SST = "obs"
+							else :
+								apply_SST =round(float(odata1[ll][1]),2)
+								obj_SST = "obs"
 	
-					if obj_SST == "fcst" :
-						apply_SST = round(float(fdata[kk][3]),2)
-						obj_SST = "fcst"
-					else : 
-						apply_SST = round(float(odata2[ll][1]),2)
-						obj_SST = "obs"
+					elif odata2[ll][3] == '남해':
+						if obj_SST == "fcst" :
+							apply_SST = round(float(fdata[kk][3]),2)
+							obj_SST = "fcst"
+						elif obj_SST == "obs" : 
+							if Diff_SST > SOUTH_RMSE_SST:
+								apply_SST = round(float(odata2[ll][1]),2)
+								obj_SST = "obs"
+							else :
+								apply_SST =round(float(odata1[ll][1]),2)
+								obj_SST = "obs"
+	
+					elif odata2[ll][3] == '동해':
+						if obj_SST == "fcst" :
+							apply_SST = round(float(fdata[kk][3]),2)
+							obj_SST = "fcst"
+						elif obj_SST == "obs" : 
+							if Diff_SST > EAST_RMSE_SST:
+								apply_SST = round(float(odata2[ll][1]),2)
+								obj_SST = "obs"
+							else :
+								apply_SST =round(float(odata1[ll][1]),2)
+								obj_SST = "obs"
 	
 				apply_WHT = round(float(fdata[kk][4]),2)
 				obj_WHT = "fcst"
-				#print([Diff_Point,fdata[kk][1],obj_SST,apply_SST,obj_WHT,apply_WHT])
 				apply1.append([Diff_Point,fdata[kk][1],obj_SST,apply_SST,obj_WHT,apply_WHT])
+				#print([Diff_Point,fdata[kk][1],obj_SST,apply_SST,obj_WHT,apply_WHT])								
 			nn += 1
 		ll += 1
-		if Diff_Point == apply1[nn][0] :
-			nn += 1
+		#if Diff_Point == apply1[nn][0] :
+		#	nn += 1
 		mm += 1
 	kk = kk + 1
 # 4일은 예측값--------------------------------------------------------------------------------------------------------------------

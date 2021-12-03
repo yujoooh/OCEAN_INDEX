@@ -43,7 +43,7 @@ class Statistic:
 		elif model == 'KMA' and fcst_time == 'ampm' :
 			VAR_AM_MIN = np.min(vars[T+4:T+6,Y,X])
 			VAR_AM_MAX = np.max(vars[T+4:T+6,Y,X])
-			VAR_AM_AVERAGE = np.mean(vars[T+3:T+5,Y,X])
+			VAR_AM_AVERAGE = np.mean(vars[T+4:T+6,Y,X])
             
 			VAR_PM_MIN = np.min(vars[T+5:T+8,Y,X])
 			VAR_PM_MAX = np.max(vars[T+5:T+8,Y,X])

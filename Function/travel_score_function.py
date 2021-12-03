@@ -14,7 +14,7 @@ class IndexScore:
 		return round(score,1)
 
 	def wspd_score(self, weight, value):
-		if   value <= 14                 : score = weight - ((14 - value) * weight / 14)
+		if   value <= 14                 : score = ((14 - value) * weight / 14)
 		elif value > 14                  : score = 0 # 강풍주의보 발효기준 이상이므로..(안전하게!)
 		return round(score,1)
 
@@ -49,7 +49,7 @@ class IndexScore:
 		return round(score,1)
 
 	def rain_score(self, score_sum, value):
-		if   value == 0 : score = score_sum # 매우좋음(76~100), 좋음(66~75), 보통(56~66), 나쁨(41~55), 매우나쁨(0~40)
+		if   value <= 1.0 : score = score_sum # 매우좋음(76~100), 좋음(66~75), 보통(56~66), 나쁨(41~55), 매우나쁨(0~40)
 		elif value <= 5 : score = 60 # 보통(중간점수)
 		elif value < 10 : score = 45 # 나쁨(중간점수)
 		else            : score = 20 # 매우나쁨(중간점수)
@@ -57,7 +57,7 @@ class IndexScore:
 
 	def warn_score(self, rain_scre, warn1, warn2): # 강수점수 반영후 점수, 해상특보, 육상특보
 		if   warn1 == '-' and warn2 == '-': score = rain_scre # 해상 or 육상 특보가 없을 경우.
-		elif warn2 == 'HW': # 폭염주의보/예비특보일경우 1단계 하향
+		elif warn2 == 'HW2' or warn2 == 'HW3' : # 폭염주의보/예비특보일경우 1단계 하향
 			if rain_scre > 75   : score = 70
 			elif rain_scre > 65 : score = 60
 			elif rain_scre > 55 : score = 50

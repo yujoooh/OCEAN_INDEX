@@ -237,7 +237,7 @@ while ii <= COM_LEN-1:
 			COM[ii].insert(15,RAIN_AMT)
 			COM[ii].insert(16,SKY)
 			#print(NAME, DATE, int(SKY), int(DEV2[10]))
-		elif COM[ii][0] == STN and COM[ii][4] == DATE and COM[ii][8] == 'daily' :
+		elif COM[ii][0] == STN and COM[ii][4] == DATE and COM[ii][8] == 'daily' and DEV2[1] == STN :
 			COM[ii].insert(15,(RAIN_AMT + float(DEV2[11])))
 			if int(SKY) >= int(DEV2[10]) : COM[ii].insert(16,SKY)
 			else : COM[ii].insert(16,SKY)
@@ -253,9 +253,6 @@ while ii <= COM_LEN-1:
 		DEV = WARN[jj].split(',')
 		WARN_AREA = DEV[0] ; WARN_TYPE = DEV[1] ; WARN_SDAY = DEV[2] ; WARN_SHR = DEV[3] ; WARN_EDAY = DEV[4] ; WARN_EHR = DEV[5]
 		#print(WARN_AREA, WARN_TYPE)
-		if WARN_TYPE == 'WW2' : WARN_TYPE = 'WW'
-		if WARN_TYPE == 'TY2' : WARN_TYPE = 'TY'
-		if WARN_TYPE == 'SS2' : WARN_TYPE = 'SS'
 		
 		#print(COM[ii][4], int(WARN_SDAY), COM[ii][5],WARN_SHR)
 		if int(COM[ii][4]) < int(WARN_EDAY) and int(COM[ii][4]) >= int(WARN_SDAY) and COM[ii][2] == WARN_AREA: #해제예고 일보다 전날일 경우 일괄적용

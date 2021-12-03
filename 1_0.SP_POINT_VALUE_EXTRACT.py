@@ -12,12 +12,12 @@ print("#SPEQ OBS data extract Start==========")
 
 #[Date set] ==============================================================================================
 #[Auto date set]
-HR = str(datetime.today().strftime('%H'))
 today = str(datetime.today().strftime('%Y%m%d'))
 dir1 = './Result/'+today
 
+HR = str(datetime.today().strftime('%H'))
 #[Manual date set]
-HR = '10'
+#HR = '10'
 if int(HR) <12 : AMPM = 'AM'
 if int(HR) >= 12 : AMPM = 'PM'
 
@@ -45,6 +45,7 @@ for LIST in INDEX_LIST:
 	
 	ii = 1
 	while ii <= INF_LEN-1 :
+	#while ii <= 1 :
 		DEV = INF[ii].split(',')
 		STN = DEV[0] ; AREA = DEV[1] ; NAME = DEV[2] ; LON = DEV[3] ; LAT = DEV[4]
 		ROMS_X = int(DEV[5]) ; ROMS_Y = int(DEV[6]) ; WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8])

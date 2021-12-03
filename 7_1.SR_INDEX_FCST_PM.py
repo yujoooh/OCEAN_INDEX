@@ -274,22 +274,6 @@ else :
         COM['RAIN_PROB'][i] = CITY['RAIN_PROB'][i]
         COM['REL_HU'][i] = CITY['REL_HU'][i]
         
-#특보자료 처리 함수 정의_1
-def convertWARNTYPE(TYPE):
-    if TYPE == 'SR2' : return 'SR'
-    if TYPE == 'SW2' : return 'SW'
-    if TYPE == 'CW2' : return 'CW'
-    if TYPE == 'DR2' : return 'DR'
-    if TYPE == 'SS2' : return 'SS'
-    if TYPE == 'WW2' : return 'WW'
-    if TYPE == 'TY2' : return 'TY'
-    if TYPE == 'SN2' : return 'SN'
-    if TYPE == 'YD2' : return 'YD'
-    if TYPE == 'HW2' : return 'HW'
-    return TYPE
-# 특보없이 산출하고 싶을때
-# WARN_LEN = 0
-
 if not os.path.exists(dir_result+'/KMA_WARNING.csv') : #기상특보자료 수집 불가시 특보 적용 없이 산출
     print('KMA_WARNING DATA Not found') ; WARN_LEN=0
 else :
@@ -298,7 +282,7 @@ else :
 if WARN_LEN==0:
     COM['특보'] = '-'
 else:
-    WARN['CONVERT_TYPE']=WARN['TYPE'].apply(convertWARNTYPE)
+    WARN['CONVERT_TYPE']=WARN['TYPE']
     WARN = WARN.astype({'START_DAY': 'str'})
     WARN = WARN.astype({'END_DAY': 'str'})
     for j in range(len(COM)):

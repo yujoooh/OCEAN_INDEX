@@ -98,7 +98,7 @@ while ii <= INF_LEN-1 :
 	REF_AGY1=DEV[19]; REF_STN_WAVE1=DEV[20]; REF_AGY2=DEV[21]; REF_STN_WAVE2=DEV[22]
 	REF_AGY3=DEV[23]; REF_STN_SST1=DEV[24]; REF_AGY4=DEV[25]; REF_STN_SST2=DEV[26]
 
-	M_CURRENT_S = Statistic().min_max_ave('KHOA', 'daily', CURRENT, ROMS_X, ROMS_Y, 0)
+	M_CURRENT_S = Statistic().min_max_ave('KHOA', 'ampm', CURRENT, ROMS_X, ROMS_Y, 0)
 
 	jj = 1 ; hr1=0 
 	while jj < len(OBS_COM):
@@ -188,30 +188,31 @@ while ii <= INF_LEN-1 :
 
 	#관측자료 최대/최소/평균값 산정 및 참고지점 1,2순위의 자료 유무 판단.. 전체 없을 시 -999로
 	#print(NAME, REF_STN_WAVE1,len(O_SST1),len(O_WHT1[9:19]), O_WHT1[9:19].count(-999),NAME,len(O_SST2), REF_STN_WAVE2,len(O_WHT2[9:19]), O_WHT2[9:19].count(-999))
-	if len(O_WHT1[9:19]) == 0 or  O_WHT1[9:19].count(-999) == 10 :
+	if len(O_WHT1[9:19]) == 0 or O_WHT1[9:13].count(-999) == 4 or O_WHT1[12:19].count(-999) == 6 or O_WHT1[9:19].count(-999) == 10 :
 		print(NAME, REF_STN_WAVE1,"WAVE REF1 all data missing")
-		if len(O_WHT2[9:19]) == 0 or O_WHT2[9:19].count(-999) == 10 :
+		if len(O_WHT2[9:19]) == 0 or O_WHT2[9:13].count(-999) == 4 or O_WHT2[12:19].count(-999) == 6 or O_WHT2[9:19].count(-999) == 10 :
 			print(NAME, REF_STN_WAVE2,"WAVE REF1/REF2 all data missing")
-			WAVE_S = [-999,-999,-999]
+			WAVE_S = [-999,-999,-999,-999,-999,-999]
 		else:
-			WAVE_S = Statistic2().min_max_ave('daily',O_WHT2,9)
+			WAVE_S = Statistic2().min_max_ave('ampm',O_WHT2,9)
 	else:
-		WAVE_S = Statistic2().min_max_ave('daily',O_WHT1,9)
+		WAVE_S = Statistic2().min_max_ave('ampm',O_WHT1,9)
 
-	if len(O_SST1[9:19]) == 0 or O_SST1[9:19].count(-999) == 10 :
+	if len(O_SST1[9:19]) == 0 or O_SST1[9:13].count(-999) == 4 or O_SST1[12:19].count(-999) == 6 or O_SST1[9:19].count(-999) == 10 :
 		print(NAME, REF_STN_SST1,"SST REF1 all data missing")
-		if len(O_SST2[9:19]) == 0 or O_SST2[9:19].count(-999) == 10 :
+		if len(O_SST2[9:19]) == 0 or O_SST2[9:13].count(-999) == 4 or O_SST2[12:19].count(-999) == 6 or O_SST2[9:19].count(-999) == 10 :
 			print(NAME, REF_STN_SST2,"SST REF1/REF2 all data missing")
-			SST_S = [-999,-999,-999]
+			SST_S = [-999,-999,-999,-999,-999,-999]
 		else:
 			#print(NAME, O_SST2)
-			SST_S = Statistic2().min_max_ave('daily',O_SST2,9)
+			SST_S = Statistic2().min_max_ave('ampm',O_SST2,9)
 	else:
 		#print(NAME, O_SST1)
-		SST_S = Statistic2().min_max_ave('daily',O_SST1,9)
+		SST_S = Statistic2().min_max_ave('ampm',O_SST1,9)
 	
 	#VARS_S ampm [0:am_min 1:am_max, 2:am_ave, 3:pm_min, 4:pm_max, 5:pm_ave] ; VARS_S daily [0:min 1:max, 2:ave]
-	DAY1.append([STN, AREA, W_AREA, NAME, yesterday, YESTERDAY_MUL,round(WAVE_S[0],1), round(WAVE_S[2],1), round(WAVE_S[1],1), round(M_CURRENT_S[0],1), round(M_CURRENT_S[2],1), round(M_CURRENT_S[1],1), int(round(SST_S[0])), int(round(SST_S[2])), int(round(SST_S[1]))])
+	DAY1.append([STN, AREA, W_AREA, NAME, yesterday, 'AM', YESTERDAY_MUL, round(WAVE_S[0],1), round(WAVE_S[2],1), round(WAVE_S[1],1), round(M_CURRENT_S[0],1), round(M_CURRENT_S[2],1), round(M_CURRENT_S[1],1), int(round(SST_S[0])), int(round(SST_S[2])), int(round(SST_S[1]))])
+	DAY1.append([STN, AREA, W_AREA, NAME, yesterday, 'PM', YESTERDAY_MUL, round(WAVE_S[3],1), round(WAVE_S[5],1), round(WAVE_S[4],1), round(M_CURRENT_S[3],1), round(M_CURRENT_S[5],1), round(M_CURRENT_S[4],1), int(round(SST_S[3])), int(round(SST_S[5])), int(round(SST_S[4]))])
 	O_SST1.clear() ;O_SST2.clear() ; O_WHT1.clear(); O_WHT2.clear()
 	ii = ii + 1
 
@@ -227,14 +228,14 @@ while ii <= len(DAY1)-1 :
 	#print(ii)
                     #0   1     2      3       4        5             6                     7                 8                     9                      10                    11                   12                  13                      14              15
 	#DAY1.append([STN, AREA, W_AREA, NAME, today, TODAY_MUL, round(WAVE_S[0],1), round(WAVE_S[2],1), round(WAVE_S[1],1), round(CURRENT_S[0],1), round(CURRENT_S[2],1), round(CURRENT_S[1],1), int(round(SST_S[0])), int(round(SST_S[2])), int(round(SST_S[1])), WARN])
-	TIDE_SCRE = IndexScore().tide_score(DAY1[ii][5])
-	WAVE_SCRE = IndexScore().wave_score(round(float(DAY1[ii][8]),1))
-	CURRENT_SCRE = IndexScore().current_score(DAY1[ii][11])
-	SST_SCRE = IndexScore().sst_score(round(DAY1[ii][13]))
+	TIDE_SCRE = IndexScore().tide_score(DAY1[ii][6])
+	WAVE_SCRE = IndexScore().wave_score(round(float(DAY1[ii][9]),1))
+	CURRENT_SCRE = IndexScore().current_score(DAY1[ii][12])
+	SST_SCRE = IndexScore().sst_score(round(DAY1[ii][14]))
 	WARN_SCRE = IndexScore().warn_score('-')
 	TOTAL_SCRE1 = IndexScore().total_score(TIDE_SCRE, WAVE_SCRE, CURRENT_SCRE, SST_SCRE, WARN_SCRE)[0] # forecast score(no rain, no warning)
 
-	DAY1[ii].insert(6,TIDE_SCRE) ; DAY1[ii].insert(10,WAVE_SCRE) ; DAY1[ii].insert(14,CURRENT_SCRE); DAY1[ii].insert(18,SST_SCRE) ;DAY1[ii].insert(19,TOTAL_SCRE1)
+	DAY1[ii].insert(7,TIDE_SCRE) ; DAY1[ii].insert(11,WAVE_SCRE) ; DAY1[ii].insert(15,CURRENT_SCRE); DAY1[ii].insert(19,SST_SCRE) ;DAY1[ii].insert(20,TOTAL_SCRE1)
 	ii = ii + 1
 
 #ii = 0
@@ -245,11 +246,11 @@ while ii <= len(DAY1)-1 :
 #[Output Data] ========================================================================================
 OUT_FNAME1=dir1+'/SSEQ_INDEX_OBS_1QC_'+today+'.csv'
 with open(OUT_FNAME1,'w',encoding='utf8') as file:
-	file.write('생산일,코드,권역,지역,예측일자,물때,물때점수,최소파고,평균파고,최대파고,파고점수,최소유속,평균유속,최대유속,유속점수,최소수온,평균수온,최대수온,수온점수,총점수\n',)
+	file.write('생산일,코드,권역,지역,예측일자,시간,물때,물때점수,최소파고,평균파고,최대파고,파고점수,최소유속,평균유속,최대유속,유속점수,최소수온,평균수온,최대수온,수온점수,총점수\n',)
 	ii = 0
 	while ii <= len(DAY1)-1 :
 		#[전체 데이터 Writing]
-		file.write(f'{today},{DAY1[ii][0]},{DAY1[ii][1]},{DAY1[ii][3]},{DAY1[ii][4]},{DAY1[ii][5]},{DAY1[ii][6]},{DAY1[ii][7]},{DAY1[ii][8]},{DAY1[ii][9]},{DAY1[ii][10]},{DAY1[ii][11]},{DAY1[ii][12]},{DAY1[ii][13]},{DAY1[ii][14]},{DAY1[ii][15]},{DAY1[ii][16]},{DAY1[ii][17]},{DAY1[ii][18]},{DAY1[ii][19]:4.2f}\n')
+		file.write(f'{today},{DAY1[ii][0]},{DAY1[ii][1]},{DAY1[ii][3]},{DAY1[ii][4]},{DAY1[ii][5]},{DAY1[ii][6]},{DAY1[ii][7]},{DAY1[ii][8]},{DAY1[ii][9]},{DAY1[ii][10]},{DAY1[ii][11]},{DAY1[ii][12]},{DAY1[ii][13]},{DAY1[ii][14]},{DAY1[ii][15]},{DAY1[ii][16]},{DAY1[ii][17]},{DAY1[ii][18]},{DAY1[ii][19]},{DAY1[ii][20]:4.2f}\n')
 		ii = ii + 1
 
 print("#SSEQ OBS_INDEX 1QC CREAT Complete==========")

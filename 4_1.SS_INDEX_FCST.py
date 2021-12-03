@@ -150,6 +150,16 @@ while ii <= INF_LEN-1 :
 		else : 
 			WAVE_2S = Statistic().min_max_ave('KHOA', 'ampm', WHT, WW3_X, WW3_Y, jj)
 			WAVE_S = Statistic().min_max_ave('KHOA', 'daily', WHT, WW3_X, WW3_Y, jj)
+		if WAVE_S[0] < 0.1 : WAVE_S[0] = 0.1
+		if WAVE_S[1] < 0.1 : WAVE_S[1] = 0.1
+		if WAVE_S[2] < 0.1 : WAVE_S[2] = 0.1
+		if WAVE_2S[0] < 0.1 : WAVE_2S[0] = 0.1
+		if WAVE_2S[1] < 0.1 : WAVE_2S[1] = 0.1
+		if WAVE_2S[2] < 0.1 : WAVE_2S[2] = 0.1
+		if WAVE_2S[3] < 0.1 : WAVE_2S[3] = 0.1		
+		if WAVE_2S[4] < 0.1 : WAVE_2S[4] = 0.1
+		if WAVE_2S[5] < 0.1 : WAVE_2S[5] = 0.1		
+			
 				
 		#VARS_S ampm [0:am_min 1:am_max, 2:am_ave, 3:pm_min, 4:pm_max, 5:pm_ave] ; VARS_S daily [0:min 1:max, 2:ave]
 		if jj == 0  :
@@ -207,10 +217,6 @@ while ii <= COM_LEN-1:
 		DEV = WARN[jj].split(',')
 		WARN_AREA = DEV[0] ; WARN_TYPE = DEV[1] ; WARN_SDAY = DEV[2] ; WARN_SHR = DEV[3] ; WARN_EDAY = DEV[4] ; WARN_EHR = DEV[5]
 		#print(WARN_AREA, WARN_TYPE)
-		if WARN_TYPE == 'WW2' : WARN_TYPE = 'WW'
-		if WARN_TYPE == 'TY2' : WARN_TYPE = 'TY'
-		if WARN_TYPE == 'SS2' : WARN_TYPE = 'SS'
-		
 		#print(COM[ii][4], int(WARN_SDAY), COM[ii][5],WARN_SHR)
 		if int(COM[ii][4]) < int(WARN_EDAY) and int(COM[ii][4]) >= int(WARN_SDAY) and COM[ii][2] == WARN_AREA: #해제예고 일보다 전날일 경우 일괄적용
 			COM[ii].insert(21,WARN_TYPE)

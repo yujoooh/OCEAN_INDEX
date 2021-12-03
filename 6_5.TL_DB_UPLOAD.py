@@ -54,39 +54,76 @@ while ii <= len(content1)-1 :
 	MIN_WSPD = float(DEV[13]) ; AVE_WSPD = float(DEV[14]) ; MAX_WSPD = float(DEV[15])  ; WSPD_SCORE = float(DEV[16])
 	WEATHER = float(DEV[17]) ; WEATHER_SCORE = float(DEV[18]) ; RAIN = float(DEV[19])  ; RAIN_SCORE = float(DEV[20])
 	WARN = DEV[21] ; WARN_SCORE = float(DEV[22]) ; TOTAL = float(DEV[23])
-	print(CODE, YMD, TL_STIME, TL_ETIME, TL_TIME, TL_SCORE, MIN_TEMP, AVE_TEMP, MAX_TEMP, TEMP_SCORE, MIN_WSPD, AVE_WSPD, MAX_WSPD, WSPD_SCORE, WEATHER, WEATHER_SCORE, RAIN, RAIN_SCORE, WARN, WARN_SCORE, TOTAL)
-	
-	sqlStr  = f"merge into WEB_TLEQ_SCRE@svclink.nori.go.kr    "
-	#sqlStr  = f"merge into WEB_TLEQ_SCRE    "
-	sqlStr += f"using dual  "
-	sqlStr += f"on (TL_CODE='{CODE}' and PRED_DATE='{YR}-{MN}-{DY}' and TL_EXP_STIME='{TL_STIME}' and TL_EXP_ETIME='{TL_ETIME}')  "
-	sqlStr += f"when matched then  "
-	sqlStr += f"update set  "
-	sqlStr += f"TL_SCORE={TL_SCORE},  "
-	sqlStr += f"MIN_AIR_TEMP={MIN_TEMP},  "
-	sqlStr += f"AVG_AIR_TEMP={AVE_TEMP},  "
-	sqlStr += f"MAX_AIR_TEMP={MAX_TEMP},  "
-	sqlStr += f"AT_SCORE={TEMP_SCORE},  "
-	sqlStr += f"MIN_WIND_SPEED={MIN_WSPD},  "
-	sqlStr += f"AVG_WIND_SPEED={AVE_WSPD},  "
-	sqlStr += f"MAX_WIND_SPEED={MAX_WSPD},  "	
-	sqlStr += f"WS_SCORE={WSPD_SCORE},  "
-	sqlStr += f"WEATHER={WEATHER},  "
-	sqlStr += f"WT_SCORE={WEATHER_SCORE},  "
-	sqlStr += f"TOTAL_SCORE={TOTAL},  "
-	sqlStr += f"MAX_RAIN_AMT={RAIN},  "
-	sqlStr += f"RAIN_AMT_SCORE={RAIN_SCORE},  "
-	sqlStr += f"WARN='{WARN}',  "
-	sqlStr += f"WARN_SCORE={WARN_SCORE}  "
-	sqlStr += f"when not matched then  "
-	sqlStr += f"insert (TL_CODE, PRED_DATE, TL_EXP_STIME, TL_EXP_ETIME, TL_EXP_HOUR, TL_SCORE, MIN_AIR_TEMP, AVG_AIR_TEMP, MAX_AIR_TEMP, AT_SCORE, MIN_WIND_SPEED, AVG_WIND_SPEED, MAX_WIND_SPEED, WS_SCORE, WEATHER, WT_SCORE, TOTAL_SCORE, MAX_RAIN_AMT, RAIN_AMT_SCORE, WARN, WARN_SCORE)  "
-	sqlStr += f"values ('{CODE}', '{YR}-{MN}-{DY}', '{TL_STIME}', '{TL_ETIME}', {TL_TIME}, {TL_SCORE}, {MIN_TEMP}, {AVE_TEMP}, {MAX_TEMP}, {TEMP_SCORE}, {MIN_WSPD}, {AVE_WSPD}, {MAX_WSPD}, {WSPD_SCORE}, {WEATHER}, {WEATHER_SCORE}, {TOTAL}, {RAIN}, {RAIN_SCORE}, '{WARN}', {WARN_SCORE})  "
+	if MN == '05' and MN == '06' and MN == '07' and MN == '08' and MN == '09' and MN == '10' :	
+		print(CODE, YMD, TL_STIME, TL_ETIME, TL_TIME, TL_SCORE, MIN_TEMP, AVE_TEMP, MAX_TEMP, TEMP_SCORE, MIN_WSPD, AVE_WSPD, MAX_WSPD, WSPD_SCORE, WEATHER, WEATHER_SCORE, RAIN, RAIN_SCORE, WARN, WARN_SCORE, TOTAL)
 
-	print(sqlStr)
-	#if ii == 2: break
-	cur.execute(sqlStr)
-	cur.execute('commit')
-	ii = ii + 1
+		sqlStr  = f"merge into WEB_TLEQ_SCRE@svclink.nori.go.kr    "
+		#sqlStr  = f"merge into WEB_TLEQ_SCRE    "
+		sqlStr += f"using dual  "
+		sqlStr += f"on (TL_CODE='{CODE}' and PRED_DATE='{YR}-{MN}-{DY}' and TL_EXP_STIME='{TL_STIME}' and TL_EXP_ETIME='{TL_ETIME}')  "
+		sqlStr += f"when matched then  "
+		sqlStr += f"update set  "
+		sqlStr += f"TL_SCORE={TL_SCORE},  "
+		sqlStr += f"MIN_AIR_TEMP={MIN_TEMP},  "
+		sqlStr += f"AVG_AIR_TEMP={AVE_TEMP},  "
+		sqlStr += f"MAX_AIR_TEMP={MAX_TEMP},  "
+		sqlStr += f"AT_SCORE={TEMP_SCORE},  "
+		sqlStr += f"MIN_WIND_SPEED={MIN_WSPD},  "
+		sqlStr += f"AVG_WIND_SPEED={AVE_WSPD},  "
+		sqlStr += f"MAX_WIND_SPEED={MAX_WSPD},  "	
+		sqlStr += f"WS_SCORE={WSPD_SCORE},  "
+		sqlStr += f"WEATHER={WEATHER},  "
+		sqlStr += f"WT_SCORE={WEATHER_SCORE},  "
+		sqlStr += f"TOTAL_SCORE={TOTAL},  "
+		sqlStr += f"MAX_RAIN_AMT={RAIN},  "
+		sqlStr += f"RAIN_AMT_SCORE={RAIN_SCORE},  "
+		sqlStr += f"WARN='{WARN}',  "
+		sqlStr += f"WARN_SCORE={WARN_SCORE}  "
+		sqlStr += f"when not matched then  "
+		sqlStr += f"insert (TL_CODE, PRED_DATE, TL_EXP_STIME, TL_EXP_ETIME, TL_EXP_HOUR, TL_SCORE, MIN_AIR_TEMP, AVG_AIR_TEMP, MAX_AIR_TEMP, AT_SCORE, MIN_WIND_SPEED, AVG_WIND_SPEED, MAX_WIND_SPEED, WS_SCORE, WEATHER, WT_SCORE, TOTAL_SCORE, MAX_RAIN_AMT, RAIN_AMT_SCORE, WARN, WARN_SCORE)  "
+		sqlStr += f"values ('{CODE}', '{YR}-{MN}-{DY}', '{TL_STIME}', '{TL_ETIME}', {TL_TIME}, {TL_SCORE}, {MIN_TEMP}, {AVE_TEMP}, {MAX_TEMP}, {TEMP_SCORE}, {MIN_WSPD}, {AVE_WSPD}, {MAX_WSPD}, {WSPD_SCORE}, {WEATHER}, {WEATHER_SCORE}, {TOTAL}, {RAIN}, {RAIN_SCORE}, '{WARN}', {WARN_SCORE})  "
+
+		print(sqlStr)
+		#if ii == 2: break
+		cur.execute(sqlStr)
+		cur.execute('commit')
+		ii = ii + 1
+
+	else :
+		TOTAL = 6.0                
+		print(CODE, YMD, TL_STIME, TL_ETIME, TL_TIME, TL_SCORE, MIN_TEMP, AVE_TEMP, MAX_TEMP, TEMP_SCORE, MIN_WSPD, AVE_WSPD, MAX_WSPD, WSPD_SCORE, WEATHER, WEATHER_SCORE, RAIN, RAIN_SCORE, WARN, WARN_SCORE, TOTAL)
+
+		sqlStr  = f"merge into WEB_TLEQ_SCRE@svclink.nori.go.kr    "
+		#sqlStr  = f"merge into WEB_TLEQ_SCRE    "
+		sqlStr += f"using dual  "
+		sqlStr += f"on (TL_CODE='{CODE}' and PRED_DATE='{YR}-{MN}-{DY}' and TL_EXP_STIME='{TL_STIME}' and TL_EXP_ETIME='{TL_ETIME}')  "
+		sqlStr += f"when matched then  "
+		sqlStr += f"update set  "
+		sqlStr += f"TL_SCORE={TL_SCORE},  "
+		sqlStr += f"MIN_AIR_TEMP={MIN_TEMP},  "
+		sqlStr += f"AVG_AIR_TEMP={AVE_TEMP},  "
+		sqlStr += f"MAX_AIR_TEMP={MAX_TEMP},  "
+		sqlStr += f"AT_SCORE={TEMP_SCORE},  "
+		sqlStr += f"MIN_WIND_SPEED={MIN_WSPD},  "
+		sqlStr += f"AVG_WIND_SPEED={AVE_WSPD},  "
+		sqlStr += f"MAX_WIND_SPEED={MAX_WSPD},  "	
+		sqlStr += f"WS_SCORE={WSPD_SCORE},  "
+		sqlStr += f"WEATHER={WEATHER},  "
+		sqlStr += f"WT_SCORE={WEATHER_SCORE},  "
+		sqlStr += f"TOTAL_SCORE={TOTAL},  "
+		sqlStr += f"MAX_RAIN_AMT={RAIN},  "
+		sqlStr += f"RAIN_AMT_SCORE={RAIN_SCORE},  "
+		sqlStr += f"WARN='{WARN}',  "
+		sqlStr += f"WARN_SCORE={WARN_SCORE}  "
+		sqlStr += f"when not matched then  "
+		sqlStr += f"insert (TL_CODE, PRED_DATE, TL_EXP_STIME, TL_EXP_ETIME, TL_EXP_HOUR, TL_SCORE, MIN_AIR_TEMP, AVG_AIR_TEMP, MAX_AIR_TEMP, AT_SCORE, MIN_WIND_SPEED, AVG_WIND_SPEED, MAX_WIND_SPEED, WS_SCORE, WEATHER, WT_SCORE, TOTAL_SCORE, MAX_RAIN_AMT, RAIN_AMT_SCORE, WARN, WARN_SCORE)  "
+		sqlStr += f"values ('{CODE}', '{YR}-{MN}-{DY}', '{TL_STIME}', '{TL_ETIME}', {TL_TIME}, {TL_SCORE}, {MIN_TEMP}, {AVE_TEMP}, {MAX_TEMP}, {TEMP_SCORE}, {MIN_WSPD}, {AVE_WSPD}, {MAX_WSPD}, {WSPD_SCORE}, {WEATHER}, {WEATHER_SCORE}, {TOTAL}, {RAIN}, {RAIN_SCORE}, '{WARN}', {WARN_SCORE})  "
+
+		print(sqlStr)
+		#if ii == 2: break
+		cur.execute(sqlStr)
+		cur.execute('commit')
+		ii = ii + 1		
 
 cur.close()
 con.close()

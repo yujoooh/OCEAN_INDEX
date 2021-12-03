@@ -63,7 +63,7 @@ class IndexScore:
         return score
     
     def total_score(self, wave, rpeak, wavedir, wind, sst, warn):
-        score = (wave*2.0 + wavedir*2.0 + rpeak*1.0 + wind*0.6+ sst*0.4)/5
+        score = (wave*1.7 + wavedir*1.7 + rpeak*0.8 + wind*0.5+ sst*0.3)/5
         service_score = score
         
         if service_score > warn : service_score = warn

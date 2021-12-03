@@ -127,6 +127,7 @@ for code in TIDE_STN:
 #-----------------------------------[해양관측부이 자료수집]-----------------------------------------
 BUOY_INF = open('./Info/BUOY_STATION_INFO.csv','r',encoding='utf8')
 BUOY_STN = [str(INFO) for INFO in BUOY_INF.read().split()]
+print(BUOY_STN)
 print(today,"KHOA Ocean-buoy obs data collection...","correction time", hr)
 
 for code in BUOY_STN:

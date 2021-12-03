@@ -206,7 +206,7 @@ while ii < COM_TIME_LEN :
 			elif COM_TIME[ii][4] == WARN_EDAY and COM_TIME[ii][4] >= WARN_SDAY and COM_TIME[ii][2] == WARN_AREA : # 해제예고일과 같을 경우 AM이면 오전만 적용, PM이면 오전/오후 모두적용
 				if WARN_EHR == 'AM' and (COM_TIME[ii][5] == '00' or COM_TIME[ii][5] == '03' or COM_TIME[ii][5] == '06' or COM_TIME[ii][5] == '09' or COM_TIME[ii][5] == '12') : 
 					COM_TIME[ii][18] = WARN_TYPE
-				elif WARN_EHR == 'PM' and (COM_TIME[ii][5] == '00' or COM_TIME[ii][5] == '03' or COM_TIME[ii][5] == '06' or COM_TIME[ii][5] == '09' or COM_TIME[ii][5] == '12' or COM_TIME[ii][7] == '15' or COM_TIME[ii][7] == '18' or COM_TIME[ii][7] == '21') : 
+				elif WARN_EHR == 'PM' and (COM_TIME[ii][5] == '00' or COM_TIME[ii][5] == '03' or COM_TIME[ii][5] == '06' or COM_TIME[ii][5] == '09' or COM_TIME[ii][5] == '12' or COM_TIME[ii][5] == '15' or COM_TIME[ii][5] == '18' or COM_TIME[ii][5] == '21') : 
 					COM_TIME[ii][18] = WARN_TYPE
 				jj = WARN_LEN
 			else : 

@@ -73,16 +73,16 @@ if os.path.isfile(INFILE_3):
 	WHT_4 = DATA.variables['hsig4_busn'][:,:,:]  #[t,y,x]
 	WHT_5 = DATA.variables['hsig5_gawn'][:,:,:]  #[t,y,x]
 	DATA2 = Dataset(INFILE_4, mode='r')
-	WHT = DATA2.variables['Hsig'][:,:,:]  #[t,y,x]	
+	WHT = DATA2.variables['Hsig'][:,:,:]  #[t,y,x]
+
 else :
 	DATA = Dataset(INFILE_4, mode='r')
 	WHT = DATA.variables['Hsig'][:,:,:]  #[t,y,x]
 
 #[Sea Travel Index Forecast Area]=========================================================================
-FORECAST_AREA = ['JEJU']
-#FORECAST_AREA = ['JEJU','BUSAN','YEOSU','INCHEON','GANGNEUNG','TAEAN']
+#FORECAST_AREA = ['JEJU']
+FORECAST_AREA = ['JEJU','BUSAN','YEOSU','INCHEON','GANGNEUNG','TAEAN']
 for FCST_AREA in FORECAST_AREA : 
-	print(FCST_AREA)
 	#[Info Data Read]=========================================================================================
 	POINT_INF = open('./Info/'+FCST_AREA+'_Point_Info.csv','r',encoding='utf8')
 	INF = [str(INFO) for INFO in POINT_INF.read().split()]
@@ -132,19 +132,22 @@ for FCST_AREA in FORECAST_AREA :
 					if CWW3_LOC == 2 : WAVE_S = WHT_2[jjj, CWW3_Y, CWW3_X] 
 					if CWW3_LOC == 3 : WAVE_S = WHT_3[jjj, CWW3_Y, CWW3_X] 
 					if CWW3_LOC == 4 : WAVE_S = WHT_4[jjj, CWW3_Y, CWW3_X] 
-					if CWW3_LOC == 5 : WAVE_S = WHT_5[jjj, CWW3_Y, CWW3_X] 
+					if CWW3_LOC == 5 : WAVE_S = WHT_5[jjj, CWW3_Y, CWW3_X]
+
 				else : # CWW3 최대 예측기간 이후 WW3로 적용
 					WAVE_S = WHT[jj, WW3_Y, WW3_X] 
 					#print(WAVE_S)
 			else :
-				WAVE_S =WHT[jj, WW3_Y, WW3_X] 
+				WAVE_S =WHT[jj, WW3_Y, WW3_X]
 
-			if str(SST_S)  == '--'  : SST_S  = -999   # 내륙의 여행요소인 경우 수온 필요 없음
+			#if WAVE_S < '0.1' : WAVE_S == '0.1'			
+			if str(SST_S)  == '--' or SST_S > 9999   : SST_S  = -999   # 내륙의 여행요소인 경우 수온 필요 없음
 			if str(CURRENT_S)  == '--'  : CURRENT_S  = -999   # 내륙의 여행요소인 경우 유속 필요 없음
 			if str(WAVE_S) == 'nan' or str(WAVE_S) == '-9.99': WAVE_S = -999 # 내륙의 여행요소인 경우 파고 필요 없음
 			
 			tm1, tm2 = divmod(jj+9,24) ; hr = format(tm2, '02') #; print(tm1, tm2, hr) #  시간계산
 			afterday = (date.today() + timedelta(tm1)).strftime('%Y%m%d') # 입력날짜 정보
+			#print(afterday, hr)
 			#[물때정보 생산]----------------------------------------------------------------------------
 			yr = int(afterday[0:4]) ; mn = int(afterday[4:6]) ; dy = int(afterday[6:8])
 			yr_lunar = lunar.LunarDate.fromSolarDate(yr,mn,dy).year
@@ -169,11 +172,10 @@ for FCST_AREA in FORECAST_AREA :
 		if CITY_LEN == 0 :
 			COM_TIME[ii].insert(15,1)    # SKY [맑음:1, 구름많음:3, 흐림:4]
 			COM_TIME[ii].insert(16,0)    # RAIN AMOUNT
-			COM_TIME[ii].insert(17,0)    # RAIN AMOUNT_ACCUMULATE
-			COM_TIME[ii].insert(18,0) # RAIN PROBABILITY
-			COM_TIME[ii].insert(19,0) # RELATIVE HUMEDITY
-			COM_TIME[ii].insert(20,'-')    # SEA_WARNING
-			COM_TIME[ii].insert(21,'-')    # LAND_WARNING
+			COM_TIME[ii].insert(17,0) # RAIN PROBABILITY
+			COM_TIME[ii].insert(18,0) # RELATIVE HUMEDITY
+			COM_TIME[ii].insert(19,'-')    # SEA_WARNING
+			COM_TIME[ii].insert(20,'-')    # LAND_WARNING
 		else :
 			jj = 1
 			while jj < CITY_LEN :
@@ -203,24 +205,24 @@ for FCST_AREA in FORECAST_AREA :
 			while jj < WARN_LEN : 
 				DEV = WARN[jj].split(',')
 				WARN_AREA = DEV[0] ; WARN_TYPE = DEV[1] ; WARN_SDAY = DEV[2] ; WARN_SHR = DEV[3] ; WARN_EDAY = DEV[4] ; WARN_EHR = DEV[5]
-				#print(WARN_AREA, WARN_TYPE)
-				if WARN_TYPE == 'SR1' or  WARN_TYPE == 'SR2' or  WARN_TYPE == 'SR3' : WARN_TYPE = 'SR'
-				if WARN_TYPE == 'SW1' or  WARN_TYPE == 'SW2' or  WARN_TYPE == 'SW3' : WARN_TYPE = 'SW'
-				if WARN_TYPE == 'CW1' or  WARN_TYPE == 'CW2' or  WARN_TYPE == 'CW3' : WARN_TYPE = 'CW'
-				if WARN_TYPE == 'DR1' or  WARN_TYPE == 'DR2' or  WARN_TYPE == 'DR3' : WARN_TYPE = 'DR'
-				if WARN_TYPE == 'SS1' or  WARN_TYPE == 'SS2' or  WARN_TYPE == 'SS3' : WARN_TYPE = 'SS'
-				if WARN_TYPE == 'WW1' or  WARN_TYPE == 'WW2' or  WARN_TYPE == 'WW3' : WARN_TYPE = 'WW'
-				if WARN_TYPE == 'TY1' or  WARN_TYPE == 'TY2' or  WARN_TYPE == 'TY3' : WARN_TYPE = 'TY'
-				if WARN_TYPE == 'SN1' or  WARN_TYPE == 'SN2' or  WARN_TYPE == 'SN3' : WARN_TYPE = 'SN'
-				if WARN_TYPE == 'YD1' or  WARN_TYPE == 'YD2' or  WARN_TYPE == 'YD3' : WARN_TYPE = 'YD'
-				if WARN_TYPE == 'HW1' : WARN_TYPE = 'HW1'	#폭염경보
-				if WARN_TYPE == 'HW2' or WARN_TYPE == 'HW3' : WARN_TYPE = 'HW'	#폭염주의보/예비특보
+				#print(WARN_AREA, WARN_TYPE)				
+				#if WARN_TYPE == 'SR1' or  WARN_TYPE == 'SR2' or  WARN_TYPE == 'SR3' : WARN_TYPE = 'SR'
+				#if WARN_TYPE == 'SW1' or  WARN_TYPE == 'SW2' or  WARN_TYPE == 'SW3' : WARN_TYPE = 'SW'
+				#if WARN_TYPE == 'CW1' or  WARN_TYPE == 'CW2' or  WARN_TYPE == 'CW3' : WARN_TYPE = 'CW'
+				#if WARN_TYPE == 'DR1' or  WARN_TYPE == 'DR2' or  WARN_TYPE == 'DR3' : WARN_TYPE = 'DR'
+				#if WARN_TYPE == 'SS1' or  WARN_TYPE == 'SS2' or  WARN_TYPE == 'SS3' : WARN_TYPE = 'SS'
+				#if WARN_TYPE == 'WW1' or  WARN_TYPE == 'WW2' or  WARN_TYPE == 'WW3' : WARN_TYPE = 'WW'
+				#if WARN_TYPE == 'TY1' or  WARN_TYPE == 'TY2' or  WARN_TYPE == 'TY3' : WARN_TYPE = 'TY'
+				#if WARN_TYPE == 'SN1' or  WARN_TYPE == 'SN2' or  WARN_TYPE == 'SN3' : WARN_TYPE = 'SN'
+				#if WARN_TYPE == 'YD1' or  WARN_TYPE == 'YD2' or  WARN_TYPE == 'YD3' : WARN_TYPE = 'YD'
+				#if WARN_TYPE == 'HW1' : WARN_TYPE = 'HW1'	#폭염경보
+				#if WARN_TYPE == 'HW2' or WARN_TYPE == 'HW3' : WARN_TYPE = 'HW'	#폭염주의보/예비특보
 				#[해상특보적용]------------------------------------------------------------------------------------------
 				if COM_TIME[ii][6] < WARN_EDAY and COM_TIME[ii][6] >= WARN_SDAY and COM_TIME[ii][3] == WARN_AREA : # [해상특보] 해제예고 일보다 전날일 경우 일괄적용
 					COM_TIME[ii][19] = WARN_TYPE
 					jjj = WARN_LEN
 				elif COM_TIME[ii][6] == WARN_EDAY and COM_TIME[ii][6] >= WARN_SDAY and COM_TIME[ii][3] == WARN_AREA : # 해제예고일과 같을 경우 AM이면 오전만 적용, PM이면 오전/오후 모두적용
-					if WARN_EHR == 'AM' and (COM_TIME[ii][7] == '00' or COM_TIME[ii][7] == '03' or COM_TIME[ii][7] == '06' or COM_TIME[ii][7] == '09' or COM_TIME[ii][7] == '12') : 
+					if WARN_EHR == 'AM' and (COM_TIME[ii][7] == '00' or COM_TIME[ii][7] == '03' or COM_TIME[ii][7] == '06' or COM_TIME[ii][7] == '09') : 
 						COM_TIME[ii][19] = WARN_TYPE
 					elif WARN_EHR == 'PM' and (COM_TIME[ii][7] == '00' or COM_TIME[ii][7] == '03' or COM_TIME[ii][7] == '06' or COM_TIME[ii][7] == '09' or COM_TIME[ii][7] == '12' or COM_TIME[ii][7] == '15' or COM_TIME[ii][7] == '18' or COM_TIME[ii][7] == '21') : 
 						COM_TIME[ii][19] = WARN_TYPE
@@ -232,7 +234,7 @@ for FCST_AREA in FORECAST_AREA :
 					COM_TIME[ii][20] = WARN_TYPE
 					jj = WARN_LEN
 				elif COM_TIME[ii][6] == WARN_EDAY and COM_TIME[ii][6] >= WARN_SDAY and COM_TIME[ii][4] == WARN_AREA : # 해제예고일과 같을 경우 AM이면 오전만 적용, PM이면 오전/오후 모두적용
-					if WARN_EHR == 'AM' and (COM_TIME[ii][7] == '00' or COM_TIME[ii][7] == '03' or COM_TIME[ii][7] == '06' or COM_TIME[ii][7] == '09' or COM_TIME[ii][7] == '12') : 
+					if WARN_EHR == 'AM' and (COM_TIME[ii][7] == '00' or COM_TIME[ii][7] == '03' or COM_TIME[ii][7] == '06' or COM_TIME[ii][7] == '09') : 
 						COM_TIME[ii][20] = WARN_TYPE
 					elif WARN_EHR == 'PM' and (COM_TIME[ii][7] == '00' or COM_TIME[ii][7] == '03' or COM_TIME[ii][7] == '06' or COM_TIME[ii][7] == '09' or COM_TIME[ii][7] == '12' or COM_TIME[ii][7] == '15' or COM_TIME[ii][7] == '18' or COM_TIME[ii][7] == '21') : 
 						COM_TIME[ii][20] = WARN_TYPE
@@ -250,6 +252,7 @@ for FCST_AREA in FORECAST_AREA :
 
 	#[Index Score Calculate] ========================================================================================
 	SEA_TRAVEL_INDEX = Element_extract().travel(COM_TIME_DF,FCST_AREA)
+	SEA_TRAVEL_INDEX = SEA_TRAVEL_INDEX.sort_values(by = ['DATE', 'FC_AREA'], ascending=True)
 	#print(SEA_TRAVEL_INDEX)
 
 	#[Output Data] ========================================================================================

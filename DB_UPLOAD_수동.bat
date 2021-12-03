@@ -7,4 +7,4 @@ python 4_5.SS_DB_UPLOAD.py
 python 5_5.SD_DB_UPLOAD.py
 python 6_5.TL_DB_UPLOAD.py
 python 7_5.SR_DB_UPLOAD.py
-python 8_5.SEA_TRAVEL_DB_UPLOAD.py
+python 8_5.ST_INDEX_DB_UPLOAD.py

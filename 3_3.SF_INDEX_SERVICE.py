@@ -183,6 +183,7 @@ while kk < int((SFEQ_LEN-1)*2/10):
 						apply_WHT = round(float(odata1[ll][2]),2)
 						obj_WHT = "obs"
 				apply1.append([Diff_Point,fdata[kk][1],obj_SST,apply_SST,obj_WHT,apply_WHT])
+				#print([kk,Diff_Point,fdata[kk][1],obj_SST,apply_SST,obj_WHT,apply_WHT])				
 		ll += 1
 		mm += 1
 	kk = kk + 1
@@ -243,7 +244,7 @@ while kk < int((SFEQ_LEN-1)*4/10):
 				apply_WHT = round(float(fdata[kk][8]),10)
 				obj_WHT = "fcst"	
 				apply1.append([Diff_Point,fdata[kk][1],obj_SST,apply_SST,obj_WHT,apply_WHT])
-				#print(kk,Diff_Point,fdata[kk][1],obj_SST,apply_SST,obj_WHT,apply_WHT)
+				#print([kk,Diff_Point,fdata[kk][1],obj_SST,apply_SST,obj_WHT,apply_WHT])
 
 			else:
 				if fdata[kk][1]== afterday1 and fdata[kk][2] == "AM":
@@ -323,9 +324,8 @@ while kk < int((SFEQ_LEN-1)*4/10):
 	
 				apply_WHT = round(float(fdata[kk][8]),10)
 				obj_WHT = "fcst"
-				#print([Diff_Point,fdata[kk][1],obj_SST,apply_SST,obj_WHT,apply_WHT])
 				apply1.append([Diff_Point,fdata[kk][1],obj_SST, apply_SST, obj_WHT,apply_WHT])
-				#print(Diff_Point, fdata[kk][1], diff_SST, apply_WHT)
+				#print([kk,Diff_Point,fdata[kk][1],obj_SST,apply_SST,obj_WHT,apply_WHT])
 		ll += 1
 		mm += 1
 	kk = kk + 1
@@ -335,16 +335,18 @@ while kk < int((SFEQ_LEN-1)*6/10):
 	mm = 0
 	ll = 0
 	while mm < AM_LEN:
-		if fdata[kk][0] == odata1[mm][0] and fdata[kk][1] == afterday2:# 예보지역과 관측지역 일치여부
-			Diff_Point = odata1[mm][0]
-             		# 3일--------------------------------------------------------------------------
+		if fdata[kk][0] == odata1[mm][0] :# 예보지역과 관측지역 일치여부
+			Diff_Point = fdata[kk][0]
+
+            # 3일--------------------------------------------------------------------------
 			if hr < 12:
-				if fdata[kk][1] == afterday2 and apply1[nn][1]== afterday1 and fdata[kk][2] == "AM":
+				if fdata[kk][1] == afterday2 and apply1[nn][1] == afterday1 and fdata[kk][2] == "AM":
 					if odata1[mm][1] == '-999.0':
 						Diff_SST = 0
-						obj_SST = "fcst"                        
 					else:
-						Diff_SST = abs(round(float(apply1[nn-1][3]) - float(fdata[kk][4]),2))
+						Diff_SST = abs(round(float(apply1[nn][3]) - float(fdata[kk][4]),2))
+					#print(apply1[nn][3], fdata[kk][4], Diff_SST)												
+					
 					if odata1[mm][3] == '서해':
 						if Diff_SST > WEST_RMSE_SST:
 							apply_SST = round(float(odata1[mm][1]),2)
@@ -370,7 +372,7 @@ while kk < int((SFEQ_LEN-1)*6/10):
 							obj_SST = "fcst"
 					apply_WHT = round(float(fdata[kk][8]),10)
 					obj_WHT = "fcst"
-				elif fdata[kk][1] == afterday2 and apply1[nn][1]== afterday1 and fdata[kk][2] == "PM":
+				elif fdata[kk][1] == afterday2 and fdata[kk][2] == "PM":
 					if obj_SST == "fcst" :
 						apply_SST = round(float(fdata[kk][4]),2)
 						obj_SST = "fcst"
@@ -380,15 +382,16 @@ while kk < int((SFEQ_LEN-1)*6/10):
 	
 				apply_WHT = round(float(fdata[kk][8]),10)
 				obj_WHT = "fcst"
-	
 				apply1.append([Diff_Point,fdata[kk][1],obj_SST,apply_SST,obj_WHT,apply_WHT])
+				#print([Diff_Point,fdata[kk][1],obj_SST,apply_SST,obj_WHT,apply_WHT])				
 	
 			else:
-				if fdata[kk][1] == afterday2 and fdata[kk][2] == "AM":
+				if fdata[kk][1] == afterday2 and apply1[nn][1] == afterday1 and fdata[kk][2] == "AM":
 					if odata1[mm][1] == '-999.0':
 						Diff_SST = 0
 					else:
-						Diff_SST = abs(round(float(apply1[nn-1][3]) - float(fdata[kk][4]),2))
+						Diff_SST = abs(round(float(apply1[nn][3]) - float(fdata[kk][4]),2))
+					#print(apply1[nn][3], fdata[kk][4], Diff_SST)
 	
 					if odata1[mm][3] == '서해':
 						if Diff_SST > WEST_RMSE_SST:
@@ -415,26 +418,58 @@ while kk < int((SFEQ_LEN-1)*6/10):
 							obj_SST = "fcst"
 					
 			
-				if fdata[kk][1] == afterday2 and fdata[kk][2] == "PM":                
+				elif fdata[kk][1] == afterday2 and apply1[nn][1] == afterday1 and fdata[kk][2] == "PM":                
 					if odata2[ll][1] == '-999.0':
 						Diff_SST = 0                   
 					else:
-						Diff_SST = abs(round(float(apply1[nn-1][3]) - float(fdata[kk][4]),2))
+						Diff_SST = abs(round(float(apply1[nn][3]) - float(fdata[kk][4]),2))
+					#print(apply1[nn][3], fdata[kk][4], Diff_SST)						
 	
-					if obj_SST == "fcst" :
-						apply_SST = round(float(fdata[kk][4]),2)
-						obj_SST = "fcst"
-					else : 
-						apply_SST = round(float(odata2[ll][1]),2)
-						obj_SST = "obs"
+					#해역별 RMSE 비교  : apply_는 적용할 자료------------------------------------
+					if odata2[ll][3] == '서해':
+						if obj_SST == "fcst" :
+							apply_SST = round(float(fdata[kk][4]),2)
+							obj_SST = "fcst"
+						elif obj_SST == "obs" : 
+							if Diff_SST > WEST_RMSE_SST:
+								apply_SST =round(float(odata2[ll][1]),2)
+								obj_SST = "obs"
+							else :
+								apply_SST =round(float(odata1[ll][1]),2)
+								obj_SST = "obs"
+	
+					elif odata2[ll][3] == '남해':
+						if obj_SST == "fcst" :
+							apply_SST = round(float(fdata[kk][4]),2)
+							obj_SST = "fcst"
+						elif obj_SST == "obs" : 
+							if Diff_SST > SOUTH_RMSE_SST:
+								apply_SST = round(float(odata2[ll][1]),2)
+								obj_SST = "obs"
+							else :
+								apply_SST =round(float(odata1[ll][1]),2)
+								obj_SST = "obs"
+	
+					elif odata2[ll][3] == '동해':
+						if obj_SST == "fcst" :
+							apply_SST = round(float(fdata[kk][4]),2)
+							obj_SST = "fcst"
+						elif obj_SST == "obs" : 
+							if Diff_SST > EAST_RMSE_SST:
+								apply_SST = round(float(odata2[ll][1]),2)
+								obj_SST = "obs"
+							else :
+								apply_SST =round(float(odata1[ll][1]),2)
+								obj_SST = "obs"
 	
 				apply_WHT = round(float(fdata[kk][8]),10)
 				obj_WHT = "fcst"
 				apply1.append([Diff_Point,fdata[kk][1],obj_SST,apply_SST,obj_WHT,apply_WHT])
+				#print([Diff_Point,fdata[kk][1],obj_SST,apply_SST,obj_WHT,apply_WHT])
 			nn += 1
 		ll += 1
-		if Diff_Point == apply1[nn][0] :
-			nn += 1
+		#if Diff_Point == apply1[nn][0] :
+		#	nn += 1
 		mm += 1
 	kk = kk + 1
 #print(kk)
@@ -498,14 +533,7 @@ while ii < len(apply1) :
 	MAX_SST = round(float(apply1[ii][3])*float(fdata[ii][5])/float(fdata[ii][4]),1)
 	if MIN_WHT == MAX_WHT :
 		MAX_WHT = MAX_WHT + 0.1
-	if MIN_SST == MAX_SST :
-		MIN_SST = AVE_SST - 1
-		MAX_SST = AVE_SST + 1
-	if MIN_TEMP == MAX_TEMP :
-		MIN_TEMP = AVE_TEMP - 1
-		MAX_TEMP = AVE_TEMP + 1
-
-	
+		
 	TIDE_SCRE = IndexScore().tide_score(rawdata[ii][7],int(rawdata[ii][8]))
 	WAVE_SCRE = IndexScore().wave_score(apply1[ii][5])
 	SST_SCRE = IndexScore().sst_score(rawdata[ii][7],apply1[ii][3])

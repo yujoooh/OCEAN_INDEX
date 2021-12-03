@@ -44,9 +44,18 @@ content1 = [ str(INFO) for INFO in file1.read().split()]
 con = cx_Oracle.connect(DBID, DBPWD, DBINFO)
 cur = con.cursor()
 
+#[중기예보 자료 삭제]===================================================================
+conn = cx_Oracle.connect(DBID, DBPWD, DBINFO)
+cursor = conn.cursor()
+sql = f"delete from WEB_SREQ_SCRE@svclink.nori.go.kr where PRED_TYPE='DY' "
+cursor.execute(sql)
+cursor.close()
+conn.commit()
+conn.close()
+
 #[UPLOAD MDCDB]===================================================================
 ii = 1
-while ii <= 6 :
+while ii <= len(content1)-1 :
 	DEV = content1[ii].split(',')
 	#'생산일, 코드,해수욕장,예측년월일,시간,평균기온,기온점수,평균수온,수온점수,최대풍속,풍속점수,최대파고,파고점수,총점수\n',
 	#CODE = DEV[1] ; YR = DEV[4][0:4]; MN = DEV[4][4:6] ; DY = DEV[4][6:8] ; HR = DEV[5]

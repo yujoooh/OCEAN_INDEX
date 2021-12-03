@@ -1,5 +1,6 @@
 #[Geosystem Research : Department of Marine Forecast ]
 #[Created by C.K. Park on 2018.10.23]
+import os
 import json
 import urllib.request
 import numpy as np
@@ -17,7 +18,8 @@ yesterday = (date.today() - timedelta(1)).strftime('%Y%m%d')
 h = 0
 
 dir1 = './Result/'+today
-
+dir2 = './Result/'+today+'/OBS_DAILY/'
+if not os.path.exists(dir2): os.makedirs(dir2)
 #[KMA API KEY] ==================================================================================================
 API_KEY = "Kb%2BKlCpXZ7j3udye3E8YL8w4WRPsUtyadYzDUKAmJ6ZJoNKuLWBWqDJwHOAPuqKuRjPnotzwr2E14sBvyJ7lWw%3D%3D"
 
@@ -25,8 +27,7 @@ API_KEY = "Kb%2BKlCpXZ7j3udye3E8YL8w4WRPsUtyadYzDUKAmJ6ZJoNKuLWBWqDJwHOAPuqKuRjP
 #국내부이 http://apis.data.go.kr/1360000/OceanInfoService/getBuoyObs?ServiceKey=Kb%2BKlCpXZ7j3udye3E8YL8w4WRPsUtyadYzDUKAmJ6ZJoNKuLWBWqDJwHOAPuqKuRjPnotzwr2E14sBvyJ7lWw%3D%3D&numOfRows=17&pageNo=1&dataType=JSON&searchTime=20200428
 #국내등표 http://apis.data.go.kr/1360000/OceanInfoService/getLhObs?ServiceKey=Kb%2BKlCpXZ7j3udye3E8YL8w4WRPsUtyadYzDUKAmJ6ZJoNKuLWBWqDJwHOAPuqKuRjPnotzwr2E14sBvyJ7lWw%3D%3D&numOfRows=8&pageNo=1&dataType=JSON&searchTime=20200428
 
-
-#[Number of KMA OBS STATION] ===============================================================================================
+#[Number of KMA OBS STATION]
 WNUM = 100  # 파고부이 관측지점 수  62
 BNUM = 100 # 국내부이 관측지점 수 16
 LNUM = 100  # 국내등표 관측지점 수 -- 파고/수온 정보 미제공 8
@@ -79,7 +80,6 @@ while h < 24:
 			WBUOYID_LIST = Missing_STN().WBUOYID(ii,STNID,WBUOYID_LIST)
 			data1.append([str(STNID),STN,yesterday+hr,SST,WHT,WSPD,WDIR,USPD,VSPD,'파고부이'])
 			if ii == READ5-1 and len(WBUOY_LIST) > 0 and len(WBUOYID_LIST) : 
-				print(ii, WBUOY_LIST, WBUOYID_LIST)
 				for jj in WBUOYID_LIST : STNID = jj
 				for jj in WBUOY_LIST : STN = jj
 				WHT = Miss
@@ -236,7 +236,6 @@ com_len = len(com)
 #[통합자료]
 
 OUT_FNAME=dir1+'/OBS_Daily/OBS_KMA_'+yesterday+'.csv'
-print(OUT_FNAME)
 with open(OUT_FNAME,'w',encoding='utf8') as file:
 	file.write('지점번호,지점명,년월일시,수온,파고,풍속,풍향,U풍속,V풍속,관측소\n')
 	ii = 0

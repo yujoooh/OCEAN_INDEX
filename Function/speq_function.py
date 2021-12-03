@@ -34,7 +34,7 @@ class IndexScore:
 		return score
 
 	def rain_score(self,value):
-		if   value == 0  : score = 5
+		if   value < 1  : score = 5
 		elif value <= 5  : score = 3
 		elif value <= 10 : score = 2
 		else             : score = 1

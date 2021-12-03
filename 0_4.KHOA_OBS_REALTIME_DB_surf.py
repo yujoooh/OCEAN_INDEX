@@ -18,6 +18,7 @@ hr = str(datetime.today().strftime("%H"))
 
 #[폴더]
 dir1 = './Result/'+today
+dir2 = 'E:/LIFE_OCEAN_INDEX/Source_7D/Result/'+today
 
 #[DB Connect]
 CONID = "OCEAN"
@@ -373,5 +374,6 @@ else:
     #    for i in data3:
     #        file.write('국내등표,{0},{1},{2}\n'.format(i[0], i[1], i[2]))
     if not os.path.exists(dir1+'/SURF_OBS_AM.csv'): shutil.copy(dir1+'/SURF_OBS_PM.csv', dir1+'/SURF_OBS_AM.csv') #12시 이후에 AM자료가 없으면 PM자료 복사해서 이름 바꾸기
+
 
 print("#KOHA OBS data collection Complete==========")
