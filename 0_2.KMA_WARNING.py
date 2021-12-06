@@ -12,6 +12,7 @@ from Function.warn_function import RESERVE_WARN
 from Function.warn_area_function import WARN_AREA_FN
 
 print("20211206_ppark")
+print("20211206 yjoh")
 
 print("#KMA Warning data collection Start========")
 
