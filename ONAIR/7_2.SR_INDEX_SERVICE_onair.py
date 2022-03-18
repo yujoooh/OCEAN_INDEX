@@ -42,8 +42,7 @@ hr = float(datetime.today().strftime("%H"))
 
 hr = 10  # manual
 
-SURFING_INF = open(dir1+'/' + today +
-                   '_SREQ_INDEX_SERVICE_onair.csv', encoding='utf8')
+SURFING_INF = open(dir1+'/SREQ_INDEX_SERVICE_onair_'+today+'.csv', encoding='utf8')
 SURFING = [LST for LST in SURFING_INF.read().split()]
 SURFING_LEN = len(SURFING)
 
@@ -405,4 +404,4 @@ COM_INDEX.columns = ['산출날짜', '코드', '구분', '지역', '예측날짜
                      '파향점수', '파주기', '파주기점수', '풍속', '풍향', '풍속점수', '수온', '수온점수', '특보', '특보점수', '총점수', '예보지수']
 # OUT_FNAME=dir1+'/SURFING_INDEX_SERVICE_last_AM'+today+'.csv'
 OUT_FNAME = dir1+'/SREQ_INDEX_SERVICE_onair_'+today+'.csv'
-COM_INDEX.to_csv(OUT_FNAME, encoding='utf8', index=False)
+COM_INDEX.to_csv(OUT_FNAME, encoding='euc-kr', index=False)
