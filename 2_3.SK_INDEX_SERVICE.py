@@ -220,8 +220,10 @@ while ii <= len(apply1)-1 :
 	MAX_WHT = float(apply1[ii][3])
 	MIN_WHT = round(float(apply1[ii][3])*float(fdata[ii][3])/float(fdata[ii][5]),1)
 	AVE_WHT = round(float(apply1[ii][3])*float(fdata[ii][4])/float(fdata[ii][5]),1)
-	if MIN_WHT == MAX_WHT :
-		MAX_WHT = MAX_WHT + 0.1        
+#	if MIN_WHT == MAX_WHT :
+#		MAX_WHT = MAX_WHT + 0.1
+#	if round(float(MIN_WHT),1) < 0.1 :
+#		MIN_WHT = 0.1
 	SAIL_SCRE = IndexScore().sail_score(float(rawdata[ii][7]))
 	TON_SCRE = IndexScore().ton_score(float(rawdata[ii][8]))
 	WIND_SCRE = IndexScore().wind_score(float(rawdata[ii][14]))

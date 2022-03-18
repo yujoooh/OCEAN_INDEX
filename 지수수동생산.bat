@@ -6,8 +6,11 @@ set DAY=%date:~8,2%
 set TODAY=%YEAR%%MONTH%%DAY%
 set logfile=./log/%TODAY%.log
 
-call SP.bat
+rem call SP.bat
 call SK.bat
 call SF.bat
 call SS.bat
+rem call SD.bat
+rem call TL.bat
+rem call ST.bat
 call SR.bat

@@ -120,9 +120,6 @@ while ii <= INF_LEN-1 :
 	RWW3_X = int(DEV[14]) ; RWW3_Y = int(DEV[15]) ; W_AREA = DEV[18] ; FISH_NAME = DEV[27] ; FISH_TYPE = DEV[28]
 
 	if today[4:6] == '01' or today[4:6] =='02' or today[4:6] =='03' or today[4:6] =='11' or today[4:6] =='12' : 
-		#print(today[4:6], 'winter')
-	#if today[4:6] == '01' or today[4:6] == '02' or today[4:6] == '03' or today[4:6] == '11' or today[4:6] == '12' : 
-
 		jj = 0 ; jjj = 0
 		while jj <= 144:
 			SST_2S  = Statistic().min_max_ave('KHOA', 'ampm', SST, ROMS_X, ROMS_Y, jj)
@@ -185,6 +182,74 @@ while ii <= INF_LEN-1 :
 			if jj == 144 :
 				DAY7.append([STN, AREA, W_AREA, NAME, afterday6, 'DY', FISH_NAME, FISH_TYPE, AFTERDAY6_MUL, WAVE_S[0], WAVE_S[2], WAVE_S[1], SST_S[0], SST_S[2], SST_S[1], TEMP_S[0], TEMP_S[2], TEMP_S[1], WIND_S[0], WIND_S[2], WIND_S[1]])
 			jj = jj + 24 #24시간 간격으로 일괄 계산
+
+	elif today[4:6] == '05' :
+		if FISH_TYPE == 'BP' or FISH_TYPE == 'GR' or FISH_TYPE =='GP':
+			MSG = 'No service this season .. BP'
+			print(MSG)
+		else :
+			jj = 0 ; jjj = 0
+			while jj <= 144:
+				SST_2S  = Statistic().min_max_ave('KHOA', 'ampm', SST, ROMS_X, ROMS_Y, jj)
+				SST_S  = Statistic().min_max_ave('KHOA', 'daily', SST, ROMS_X, ROMS_Y, jj)
+				WIND_2S = Statistic().min_max_ave('KHOA', 'ampm', WIND, WRF_X, WRF_Y, jj)
+				WIND_S = Statistic().min_max_ave('KHOA', 'daily', WIND, WRF_X, WRF_Y, jj)
+				TEMP_2S = Statistic().min_max_ave('KHOA', 'ampm', TEMP, WRF_X, WRF_Y, jj)
+				TEMP_S = Statistic().min_max_ave('KHOA', 'daily', TEMP, WRF_X, WRF_Y, jj)
+		
+				if os.path.isfile(INFILE_3):
+					if jj <= 48 :
+						jjj = int(jj / 3) #3시간 자료
+						if CWW3_LOC == 1 :
+							WAVE_2S = Statistic().min_max_ave('KMA', 'ampm', WHT_1, CWW3_X, CWW3_Y, jjj)
+							WAVE_S = Statistic().min_max_ave('KMA', 'daily', WHT_1, CWW3_X, CWW3_Y, jjj)
+						if CWW3_LOC == 2 :
+							WAVE_2S = Statistic().min_max_ave('KMA', 'ampm', WHT_2, CWW3_X, CWW3_Y, jjj)
+							WAVE_S = Statistic().min_max_ave('KMA', 'daily', WHT_2, CWW3_X, CWW3_Y, jjj)
+						if CWW3_LOC == 3 :
+							WAVE_2S = Statistic().min_max_ave('KMA', 'ampm', WHT_3, CWW3_X, CWW3_Y, jjj)
+							WAVE_S = Statistic().min_max_ave('KMA', 'daily', WHT_3, CWW3_X, CWW3_Y, jjj)
+						if CWW3_LOC == 4 :
+							WAVE_2S = Statistic().min_max_ave('KMA', 'ampm', WHT_4, CWW3_X, CWW3_Y, jjj)
+							WAVE_S = Statistic().min_max_ave('KMA', 'daily', WHT_4, CWW3_X, CWW3_Y, jjj)
+						if CWW3_LOC == 5 :
+							WAVE_2S = Statistic().min_max_ave('KMA', 'ampm', WHT_5, CWW3_X, CWW3_Y, jjj)
+							WAVE_S = Statistic().min_max_ave('KMA', 'daily', WHT_5, CWW3_X, CWW3_Y, jjj)
+					else :
+						WAVE_2S = Statistic().min_max_ave('KHOA', 'ampm', WHT, WW3_X, WW3_Y, jj)
+						WAVE_S = Statistic().min_max_ave('KHOA', 'daily', WHT, WW3_X, WW3_Y, jj)
+				else : 
+					WAVE_2S = Statistic().min_max_ave('KHOA', 'ampm', WHT, WW3_X, WW3_Y, jj)
+					WAVE_S = Statistic().min_max_ave('KHOA', 'daily', WHT, WW3_X, WW3_Y, jj)
+				if WAVE_S[0] < 0.1 : WAVE_S[0] = 0.1
+				if WAVE_S[1] < 0.1 : WAVE_S[1] = 0.1
+				if WAVE_S[2] < 0.1 : WAVE_S[2] = 0.1
+				if WAVE_2S[0] < 0.1 : WAVE_2S[0] = 0.1
+				if WAVE_2S[1] < 0.1 : WAVE_2S[0] = 0.1
+				if WAVE_2S[2] < 0.1 : WAVE_2S[2] = 0.1
+				if WAVE_2S[3] < 0.1 : WAVE_2S[3] = 0.1			
+				if WAVE_2S[4] < 0.1 : WAVE_2S[4] = 0.1
+				if WAVE_2S[5] < 0.1 : WAVE_2S[5] = 0.1			
+				
+				#VARS_S ampm [0:am_min 1:am_max, 2:am_ave, 3:pm_min, 4:pm_max, 5:pm_ave] ; VARS_S daily [0:min 1:max, 2:ave]
+				if jj == 0  :
+					DAY1.append([STN, AREA, W_AREA, NAME, today, 'AM', FISH_NAME, FISH_TYPE, TODAY_MUL, WAVE_2S[0], WAVE_2S[2], WAVE_2S[1], SST_2S[0], SST_2S[2], SST_2S[1], TEMP_2S[0], TEMP_2S[2], TEMP_2S[1], WIND_2S[0], WIND_2S[2], WIND_2S[1]])
+					DAY1.append([STN, AREA, W_AREA, NAME, today, 'PM', FISH_NAME, FISH_TYPE, TODAY_MUL, WAVE_2S[3], WAVE_2S[5], WAVE_2S[4], SST_2S[3], SST_2S[5], SST_2S[4], TEMP_2S[3], TEMP_2S[5], TEMP_2S[4], WIND_2S[3], WIND_2S[5], WIND_2S[4]])
+				if jj == 24 :
+					DAY2.append([STN, AREA, W_AREA, NAME, afterday1, 'AM', FISH_NAME, FISH_TYPE, AFTERDAY1_MUL, WAVE_2S[0], WAVE_2S[2], WAVE_2S[1], SST_2S[0], SST_2S[2], SST_2S[1], TEMP_2S[0], TEMP_2S[2], TEMP_2S[1], WIND_2S[0], WIND_2S[2], WIND_2S[1]])
+					DAY2.append([STN, AREA, W_AREA, NAME, afterday1, 'PM', FISH_NAME, FISH_TYPE, AFTERDAY1_MUL, WAVE_2S[3], WAVE_2S[5], WAVE_2S[4], SST_2S[3], SST_2S[5], SST_2S[4], TEMP_2S[3], TEMP_2S[5], TEMP_2S[4], WIND_2S[3], WIND_2S[5], WIND_2S[4]])
+				if jj == 48 :
+					DAY3.append([STN, AREA, W_AREA, NAME, afterday2, 'AM', FISH_NAME, FISH_TYPE, AFTERDAY2_MUL, WAVE_2S[0], WAVE_2S[2], WAVE_2S[1], SST_2S[0], SST_2S[2], SST_2S[1], TEMP_2S[0], TEMP_2S[2], TEMP_2S[1], WIND_2S[0], WIND_2S[2], WIND_2S[1]])
+					DAY3.append([STN, AREA, W_AREA, NAME, afterday2, 'PM', FISH_NAME, FISH_TYPE, AFTERDAY2_MUL, WAVE_2S[3], WAVE_2S[5], WAVE_2S[4], SST_2S[3], SST_2S[5], SST_2S[4], TEMP_2S[3], TEMP_2S[5], TEMP_2S[4], WIND_2S[3], WIND_2S[5], WIND_2S[4]])
+				if jj == 72 :
+					DAY4.append([STN, AREA, W_AREA, NAME, afterday3, 'DY', FISH_NAME, FISH_TYPE, AFTERDAY3_MUL, WAVE_S[0], WAVE_S[2], WAVE_S[1], SST_S[0], SST_S[2], SST_S[1], TEMP_S[0], TEMP_S[2], TEMP_S[1], WIND_S[0], WIND_S[2], WIND_S[1]])
+				if jj == 96 :
+					DAY5.append([STN, AREA, W_AREA, NAME, afterday4, 'DY', FISH_NAME, FISH_TYPE, AFTERDAY4_MUL, WAVE_S[0], WAVE_S[2], WAVE_S[1], SST_S[0], SST_S[2], SST_S[1], TEMP_S[0], TEMP_S[2], TEMP_S[1], WIND_S[0], WIND_S[2], WIND_S[1]])
+				if jj == 120 :
+					DAY6.append([STN, AREA, W_AREA, NAME, afterday5, 'DY', FISH_NAME, FISH_TYPE, AFTERDAY5_MUL, WAVE_S[0], WAVE_S[2], WAVE_S[1], SST_S[0], SST_S[2], SST_S[1], TEMP_S[0], TEMP_S[2], TEMP_S[1], WIND_S[0], WIND_S[2], WIND_S[1]])
+				if jj == 144 :
+					DAY7.append([STN, AREA, W_AREA, NAME, afterday6, 'DY', FISH_NAME, FISH_TYPE, AFTERDAY6_MUL, WAVE_S[0], WAVE_S[2], WAVE_S[1], SST_S[0], SST_S[2], SST_S[1], TEMP_S[0], TEMP_S[2], TEMP_S[1], WIND_S[0], WIND_S[2], WIND_S[1]])
+				jj = jj + 24 #24시간 간격으로 일괄 계산		
 			
 	else :
 		if FISH_TYPE == 'GR' or FISH_TYPE =='GP':
@@ -224,6 +289,15 @@ while ii <= INF_LEN-1 :
 				else : 
 					WAVE_2S = Statistic().min_max_ave('KHOA', 'ampm', WHT, WW3_X, WW3_Y, jj)
 					WAVE_S = Statistic().min_max_ave('KHOA', 'daily', WHT, WW3_X, WW3_Y, jj)
+				if WAVE_S[0] < 0.1 : WAVE_S[0] = 0.1
+				if WAVE_S[1] < 0.1 : WAVE_S[1] = 0.1
+				if WAVE_S[2] < 0.1 : WAVE_S[2] = 0.1
+				if WAVE_2S[0] < 0.1 : WAVE_2S[0] = 0.1
+				if WAVE_2S[1] < 0.1 : WAVE_2S[0] = 0.1
+				if WAVE_2S[2] < 0.1 : WAVE_2S[2] = 0.1
+				if WAVE_2S[3] < 0.1 : WAVE_2S[3] = 0.1			
+				if WAVE_2S[4] < 0.1 : WAVE_2S[4] = 0.1
+				if WAVE_2S[5] < 0.1 : WAVE_2S[5] = 0.1
 					
 				#VARS_S ampm [0:am_min 1:am_max, 2:am_ave, 3:pm_min, 4:pm_max, 5:pm_ave] ; VARS_S daily [0:min 1:max, 2:ave]
 				if jj == 0  :
@@ -274,13 +348,18 @@ while ii <= COM_LEN-1:
 		DEV = WARN[jj].split(',')
 		WARN_AREA = DEV[0] ; WARN_TYPE = DEV[1] ; WARN_SDAY = DEV[2] ; WARN_SHR = DEV[3] ; WARN_EDAY = DEV[4] ; WARN_EHR = DEV[5]
 		#print(WARN_AREA, WARN_TYPE)
-		
-		#print(COM[ii][4], int(WARN_SDAY), COM[ii][5],WARN_SHR)
 		if int(COM[ii][4]) < int(WARN_EDAY) and int(COM[ii][4]) >= int(WARN_SDAY) and COM[ii][2] == WARN_AREA: #해제예고 일보다 전날일 경우 일괄적용
-			COM[ii].insert(21,WARN_TYPE)
+			if int(WARN_SDAY) == int(COM[ii][4]) and WARN_SHR == 'PM':
+				if COM[ii][5] == 'AM' :
+					COM[ii].insert(21,'-')
+				elif COM[ii][5] == 'PM' or COM[ii][5] == 'DY' :
+					COM[ii].insert(21,WARN_TYPE)					
+			else :
+				COM[ii].insert(21,WARN_TYPE)				
 			jj = WARN_LEN
-		elif int(COM[ii][4]) == int(WARN_EDAY) and int(COM[ii][4]) >= int(WARN_SDAY) and COM[ii][2] == WARN_AREA: #해제예고일과 같을 경우 AM이면 오전만 적용, PM이면 오전/오후 모두적용
-			if WARN_EHR == 'PM' : 
+			
+		elif int(COM[ii][4]) == int(WARN_EDAY) and int(COM[ii][4]) > int(WARN_SDAY) and COM[ii][2] == WARN_AREA: #해제예고일과 같을 경우 AM이면 오전만 적용, PM이면 오전/오후 모두적용
+			if WARN_EHR == 'PM' :
 				COM[ii].insert(21,WARN_TYPE)
 			elif WARN_EHR == 'AM' :
 				if COM[ii][5] == 'AM' or COM[ii][5] == 'DY' :
@@ -288,6 +367,17 @@ while ii <= COM_LEN-1:
 				else :
 					COM[ii].insert(21,'-')
 			jj = WARN_LEN
+
+		elif int(COM[ii][4]) == int(WARN_EDAY) and int(COM[ii][4]) == int(WARN_SDAY) and COM[ii][2] == WARN_AREA: #해제예고일과 같을 경우 AM이면 오전만 적용, PM이면 오전/오후 모두적용
+			if WARN_SHR == 'PM' :
+				if COM[ii][5] == 'PM' or COM[ii][5] == 'DY' :
+					COM[ii].insert(21,WARN_TYPE)
+				elif COM[ii][5] == 'AM':
+					COM[ii].insert(21,'-')					
+			else :
+				COM[ii].insert(21,WARN_TYPE)
+			jj = WARN_LEN
+			
 		else:
 			jj = jj + 1
 			if jj == WARN_LEN :

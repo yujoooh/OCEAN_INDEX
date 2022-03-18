@@ -69,7 +69,7 @@ for LIST in INDEX_LIST:
 					MWHT2 = KMA_MWHT
 				jj = jj + 1		
 		
-			kk = 4
+			kk = 7
 			while kk <= KHOA_LEN-1 :# 지점별 1/2순위 선택(조사원)
 				DEV3 = KHOA_OBS[kk].split(',')
 				KHOA_AGY = DEV3[0] ; KHOA_STN = DEV3[1] ; KHOA_SST = DEV3[2] ; KHOA_MWHT = DEV3[3]
@@ -105,7 +105,7 @@ for LIST in INDEX_LIST:
 					MWHT2 = KMA_MWHT
 				jj = jj + 1		
 		
-			kk = 4
+			kk = 7
 			while kk <= KHOA_LEN-1 :# 지점별 1/2순위 선택(조사원)
 				DEV3 = KHOA_OBS[kk].split(',')
 				KHOA_AGY = DEV3[0] ; KHOA_STN = DEV3[1] ; KHOA_SST = DEV3[2] ; KHOA_MWHT = DEV3[3]

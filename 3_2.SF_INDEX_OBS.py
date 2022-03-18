@@ -214,8 +214,8 @@ while ii <= INF_LEN-1 :
 
 		#VARS_S ampm [0:am_min 1:am_max, 2:am_ave, 3:pm_min, 4:pm_max, 5:pm_ave] ; VARS_S daily [0:min 1:max, 2:ave]
 		#print(STN, AREA, W_AREA, NAME,round(WAVE_S[0],1), round(WAVE_S[2],1), round(WAVE_S[1],1))
-		DAY1.append([STN, AREA, W_AREA, NAME, yesterday, 'AM', FISH_NAME, FISH_TYPE, YESTERDAY_MUL, round(WAVE_S[0],1), round(WAVE_S[2],1), round(WAVE_S[1],1), int(round(SST_S[0])), int(round(SST_S[2])), int(round(SST_S[1])), int(round(M_TEMP_S[0])), int(round(M_TEMP_S[2])), int(round(M_TEMP_S[1])), int(round(M_WIND_S[0])), int(round(M_WIND_S[2])), int(round(M_WIND_S[1]))])
-		DAY1.append([STN, AREA, W_AREA, NAME, yesterday, 'PM', FISH_NAME, FISH_TYPE, YESTERDAY_MUL, round(WAVE_S[3],1), round(WAVE_S[5],1), round(WAVE_S[4],1), int(round(SST_S[3])), int(round(SST_S[5])), int(round(SST_S[4])), int(round(M_TEMP_S[3])), int(round(M_TEMP_S[5])), int(round(M_TEMP_S[4])), int(round(M_WIND_S[3])), int(round(M_WIND_S[5])), int(round(M_WIND_S[4]))])
+		DAY1.append([STN, AREA, W_AREA, NAME, yesterday, 'AM', FISH_NAME, FISH_TYPE, YESTERDAY_MUL, round(WAVE_S[0],1), round(WAVE_S[2],1), round(WAVE_S[1],1), round(SST_S[0],1), round(SST_S[2],1), round(SST_S[1],1), round(M_TEMP_S[0],1), round(M_TEMP_S[2],1), round(M_TEMP_S[1],1), round(M_WIND_S[0],1), round(M_WIND_S[2],1), round(M_WIND_S[1],1)])
+		DAY1.append([STN, AREA, W_AREA, NAME, yesterday, 'PM', FISH_NAME, FISH_TYPE, YESTERDAY_MUL, round(WAVE_S[3],1), round(WAVE_S[5],1), round(WAVE_S[4],1), round(SST_S[3],1), round(SST_S[5],1), round(SST_S[4],1), round(M_TEMP_S[3],1), round(M_TEMP_S[5],1), round(M_TEMP_S[4],1), round(M_WIND_S[3],1), round(M_WIND_S[5],1), round(M_WIND_S[4],1)])
 		O_SST1.clear() ;O_SST2.clear() ; O_WHT1.clear(); O_WHT2.clear()
 	
 	else :
@@ -333,9 +333,9 @@ while ii <= len(DAY1)-1 :
     #DAY3.append([STN, AREA, W_AREA, NAME, afterday2, FISH_NAME, FISH_TYPE, AFTERDAY2_MUL, WAVE_S[0], WAVE_S[2], WAVES_[1], SST_S[0], SST_S[2], SST_S[1], TEMP_S[0], TEMP_S[2], TEMP_S[1], WIND_S[0], WIND_S[2], WIND_S[1]])
 	TIDE_SCRE = IndexScore().tide_score(DAY1[ii][7],DAY1[ii][8])
 	WAVE_SCRE = IndexScore().wave_score(round(float(DAY1[ii][11]),1))
-	SST_SCRE = IndexScore().sst_score(DAY1[ii][7],DAY1[ii][13])
-	TEMP_SCRE = IndexScore().temp_score(DAY1[ii][16])
-	WIND_SCRE = IndexScore().wind_score(DAY1[ii][20])
+	SST_SCRE = IndexScore().sst_score(DAY1[ii][7],round(DAY1[ii][13],1))
+	TEMP_SCRE = IndexScore().temp_score(round(DAY1[ii][16],1))
+	WIND_SCRE = IndexScore().wind_score(round(DAY1[ii][20],1))
 	WARN_SCRE = IndexScore().warn_score('-')
 	TOTAL_SCRE1 = IndexScore().total_score(TIDE_SCRE, WAVE_SCRE, SST_SCRE, TEMP_SCRE, WIND_SCRE, WARN_SCRE)[0] # forecast score(no rain, no warning)
 

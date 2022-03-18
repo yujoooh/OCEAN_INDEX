@@ -115,6 +115,8 @@ class Element_extract:
 					CURRENT_SCRE = IndexScore().current_score(WEIGHT_CURR,globals()['{}_MEAN_CURRENT'.format(TM)])
 					SCORE_SUM = SKY_SCRE + TEMP_SCRE + WSPD_SCRE + SST_SCRE + WAVE_SCRE + MUL_SCRE + CURRENT_SCRE + ADD_CARNIVAL # 강수/특보 반영 전 점수
 					RAIN_SCRE = IndexScore().rain_score(SCORE_SUM,globals()['{}_MEAN_RAIN'.format(TM)]) # 강수량 점수 반영
+					if SCORE_SUM > RAIN_SCRE : RAIN_SCRE = RAIN_SCRE
+					elif SCORE_SUM < RAIN_SCRE : RAIN_SCRE = SCORE_SUM
 					WARN_SCRE = IndexScore().warn_score(RAIN_SCRE,globals()['WARN1_{}'.format(TM)],globals()['WARN2_{}'.format(TM)])  # 특보점수 반영(해상, 육상)
 
 					globals()['FINAL_SCRE_{}'.format(TM)] = WARN_SCRE # 최종 예보점수

@@ -35,8 +35,8 @@ BBUOY_URL = "http://apis.data.go.kr/1360000/OceanInfoService/getBuoyObs?ServiceK
 #LAMP_URL = "http://apis.data.go.kr/1360000/OceanInfoService/getLhObs?ServiceKey=" #국내등표 -- 파고/수온 정보 미제공
 
 #[Number of KMA OBS STATION] ===============================================================================================
-WNUM = 74  # 파고부이 관측지점 수 
-BNUM = 23  # 해양기상부이 관측지점 수
+WNUM = 75  # 파고부이 관측지점 수 
+BNUM = 24  # 해양기상부이 관측지점 수
 #LNUM = 17  # 국내등표 관측지점 수 -- 파고/수온 정보 미제공
 
 data1 = [] # 파고부이 데이터 저장 리스트 생성

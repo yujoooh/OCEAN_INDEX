@@ -57,7 +57,8 @@ class IndexScore:
 
 	def warn_score(self, rain_scre, warn1, warn2): # 강수점수 반영후 점수, 해상특보, 육상특보
 		if   warn1 == '-' and warn2 == '-': score = rain_scre # 해상 or 육상 특보가 없을 경우.
-		elif warn2 == 'HW2' or warn2 == 'HW3' : # 폭염주의보/예비특보일경우 1단계 하향
+		elif (warn1 == '-' and warn2 == 'DR1') or (warn1 == '-' and warn2 == 'DR2') or (warn1 == '-' and warn2 == 'DR3') : score = rain_scre # 해상 or 육상 특보가 없을 경우.		
+		elif (warn1 == '-' and warn2 == 'HW2') or (warn1 == '-' and warn2 == 'HW3') : # 폭염주의보/예비특보일경우 1단계 하향
 			if rain_scre > 75   : score = 70
 			elif rain_scre > 65 : score = 60
 			elif rain_scre > 55 : score = 50

@@ -78,11 +78,11 @@ elif CHECK3 == '00' :
 		hr = 9
 	
 	#[INFO FILE NAME READ]
-	#INDEX_LIST = ['JEJU']
+	#INDEX_LIST = ['JEJU','BUSAN','YEOSU','INCHEON','GANGNEUNG','TAEAN']
 	INDEX_LIST = ['JEJU','BUSAN','YEOSU']
 	for LIST in INDEX_LIST:
 		#[READ each Info Data] ========================================================================================
-		POINT_INF = open('./Info/'+LIST+'_Point_Info2.csv','r',encoding='utf8')
+		POINT_INF = open('./Info/'+LIST+'_Point_Info.csv','r',encoding='utf8')
 		INF = [str(INFO) for INFO in POINT_INF.read().split()]
 		INF_LEN = len(INF)
 		print(today,LIST,"City forecast data collection", INF_LEN)
@@ -145,7 +145,7 @@ elif CHECK3 == '00' :
 						RAIN_AMT2 = '50.0'
 
 					elif RAIN_AMT2 == "1.0mm 미만" :
-						RAIN_AMT2 = '0.5'						
+						RAIN_AMT2 = '0.0'						
 					else :
 						RAIN_AMT2 = RAIN_AMT2.replace('mm','')
 						RAIN_AMT2 = RAIN_AMT2.replace('~',',')
@@ -269,7 +269,7 @@ elif CHECK3 == '00' :
 							RAIN_AMT = '50.0'
 
 						elif RAIN_AMT == "1.0mm 미만" :
-							RAIN_AMT = '0.5'							
+							RAIN_AMT = '0.0'							
 							
 						else :
 							RAIN_AMT = RAIN_AMT.replace('mm','')

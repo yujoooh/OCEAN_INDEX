@@ -33,7 +33,7 @@ API_KEY = "%2FtpOfcOL1h6oaaa5fQmJGu%2FUO%2FMPmyJLomOzHymKjaFGJ8mL1dxspAvT5TtMFVq
 MID_API_KEY = "%2FtpOfcOL1h6oaaa5fQmJGu%2FUO%2FMPmyJLomOzHymKjaFGJ8mL1dxspAvT5TtMFVqoT5HoFgVL19xe%2BrQTB4cluQ%3D%3D" #일일 트래픽 100000
 
 #Check KMA API access
-#동네예보 http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=%2FtpOfcOL1h6oaaa5fQmJGu%2FUO%2FMPmyJLomOzHymKjaFGJ8mL1dxspAvT5TtMFVqoT5HoFgVL19xe%2BrQTB4cluQ%3D%3D&numOfRows=225&pageNo=1&dataType=JSON&base_date=20210818&base_time=0200&nx=46&ny=71
+#동네예보 http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=%2FtpOfcOL1h6oaaa5fQmJGu%2FUO%2FMPmyJLomOzHymKjaFGJ8mL1dxspAvT5TtMFVqoT5HoFgVL19xe%2BrQTB4cluQ%3D%3D&numOfRows=809&pageNo=1&dataType=JSON&base_date=20220218&base_time=0500&nx=46&ny=71
 #중기예보 http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=%2FtpOfcOL1h6oaaa5fQmJGu%2FUO%2FMPmyJLomOzHymKjaFGJ8mL1dxspAvT5TtMFVqoT5HoFgVL19xe%2BrQTB4cluQ%3D%3D&numOfRows=100&pageNo=1&regId=11B00000&tmFc=202008210600&dataType=JSON
 CITY_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey="  #단기예보 URL(2021.08.12, 동네예보 폐기예정, 단기예보에 기존사항 포함)
 MID_URL  = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey="    #중기예보(육상) URL
@@ -79,8 +79,8 @@ elif CHECK3 == '00' :
 		hr = 9
 	
 	#[INFO FILE NAME READ]
-	#INDEX_LIST = ['SP','SK','SF','SS','SD','TL']
-	INDEX_LIST = ['SD']		
+	INDEX_LIST = ['SP','SK','SF','SS','SD','TL']
+	#INDEX_LIST = ['SD']		
 	for LIST in INDEX_LIST:
 		#[READ each Info Data] ========================================================================================
 		POINT_INF = open('./Info/'+LIST+'_Point_Info.csv','r',encoding='utf8')
@@ -150,7 +150,7 @@ elif CHECK3 == '00' :
 						RAIN_AMT2 = '50.0'
 
 					elif RAIN_AMT2 == "1.0mm 미만" :
-						RAIN_AMT2 = '0.5'						
+						RAIN_AMT2 = '0.0'						
 					else :
 						RAIN_AMT2 = RAIN_AMT2.replace('mm','')
 						RAIN_AMT2 = RAIN_AMT2.replace('~',',')
@@ -274,7 +274,7 @@ elif CHECK3 == '00' :
 							RAIN_AMT = '50.0'
 
 						elif RAIN_AMT == "1.0mm 미만" :
-							RAIN_AMT = '0.5'							
+							RAIN_AMT = '0.0'							
 						else :
 							RAIN_AMT = RAIN_AMT.replace('mm','')
 							RAIN_AMT = RAIN_AMT.replace('~',',')
