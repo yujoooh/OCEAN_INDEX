@@ -11,9 +11,12 @@ print("#INDEX result DB upload Start ========")
 
 #[Date Set]==================================================================================================
 today = str(datetime.today().strftime('%Y%m%d'))
-#afterday1 = (date.today() + timedelta(1)).strftime('%Y%m%d')
-#afterday2 = (date.today() + timedelta(2)).strftime('%Y%m%d')
+afterday1 = (date.today() + timedelta(1)).strftime('%Y%m%d')
+afterday2 = (date.today() + timedelta(2)).strftime('%Y%m%d')
 
+#[경로]==================================================================================================
+dir1 = 'D:/LIFE_OCEAN_INDEX/Source_3D/Result/'+today
+dir2 = 'D:/LIFE_OCEAN_INDEX/Source_7D/Result/'+today
 
 #[DB connect inforamtion]================================================================
 #[MDCDB]
@@ -32,22 +35,42 @@ cur = con.cursor()
 #[중기예보 자료 삭제]===================================================================
 conn = cx_Oracle.connect(DBID, DBPWD, DBINFO)
 cursor = conn.cursor()
-sql = f"delete from WEB_STEQ_SCRE_KHOA where PRED_TYPE='DY' "
-cursor.execute(sql)
-sql = f"delete from WEB_SREQ_SCRE_KHOA where PRED_TYPE='DY' "
-cursor.execute(sql)
-sql = f"delete from WEB_SSEQ_SCRE_KHOA where PRED_TYPE='DY' "
-cursor.execute(sql)
-sql = f"delete from WEB_SFEQ_SCRE_KHOA where PRED_TYPE='DY' "
-cursor.execute(sql)
-sql = f"delete from WEB_SKEQ_SCRE_KHOA where PRED_TYPE='DY' "
-cursor.execute(sql)
-sql = f"delete from WEB_BEACH_QUOT_SCORE_KHOA where PRED_HOUR='DY' "
-cursor.execute(sql)
-cursor.close()
-conn.commit()
-conn.close()
-
+if not os.path.exists(dir1) : 
+    sql = f"delete from WEB_STEQ_SCRE_KHOA where PRED_TYPE='DY' "
+    cursor.execute(sql)
+    sql = f"delete from WEB_SREQ_SCRE_KHOA where PRED_TYPE='DY' "
+    cursor.execute(sql)
+    sql = f"delete from WEB_SSEQ_SCRE_KHOA where PRED_TYPE='DY' "
+    cursor.execute(sql)
+    sql = f"delete from WEB_SFEQ_SCRE_KHOA where PRED_TYPE='DY' "
+    cursor.execute(sql)
+    sql = f"delete from WEB_SKEQ_SCRE_KHOA where PRED_TYPE='DY' "
+    cursor.execute(sql)
+    sql = f"delete from WEB_BEACH_QUOT_SCORE_KHOA where PRED_HOUR='DY' "
+    cursor.execute(sql)
+    cursor.close()
+    conn.commit()
+    conn.close()
+else :
+    YR = afterday2[0:4]; MN = afterday2[4:6] ; DY = afterday2[6:8]
+    conn = cx_Oracle.connect(DBID, DBPWD, DBINFO)
+    cursor = conn.cursor()
+    sql = f"delete from WEB_SKEQ_SCRE_KHOA where PRED_DATE= '{YR}-{MN}-{DY}' "
+    cursor.execute(sql)
+    sql = f"delete from WEB_SSEQ_SCRE_KHOA where PRED_DATE= '{YR}-{MN}-{DY}' "
+    cursor.execute(sql)
+    sql = f"delete from WEB_STEQ_SCRE_KHOA where PRED_DATE= '{YR}-{MN}-{DY}' "
+    cursor.execute(sql)
+    sql = f"delete from WEB_SFEQ_SCRE_KHOA where PRED_DATE= '{YR}-{MN}-{DY}' "
+    cursor.execute(sql)
+    sql = f"delete from WEB_SREQ_SCRE_KHOA where PRED_DATE= '{YR}-{MN}-{DY}' "
+    cursor.execute(sql)
+    sql = f"delete from WEB_BEACH_QUOT_SCORE_KHOA where PRED_YEAR = {YR} and PRED_MONTH = {MN} and PRED_DAY = {DY}"
+    cursor.execute(sql)
+    cursor.close()
+    conn.commit()
+    conn.close()
+    
 #[UPLOAD]===================================================================
 # HS 해수욕
 #sql = "CALL PROC_CLONE_RESULT_QUOTIENT@svclink.nori.go.kr('HS', to_date('"

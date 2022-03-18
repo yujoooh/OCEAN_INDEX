@@ -12,8 +12,8 @@ from math import *
 print("#KMA Yesterday OBS data collection Start==========")
 
 #[Date Set]===============================================================================================================
-today = '20201129'
-yesterday = '20201128'
+today = '20211226'
+yesterday = '20211225'
 h = 0
 
 dir1 = './Result/'+today

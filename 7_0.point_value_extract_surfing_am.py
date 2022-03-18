@@ -21,7 +21,7 @@ HR = '10'
 if int(HR) <12 : AMPM = 'AM'
 if int(HR) >= 12 : AMPM = 'PM'
 	
-KHOA_OBS_DATA = open(dir1+'/SURF_OBS_'+AMPM+'.csv','r',encoding='utf8')
+KHOA_OBS_DATA = open(dir1+'/KHOA_OBS_'+AMPM+'.csv','r',encoding='utf8')
 KHOA_OBS = [LST for LST in KHOA_OBS_DATA.read().split()]
 KHOA_LEN = len(KHOA_OBS)
 

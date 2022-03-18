@@ -71,7 +71,7 @@ for LIST in INDEX_LIST:
 				SST2 = KMA_SST
 			jj = jj + 1		
 		
-		kk = 4
+		kk = 7
 		while kk <= KHOA_LEN-1 :# 지점별 1/2순위 선택(조사원)
 			DEV3 = KHOA_OBS[kk].split(',')
 			KHOA_AGY = DEV3[0] ; KHOA_STN = DEV3[1] ; KHOA_SST = DEV3[2] ; KHOA_MWHT = DEV3[3]
@@ -94,20 +94,20 @@ for LIST in INDEX_LIST:
 			MWHT = MWHT2
 		else:
 			MWHT = -999
-		print(NAME, MWHT)
+		#print(NAME, MWHT)
 		if SST1 != '-999.0' :
 			SST = SST1
 		elif SST2 != '-999.0' :
 			SST = SST2
 		else:
 			SST = -999
-		print(NAME, SST)
+		#print(NAME, SST)
 			
 		if AREA == '황해중부' or AREA =='황해남부' : VR_AREA = '서해'
 		if AREA == '남해서부' or AREA =='남해동부' or AREA == '제주도': VR_AREA = '남해'
 		if AREA == '동해중부' or AREA =='동해남부' : VR_AREA = '동해'
 		
-		#print(NAME, SST, MWHT, VR_AREA)
+		print(NAME, SST, MWHT, VR_AREA)
 		data.append([NAME, round(float(SST),1), round(float(MWHT),1), VR_AREA])
 		ii = ii + 1
 	data2 = []

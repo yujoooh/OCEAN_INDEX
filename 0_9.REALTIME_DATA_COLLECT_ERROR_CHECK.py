@@ -34,8 +34,8 @@ if not os.path.exists(dir1+'/KMA_OBS_AM.csv'): shutil.copy('./Info/KMA_OBS_MISSI
 if not os.path.exists(dir1+'/KMA_OBS_PM.csv'): shutil.copy('./Info/KMA_OBS_MISSING.csv', dir1+'/KMA_OBS_PM.csv') #조사원 자료수집 에러발생시 Missing 값으로 넣기.
 if not os.path.exists(dir1+'/KHOA_OBS_AM.csv'): shutil.copy('./Info/KHOA_OBS_MISSING.csv', dir1+'/KHOA_OBS_AM.csv') #조사원 자료수집 에러발생시 Missing 값으로 넣기.
 if not os.path.exists(dir1+'/KHOA_OBS_PM.csv'): shutil.copy('./Info/KHOA_OBS_MISSING.csv', dir1+'/KHOA_OBS_PM.csv') #조사원 자료수집 에러발생시 Missing 값으로 넣기.
-if not os.path.exists(dir1+'/SURF_OBS_AM.csv'): shutil.copy('./Info/SURF_OBS_MISSING.csv', dir1+'/SURF_OBS_AM.csv') #조사원 자료수집 에러발생시 Missing 값으로 넣기.
-if not os.path.exists(dir1+'/SURF_OBS_PM.csv'): shutil.copy('./Info/SURF_OBS_MISSING.csv', dir1+'/SURF_OBS_PM.csv') #조사원 자료수집 에러발생시 Missing 값으로 넣기.
+#if not os.path.exists(dir1+'/SURF_OBS_AM.csv'): shutil.copy('./Info/SURF_OBS_MISSING.csv', dir1+'/SURF_OBS_AM.csv') #조사원 자료수집 에러발생시 Missing 값으로 넣기.
+#if not os.path.exists(dir1+'/SURF_OBS_PM.csv'): shutil.copy('./Info/SURF_OBS_MISSING.csv', dir1+'/SURF_OBS_PM.csv') #조사원 자료수집 에러발생시 Missing 값으로 넣기.
 
 ##[Yesterday OBS DATA]
 #if not os.path.exists(dir1+'/OBS_DAILY/KMA_OBS_'+yesterday+'.csv'): shutil.copy('./Info/KMA_OBS_MISSING.csv', dir1+'/KMA_OBS_'+AMPM+'.csv') #조사원 자료수집 에러발생시 Missing 값으로 넣기.

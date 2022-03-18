@@ -28,13 +28,13 @@ API_KEY = "Kb%2BKlCpXZ7j3udye3E8YL8w4WRPsUtyadYzDUKAmJ6ZJoNKuLWBWqDJwHOAPuqKuRjP
 #국내등표 http://apis.data.go.kr/1360000/OceanInfoService/getLhObs?ServiceKey=Kb%2BKlCpXZ7j3udye3E8YL8w4WRPsUtyadYzDUKAmJ6ZJoNKuLWBWqDJwHOAPuqKuRjPnotzwr2E14sBvyJ7lWw%3D%3D&numOfRows=8&pageNo=1&dataType=JSON&searchTime=20200428
 
 #[Number of KMA OBS STATION]
-WNUM = 100  # 파고부이 관측지점 수  62
-BNUM = 100 # 국내부이 관측지점 수 16
-LNUM = 100  # 국내등표 관측지점 수 -- 파고/수온 정보 미제공 8
+WNUM = 100  # 파고부이 관측지점 수  73
+BNUM = 100 # 국내부이 관측지점 수 24
+#LNUM = 100  # 국내등표 관측지점 수 -- 파고/수온 정보 미제공 8
 
 data1 = [] # 파고부이 데이터 저장 리스트 생성
 data2 = [] # 국내부이 데이터 저장 리스트 생성
-data3 = [] # 국내등표 데이터 저장 리스트 생성 -- 파고/수온 정보 미제공
+#data3 = [] # 국내등표 데이터 저장 리스트 생성 -- 파고/수온 정보 미제공
 while h < 24:
 	hr = (f'{h:02d}')
 	#print(hr,yesterday+hr)
@@ -120,6 +120,7 @@ while h < 24:
 		data2.append([str('22188'),'통영',yesterday+hr,Miss,Miss,Miss,Miss,Miss,Miss,'해양기상'])
 		data2.append([str('22189'),'울산',yesterday+hr,Miss,Miss,Miss,Miss,Miss,Miss,'해양기상'])
 		data2.append([str('22190'),'울진',yesterday+hr,Miss,Miss,Miss,Miss,Miss,Miss,'해양기상'])
+		data2.append([str('22298'),'홍도',yesterday+hr,Miss,Miss,Miss,Miss,Miss,Miss,'해양기상'])		
 		
 	else :
 		READ2 = READ1.get('body')
@@ -166,70 +167,13 @@ while h < 24:
 					print(data2.append)
 				ii = ii + 1
 				#print(ii,STNID,STN.strip(),yesterday+hr,SST,WHT,WSPD)
-	#-----------------------------------[국내등표 자료수집]----------------------------------------------------
-	LURL = LAMP_URL + API_KEY + "&numOfRows=" + str(LNUM) + "&pageNo=1&dataType=JSON"+"&searchTime=" + yesterday+hr
-	LPAGE = urllib.request.urlopen(LURL)
-	LREAD = LPAGE.read()
-	LJSON = json.loads(LREAD)
-	#print(LURL)
-	
-	READ1 = LJSON.get('response') ; CHECK2 = READ1.get('header') ; CHECK3 = CHECK2.get('resultCode')
-	if CHECK3 == '03' :
-		data3.append([str('955'),'서수도',yesterday+hr,Miss,Miss,Miss,Miss,Miss,Miss,'국내등표'])
-		data3.append([str('956'),'가대암',yesterday+hr,Miss,Miss,Miss,Miss,Miss,Miss,'국내등표'])
-		data3.append([str('957'),'십이동파',yesterday+hr,Miss,Miss,Miss,Miss,Miss,Miss,'국내등표'])
-		data3.append([str('958'),'갈매여',yesterday+hr,Miss,Miss,Miss,Miss,Miss,Miss,'국내등표'])
-		data3.append([str('959'),'해수서',yesterday+hr,Miss,Miss,Miss,Miss,Miss,Miss,'국내등표'])
-		data3.append([str('960'),'지귀도',yesterday+hr,Miss,Miss,Miss,Miss,Miss,Miss,'국내등표'])
-		data3.append([str('961'),'간여암',yesterday+hr,Miss,Miss,Miss,Miss,Miss,Miss,'국내등표'])
-		data3.append([str('963'),'이덕서',yesterday+hr,Miss,Miss,Miss,Miss,Miss,Miss,'국내등표'])
-                
-	else :
-		READ2 = READ1.get('body')
-		READ3 = READ2.get('items')
-		if 'item' in READ3 :
-			READ4 = READ3.get('item')
-			READ5 = READ2.get('totalCount')
-			ii = 0
-			LAMP_LIST=[]
-			LAMPID_LIST=[]
-			while ii < READ5:
-				OBS = '국내등표'
-				STNID = READ4[ii].get('stn_id') #지점번호
-				STN = READ4[ii].get('name').strip()  #지점명
-				#LAT = str(READ4[ii].get('lat')) # 위도 -- 정보미제공
-				#LON = str(READ4[ii].get('lon')) # 경도 -- 정보미제공
-				WHT = Miss
-				SST = Miss
-				WSPD = READ4[ii].get('ws')   #풍속
-				WDIR = READ4[ii].get('wd')   #풍속
-				if WSPD == 0.0 or WSPD == "": WSPD = Miss
-				if WDIR == 0.0 or WDIR == "": WDIR = Miss
-				if WDIR == Miss and WSPD == Miss :
-					USPD = Miss ; VSPD = Miss
-				else:
-					USPD = round(-abs(float(WSPD))*sin(np.deg2rad(float(WDIR))),1)
-					VSPD = round(-abs(float(WSPD))*cos(np.deg2rad(float(WDIR))),1)
-				LAMP_LIST = Missing_STN().LAMP(ii,STN,LAMP_LIST)
-				LAMPID_LIST = Missing_STN().LAMPID(ii,STNID,LAMPID_LIST)
-				data3.append([str(STNID),STN,yesterday+hr,SST,WHT,WSPD,WDIR,USPD,VSPD,'국내등표'])
-				if ii == READ5-1 and len(LAMP_LIST) > 0 and len(LAMPID_LIST) > 0 : 
-					for jj in LAMPID_LIST : STNID = jj
-					for jj in LAMP_LIST : STN = jj
-					#WHT = Miss
-					#SST = Miss
-					WSPD = Miss
-					WDIR = Miss
-					data3.append([str(STNID),STN,yesterday+hr,SST,WHT,WSPD,WDIR,USPD,VSPD,'국내등표'])
-				ii = ii + 1
-			#print(ii,STNID,STN.strip(),yesterday+hr,SST,WHT,WSPD)
 				
 	h = h + 1
-data1.sort(); data1_len = len(data1) ; data2.sort(); data2_len = len(data2) ; data3.sort(); data3_len = len(data3)
+data1.sort(); data1_len = len(data1) ; data2.sort(); data2_len = len(data2)
 		
 
 com = [] # 1일자료 통합파일
-com = data1+data2+data3
+com = data1+data2
 com_len = len(com)
 
 #[obs data writing]---------------------------------------------------------------------------------------------

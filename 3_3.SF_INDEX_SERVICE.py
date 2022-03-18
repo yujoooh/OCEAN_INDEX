@@ -531,9 +531,10 @@ while ii < len(apply1) :
 	AVE_WHT = round(float(apply1[ii][5])*float(fdata[ii][7])/float(fdata[ii][8]),1)
 	MIN_SST = round(float(apply1[ii][3])*float(fdata[ii][3])/float(fdata[ii][4]),1)
 	MAX_SST = round(float(apply1[ii][3])*float(fdata[ii][5])/float(fdata[ii][4]),1)
-	if MIN_WHT == MAX_WHT :
-		MAX_WHT = MAX_WHT + 0.1
-		
+#	if MIN_WHT == MAX_WHT :
+#		MAX_WHT = MAX_WHT + 0.1
+#	if round(float(MIN_WHT),1) < 0.1 :
+#		MIN_WHT = 0.1		
 	TIDE_SCRE = IndexScore().tide_score(rawdata[ii][7],int(rawdata[ii][8]))
 	WAVE_SCRE = IndexScore().wave_score(apply1[ii][5])
 	SST_SCRE = IndexScore().sst_score(rawdata[ii][7],apply1[ii][3])

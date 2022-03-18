@@ -316,22 +316,36 @@ while ii <= COM2_LEN-1:
 		DEV = WARN[jj].split(',')
 		WARN_AREA = DEV[0] ; WARN_TYPE = DEV[1] ; WARN_SDAY = DEV[2] ; WARN_SHR = DEV[3] ; WARN_EDAY = DEV[4] ; WARN_EHR = DEV[5]
 		#print(WARN_AREA, WARN_TYPE)
-
 		if int(COM2[ii][8]) < int(WARN_EDAY) and int(COM2[ii][8]) >= int(WARN_SDAY) and (COM2[ii][2] == WARN_AREA or COM2[ii][3] == WARN_AREA or COM2[ii][4] == WARN_AREA or COM2[ii][5] == WARN_AREA): #해제예고 일보다 전날일 경우 일괄적용
-			COM2[ii].insert(18,WARN_TYPE)
+			if int(WARN_SDAY) == int(COM2[ii][8]) and WARN_SHR == 'PM':
+				if COM2[ii][9] == 'AM' :
+					COM2[ii].insert(18,'-')
+				elif COM2[ii][9] == 'PM' or COM2[ii][9] == 'DY' :
+					COM2[ii].insert(18,WARN_TYPE)					
+			else :
+				COM2[ii].insert(18,WARN_TYPE)				
 			jj = WARN_LEN
-
-
-		elif int(COM2[ii][8]) == int(WARN_EDAY) and int(COM2[ii][8]) >= int(WARN_SDAY) and (COM2[ii][2] == WARN_AREA or COM2[ii][3] == WARN_AREA or COM2[ii][4] == WARN_AREA or COM2[ii][5] == WARN_AREA) : #해제예고일과 같을 경우 AM이면 오전만 적용, PM이면 오전/오후 모두적용
-			if WARN_EHR == 'PM': 
+			
+		elif int(COM2[ii][8]) == int(WARN_EDAY) and int(COM2[ii][8]) > int(WARN_SDAY) and (COM2[ii][2] == WARN_AREA or COM2[ii][3] == WARN_AREA or COM2[ii][4] == WARN_AREA or COM2[ii][5] == WARN_AREA) : #해제예고일과 같을 경우 AM이면 오전만 적용, PM이면 오전/오후 모두적용
+			if WARN_EHR == 'PM' :
 				COM2[ii].insert(18,WARN_TYPE)
 			elif WARN_EHR == 'AM' :
-				if COM2[ii][9] == 'AM' or COM2[ii] == 'DY' :
+				if COM2[ii][9] == 'AM' or COM2[ii][9] == 'DY' :
 					COM2[ii].insert(18,WARN_TYPE)
 				else :
 					COM2[ii].insert(18,'-')
 			jj = WARN_LEN
-			
+
+		elif int(COM2[ii][8]) == int(WARN_EDAY) and int(COM2[ii][8]) == int(WARN_SDAY) and (COM2[ii][2] == WARN_AREA or COM2[ii][3] == WARN_AREA or COM2[ii][4] == WARN_AREA or COM2[ii][5] == WARN_AREA) : #해제예고일과 같을 경우 AM이면 오전만 적용, PM이면 오전/오후 모두적용
+			if WARN_SHR == 'PM' :
+				if COM2[ii][9] == 'PM' or COM2[ii][9] == 'DY' :
+					COM2[ii].insert(18,WARN_TYPE)
+				elif COM2[ii][5] == 'AM':
+					COM2[ii].insert(18,'-')					
+			else :
+				COM2[ii].insert(18,WARN_TYPE)
+			jj = WARN_LEN
+
 		else:
 			jj = jj + 1
 			if jj == WARN_LEN :

@@ -240,13 +240,18 @@ while ii <= COM_LEN-1:
 		DEV = WARN[jj].split(',')
 		WARN_AREA = DEV[0] ; WARN_TYPE = DEV[1] ; WARN_SDAY = DEV[2] ; WARN_SHR = DEV[3] ; WARN_EDAY = DEV[4] ; WARN_EHR = DEV[5]
 		#print(WARN_AREA, WARN_TYPE)
-		
-		#print(COM[ii][4], int(WARN_SDAY), COM[ii][5],WARN_SHR)
 		if int(COM[ii][4]) < int(WARN_EDAY) and int(COM[ii][4]) >= int(WARN_SDAY) and COM[ii][2] == WARN_AREA: #해제예고 일보다 전날일 경우 일괄적용
-			COM[ii].insert(12,WARN_TYPE)
+			if int(WARN_SDAY) == int(COM[ii][4]) and WARN_SHR == 'PM':
+				if COM[ii][5] == 'AM' :
+					COM[ii].insert(12,'-')
+				elif COM[ii][5] == 'PM' or COM[ii][5] == 'DY' :
+					COM[ii].insert(12,WARN_TYPE)					
+			else :
+				COM[ii].insert(12,WARN_TYPE)				
 			jj = WARN_LEN
-		elif int(COM[ii][4]) == int(WARN_EDAY) and int(COM[ii][4]) >= int(WARN_SDAY) and COM[ii][2] == WARN_AREA: #해제예고일과 같을 경우 AM이면 오전만 적용, PM이면 오전/오후 모두적용
-			if WARN_EHR == 'PM' : 
+			
+		elif int(COM[ii][4]) == int(WARN_EDAY) and int(COM[ii][4]) > int(WARN_SDAY) and COM[ii][2] == WARN_AREA: #해제예고일과 같을 경우 AM이면 오전만 적용, PM이면 오전/오후 모두적용
+			if WARN_EHR == 'PM' :
 				COM[ii].insert(12,WARN_TYPE)
 			elif WARN_EHR == 'AM' :
 				if COM[ii][5] == 'AM' or COM[ii][5] == 'DY' :
@@ -254,6 +259,17 @@ while ii <= COM_LEN-1:
 				else :
 					COM[ii].insert(12,'-')
 			jj = WARN_LEN
+
+		elif int(COM[ii][4]) == int(WARN_EDAY) and int(COM[ii][4]) == int(WARN_SDAY) and COM[ii][2] == WARN_AREA: #해제예고일과 같을 경우 AM이면 오전만 적용, PM이면 오전/오후 모두적용
+			if WARN_SHR == 'PM' :
+				if COM[ii][5] == 'PM' or COM[ii][5] == 'DY' :
+					COM[ii].insert(12,WARN_TYPE)
+				elif COM[ii][5] == 'AM':
+					COM[ii].insert(12,'-')					
+			else :
+				COM[ii].insert(12,WARN_TYPE)
+			jj = WARN_LEN
+			
 		else:
 			jj = jj + 1
 			if jj == WARN_LEN :

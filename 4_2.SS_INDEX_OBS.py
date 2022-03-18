@@ -211,8 +211,8 @@ while ii <= INF_LEN-1 :
 		SST_S = Statistic2().min_max_ave('ampm',O_SST1,9)
 	
 	#VARS_S ampm [0:am_min 1:am_max, 2:am_ave, 3:pm_min, 4:pm_max, 5:pm_ave] ; VARS_S daily [0:min 1:max, 2:ave]
-	DAY1.append([STN, AREA, W_AREA, NAME, yesterday, 'AM', YESTERDAY_MUL, round(WAVE_S[0],1), round(WAVE_S[2],1), round(WAVE_S[1],1), round(M_CURRENT_S[0],1), round(M_CURRENT_S[2],1), round(M_CURRENT_S[1],1), int(round(SST_S[0])), int(round(SST_S[2])), int(round(SST_S[1]))])
-	DAY1.append([STN, AREA, W_AREA, NAME, yesterday, 'PM', YESTERDAY_MUL, round(WAVE_S[3],1), round(WAVE_S[5],1), round(WAVE_S[4],1), round(M_CURRENT_S[3],1), round(M_CURRENT_S[5],1), round(M_CURRENT_S[4],1), int(round(SST_S[3])), int(round(SST_S[5])), int(round(SST_S[4]))])
+	DAY1.append([STN, AREA, W_AREA, NAME, yesterday, 'AM', YESTERDAY_MUL, round(WAVE_S[0],1), round(WAVE_S[2],1), round(WAVE_S[1],1), round(M_CURRENT_S[0],1), round(M_CURRENT_S[2],1), round(M_CURRENT_S[1],1), round(SST_S[0],1), round(SST_S[2],1), round(SST_S[1],1)])
+	DAY1.append([STN, AREA, W_AREA, NAME, yesterday, 'PM', YESTERDAY_MUL, round(WAVE_S[3],1), round(WAVE_S[5],1), round(WAVE_S[4],1), round(M_CURRENT_S[3],1), round(M_CURRENT_S[5],1), round(M_CURRENT_S[4],1), round(SST_S[3],1), round(SST_S[5],1), round(SST_S[4],1)])
 	O_SST1.clear() ;O_SST2.clear() ; O_WHT1.clear(); O_WHT2.clear()
 	ii = ii + 1
 
@@ -230,8 +230,8 @@ while ii <= len(DAY1)-1 :
 	#DAY1.append([STN, AREA, W_AREA, NAME, today, TODAY_MUL, round(WAVE_S[0],1), round(WAVE_S[2],1), round(WAVE_S[1],1), round(CURRENT_S[0],1), round(CURRENT_S[2],1), round(CURRENT_S[1],1), int(round(SST_S[0])), int(round(SST_S[2])), int(round(SST_S[1])), WARN])
 	TIDE_SCRE = IndexScore().tide_score(DAY1[ii][6])
 	WAVE_SCRE = IndexScore().wave_score(round(float(DAY1[ii][9]),1))
-	CURRENT_SCRE = IndexScore().current_score(DAY1[ii][12])
-	SST_SCRE = IndexScore().sst_score(round(DAY1[ii][14]))
+	CURRENT_SCRE = IndexScore().current_score(round(DAY1[ii][12],1))
+	SST_SCRE = IndexScore().sst_score(round(DAY1[ii][14],1))
 	WARN_SCRE = IndexScore().warn_score('-')
 	TOTAL_SCRE1 = IndexScore().total_score(TIDE_SCRE, WAVE_SCRE, CURRENT_SCRE, SST_SCRE, WARN_SCRE)[0] # forecast score(no rain, no warning)
 

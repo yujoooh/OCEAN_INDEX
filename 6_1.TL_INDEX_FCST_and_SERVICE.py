@@ -214,26 +214,25 @@ while ii <= COM_LEN-1:
 		COM[ii].insert(15,0)
 		COM[ii].insert(16,1)
 	else:        
-		COM[ii].insert(15,0)
-		COM[ii].insert(16,1)
-	ii = ii + 1
-ii = 0	
-while ii <= COM_LEN-1:
-	jj = 1 
-	while jj <= CITY_LEN-1:
-		DEV = CITY[jj].split(',')
-		if jj != CITY_LEN-1 : DEV2 = CITY[jj+1].split(',')
-		STN = DEV[0] ; NAME = DEV[1] ; DATE = DEV[2] ; AMPM = DEV[3] ; RAIN_AMT = float(DEV[11]) ; SKY = DEV[10]
-		if COM[ii][0] == STN and COM[ii][4] == DATE and COM[ii][8] == AMPM:
-			COM[ii].insert(15,RAIN_AMT)
-			COM[ii].insert(16,SKY)
-			#print(NAME, DATE, int(SKY), int(DEV2[10]))
-		elif COM[ii][0] == STN and COM[ii][4] == DATE and COM[ii][8] == 'daily' and DEV2[1] == STN :
-			COM[ii].insert(15,(RAIN_AMT + float(DEV2[11])))
-			if int(SKY) >= int(DEV2[10]) : COM[ii].insert(16,SKY)
-			else : COM[ii].insert(16,SKY)
-			#print(NAME, DATE, int(SKY), int(DEV2[10]))
-		jj = jj + 1
+		jj = 1 
+		while jj <= CITY_LEN-1:
+			DEV = CITY[jj].split(',')
+			if jj != CITY_LEN-1 : DEV2 = CITY[jj+1].split(',')
+			STN = DEV[0] ; NAME = DEV[1] ; DATE = DEV[2] ; AMPM = DEV[3] ; RAIN_AMT = float(DEV[11]) ; SKY = DEV[10]
+			if COM[ii][0] == STN and COM[ii][4] == DATE and COM[ii][8] == AMPM :
+				COM[ii].insert(15,RAIN_AMT)
+				COM[ii].insert(16,SKY)
+				#print(NAME, DATE, int(SKY), int(DEV2[10]))
+			elif COM[ii][0] == STN and COM[ii][4] == DATE and COM[ii][8] == 'daily' and DEV[2] == DEV2[2] :
+				COM[ii].insert(15,(RAIN_AMT + float(DEV2[11])))
+				if int(SKY) >= int(DEV2[10]) : COM[ii].insert(16,SKY)
+				else : COM[ii].insert(16,DEV2[10])
+				#print(NAME, DATE, int(SKY), int(DEV2[10]))
+			elif COM[ii][0] == STN and COM[ii][4] == DATE and DEV[3] == 'DY' :
+				COM[ii].insert(15,0)
+				COM[ii].insert(16,SKY)
+				#print(NAME, DATE, int(SKY), int(DEV2[10]))				
+			jj = jj + 1
 	ii = ii + 1
 #[KMA WARNING INFORAMTION : special weather report]=====================================================================================================
 ii = 0 
@@ -272,9 +271,9 @@ COM_LEN = len(COM)
 ii = 0
 while ii <= COM_LEN-1 :
 	MIN_TEMP = COM[ii][9] ; AVE_TEMP = COM[ii][10] ; MAX_TEMP = COM[ii][11]
-	if MIN_TEMP == MAX_TEMP :
-		MIN_TEMP = AVE_TEMP - 1
-		MAX_TEMP = AVE_TEMP + 1	
+#	if MIN_TEMP == MAX_TEMP :
+#		MIN_TEMP = AVE_TEMP - 1
+#		MAX_TEMP = AVE_TEMP + 1	
 	EXPHR_SCRE = IndexScore().exphr_score(COM[ii][7])
 	TEMP_SCRE = IndexScore().temp_score(COM[ii][10])
 	WIND_SCRE = IndexScore().wind_score(COM[ii][14])
