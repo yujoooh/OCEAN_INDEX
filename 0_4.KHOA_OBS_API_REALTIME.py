@@ -67,11 +67,13 @@ while ii < 53: #
 #-----------------------------------[해양관측부이 자료수집]-----------------------------------------
 BUOY_INF = open('./Info/BUOY_STATION_INFO.csv','r',encoding='utf8')
 BUOY_STN = [str(INFO) for INFO in BUOY_INF.read().split()]
+BUOY_LEN = len(BUOY_STN)
 print(today,"KHOA Ocean-buoy obs data collection...","correction time", hr)
 
 ii = 1
+
 #while ii < 35: # 
-while ii < 33: # ObsCode에서 제공되는 송정해수욕장, 낙산해수욕장은 자료가 안들어옴
+while ii < int(BUOY_LEN): # ObsCode에서 제공되는 송정해수욕장, 낙산해수욕장은 자료가 안들어옴
 	BURL = BUOY_URL+API_KEY+UOBS+BUOY_STN[ii]+"&ResultType=json"
 	OBS_PAGE = urllib.request.urlopen(BURL)     # OBS URL OPEN
 	OBS_READ = OBS_PAGE.read()                  # url에 접속하여 json file read

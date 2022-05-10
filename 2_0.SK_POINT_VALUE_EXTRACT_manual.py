@@ -58,7 +58,7 @@ for LIST in INDEX_LIST:
 		WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; WW3_X = int(DEV[9]) ; WW3_Y = int(DEV[10])
 		CWW3_X = int(DEV[11]) ; CWW3_Y = int(DEV[12]) ; CWW3_LOC = int(DEV[13])
 		RWW3_X = int(DEV[14]) ; RWW3_Y = int(DEV[15])
-		AGY1 = DEV[19]; MWHT_STN1 = DEV[20]; AGY2 = DEV[21]; MWHT_STN2 = DEV[22]
+		AGY1 = DEV[21]; MWHT_STN1 = DEV[22]; AGY2 = DEV[23]; MWHT_STN2 = DEV[24]
 #		print(AGY1, MWHT_STN1, AGY2, MWHT_STN2)
 		# 1/2순위를 결픅 값으로 초기화
 		MWHT1 = '-999.0' ; MWHT2 = '-999.0'

@@ -95,7 +95,7 @@ for SDT_DATA in SDTIME :
 		while ii <= INF_LEN-1 :
 			DEV = INF[ii].split(',')
 			STN = DEV[0] ; AREA = DEV[1] ; NAME = DEV[2] ; LON = DEV[3] ; LAT = DEV[4]
-			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[18] ; USE_YN=DEV[19]
+			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[20] ; USE_YN=DEV[21]
 			
 			if SPLIT_NAME == NAME and USE_YN == 'Y' :
 				WIND_S  = Statistic().min_max_ave('KHOA', 'daily', WIND, WRF_X, WRF_Y, 0)
@@ -111,7 +111,7 @@ for SDT_DATA in SDTIME :
 		while ii <= INF_LEN-1 :
 			DEV = INF[ii].split(',')
 			STN = DEV[0] ; AREA = DEV[1] ; NAME = DEV[2] ; LON = DEV[3] ; LAT = DEV[4]
-			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[18]
+			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[20]
 
 			if SPLIT_NAME == NAME:
 				WIND_S  = Statistic().min_max_ave('KHOA', 'daily', WIND, WRF_X, WRF_Y, 24)
@@ -127,7 +127,7 @@ for SDT_DATA in SDTIME :
 		while ii <= INF_LEN-1 :
 			DEV = INF[ii].split(',')
 			STN = DEV[0] ; AREA = DEV[1] ; NAME = DEV[2] ; LON = DEV[3] ; LAT = DEV[4]
-			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[18]
+			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[20]
 			if SPLIT_NAME == NAME :
 				WIND_S  = Statistic().min_max_ave('KHOA', 'daily', WIND, WRF_X, WRF_Y, 48)
 				TEMP_S  = Statistic().min_max_ave('KHOA', 'daily', TEMP, WRF_X, WRF_Y, 48)
@@ -141,7 +141,7 @@ for SDT_DATA in SDTIME :
 		while ii <= INF_LEN-1 :
 			DEV = INF[ii].split(',')
 			STN = DEV[0] ; AREA = DEV[1] ; NAME = DEV[2] ; LON = DEV[3] ; LAT = DEV[4]
-			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[18]
+			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[20]
 			if SPLIT_NAME == NAME  :
 				WIND_S  = Statistic().min_max_ave('KHOA', 'daily', WIND, WRF_X, WRF_Y, 72)
 				TEMP_S  = Statistic().min_max_ave('KHOA', 'daily', TEMP, WRF_X, WRF_Y, 72)
@@ -155,7 +155,7 @@ for SDT_DATA in SDTIME :
 		while ii <= INF_LEN-1 :
 			DEV = INF[ii].split(',')
 			STN = DEV[0] ; AREA = DEV[1] ; NAME = DEV[2] ; LON = DEV[3] ; LAT = DEV[4]
-			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[18]
+			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[20]
 			if SPLIT_NAME == NAME :
 				WIND_S  = Statistic().min_max_ave('KHOA', 'daily', WIND, WRF_X, WRF_Y, 96)
 				TEMP_S  = Statistic().min_max_ave('KHOA', 'daily', TEMP, WRF_X, WRF_Y, 96)
@@ -169,7 +169,7 @@ for SDT_DATA in SDTIME :
 		while ii <= INF_LEN-1 :
 			DEV = INF[ii].split(',')
 			STN = DEV[0] ; AREA = DEV[1] ; NAME = DEV[2] ; LON = DEV[3] ; LAT = DEV[4]
-			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[18]
+			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[20]
 			if SPLIT_NAME == NAME:
 				WIND_S  = Statistic().min_max_ave('KHOA', 'daily', WIND, WRF_X, WRF_Y, 120)
 				TEMP_S  = Statistic().min_max_ave('KHOA', 'daily', TEMP, WRF_X, WRF_Y, 120)
@@ -183,7 +183,7 @@ for SDT_DATA in SDTIME :
 		while ii <= INF_LEN-1 :
 			DEV = INF[ii].split(',')
 			STN = DEV[0] ; AREA = DEV[1] ; NAME = DEV[2] ; LON = DEV[3] ; LAT = DEV[4]
-			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[18]
+			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[20]
 			if SPLIT_NAME == NAME :
 				WIND_S  = Statistic().min_max_ave('KHOA', 'daily', WIND, WRF_X, WRF_Y, 144)
 				TEMP_S  = Statistic().min_max_ave('KHOA', 'daily', TEMP, WRF_X, WRF_Y, 144)

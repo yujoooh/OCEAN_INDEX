@@ -28,6 +28,7 @@ print("#SPEQ FCST_INDEX CREAT Start==========")
 #[Manual date set2] 외부변수 받아오기
 var1 = sys.argv[1] ; var2 = sys.argv[2]; var3 = sys.argv[3]
 today = str(date(int(var1),int(var2),int(var3)).strftime('%Y%m%d'))
+yesterday = str((date(int(var1),int(var2),int(var3)) - timedelta(1)).strftime('%Y%m%d'))
 afterday1 = (date(int(var1),int(var2),int(var3)) + timedelta(1)).strftime('%Y%m%d')
 afterday2 = (date(int(var1),int(var2),int(var3)) + timedelta(2)).strftime('%Y%m%d')
 afterday3 = (date(int(var1),int(var2),int(var3)) + timedelta(3)).strftime('%Y%m%d')
@@ -41,6 +42,7 @@ dir1 = './Result/'+today
 #[Model Data path] =======================================================================================
 MPATH = './Model_Data/'
 ROMS_FNAME = 'YES3K_'+ str(today) + '00.nc'      # YES3K - KHOA
+MOHID_FNAME = 'L4_OC_' + str(yesterday) + '12.nc'      # MOHID - KHOA
 WRF_FNAME = 'WRF_' + str(today) + '.nc'          # WRF_DM2 - KHOA
 WW3_FNAME = 'WW3_' + str(today) + '00.nc'        # WW3 - KHOA
 CWW3_FNAME = 'CWW3_' + str(today) + '00.nc'      # CWW3 - KMA
@@ -51,18 +53,33 @@ INFILE_2 = MPATH+WRF_FNAME
 INFILE_3 = MPATH+CWW3_FNAME
 INFILE_4 = MPATH+WW3_FNAME
 INFILE_5 = MPATH+RWW3_FNAME
+INFILE_6 = MPATH+MOHID_FNAME
 
 #[READ Model_Data] =======================================================================================
 #[YES3K]
-DATA = Dataset(INFILE_1, mode='r')
-SST = DATA.variables['temp'][:,:,:]  #[t,y,x]
-U_CURRENT = DATA.variables['u'][:,:,:]  #[t,y,x]
-V_CURRENT = DATA.variables['v'][:,:,:]  #[t,y,x]
-CURRENT= (U_CURRENT**2+V_CURRENT**2)**0.5  #Calculate Current speed
+#[YES3K, MOHID]
+if os.path.isfile(INFILE_6):
+	DATA = Dataset(INFILE_6, mode='r')
+	SST = DATA.variables['temp'][12:,:,:]     #[t,y,x]
+	U_CURRENT = DATA.variables['u'][12:,:,:]  #[t,y,x]
+	V_CURRENT = DATA.variables['v'][12:,:,:]  #[t,y,x]
+	CURRENT= (U_CURRENT**2+V_CURRENT**2)**0.5  #Calculate Current speed
+
+	DATA2 = Dataset(INFILE_1, mode='r')
+	SST2 = DATA2.variables['temp'][:,:,:]     #[t,y,x]
+	U_CURRENT2 = DATA2.variables['u'][:,:,:]  #[t,y,x]
+	V_CURRENT2 = DATA2.variables['v'][:,:,:]  #[t,y,x]
+	CURRENT2= (U_CURRENT2**2+V_CURRENT2**2)**0.5  #Calculate Current speed
+else : 
+	DATA = Dataset(INFILE_1, mode='r')
+	SST = DATA.variables['temp'][:,:,:]     #[t,y,x]
+	U_CURRENT = DATA.variables['u'][:,:,:]  #[t,y,x]
+	V_CURRENT = DATA.variables['v'][:,:,:]  #[t,y,x]
+	CURRENT= (U_CURRENT**2+V_CURRENT**2)**0.5  #Calculate Current speed
 
 #[WRF]
 DATA = Dataset(INFILE_2, mode='r')
-TEMP = DATA.variables['Tair'][:,:,:]  #[t,y,x]
+TEMP = DATA.variables['Tair'][:,:,:]     #[t,y,x]
 U_WIND = DATA.variables['Uwind'][:,:,:]  #[t,y,x]
 V_WIND = DATA.variables['Vwind'][:,:,:]  #[t,y,x]
 WIND = (U_WIND**2+V_WIND**2)**0.5  #Calculate Wind speed
@@ -116,14 +133,19 @@ while ii <= INF_LEN-1 :
 	STN = DEV[0] ; AREA = DEV[1] ; NAME = DEV[2] ; LON = DEV[3] ; LAT = DEV[4]
 	ROMS_X = int(DEV[5]) ; ROMS_Y = int(DEV[6]) ; WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8])
 	WW3_X = int(DEV[9]) ; WW3_Y = int(DEV[10]) ; CWW3_X = int(DEV[11]) ; CWW3_Y = int(DEV[12]) ; CWW3_LOC = int(DEV[13]) ;
-	RWW3_X = int(DEV[14]) ; RWW3_Y = int(DEV[15]) ; W_AREA = DEV[18]
+	RWW3_X = int(DEV[14]) ;  RWW3_Y = int(DEV[48]) ; MOHID_X = int(DEV[16]) ; MOHID_Y = int(DEV[17]) ; W_AREA = DEV[20]
 
 	jj = 0 ; jjj = 0
 	while jj <= 144:
-		SST_S  = Statistic().min_max_ave('KHOA', 'ampm', SST, ROMS_X, ROMS_Y, jj)
 		WIND_S = Statistic().min_max_ave('KHOA', 'ampm', WIND, WRF_X, WRF_Y, jj)
 		TEMP_S = Statistic().min_max_ave('KHOA', 'ampm', TEMP, WRF_X, WRF_Y, jj)
-
+		if os.path.isfile(INFILE_6):
+			if jj <= 48: #0~2day
+				SST_S  = Statistic().min_max_ave('KHOA', 'ampm', SST, MOHID_X, MOHID_Y, jj)
+			else :       #3~6days
+				SST_S  = Statistic().min_max_ave('KHOA', 'ampm', SST2, ROMS_X, ROMS_Y, jj)	
+		else : 
+			SST_S  = Statistic().min_max_ave('KHOA', 'ampm', SST, ROMS_X, ROMS_Y, jj)
 		if os.path.isfile(INFILE_3):
 			if jj <= 48 :
 				jjj = int(jj / 3) #3시간 자료

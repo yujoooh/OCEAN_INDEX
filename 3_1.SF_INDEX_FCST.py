@@ -15,6 +15,7 @@ print("#SFEQ FCST_INDEX CREAT Start==========")
 #[Date set] ==============================================================================================
 #[Auto date set]
 today = str(datetime.today().strftime('%Y%m%d'))
+yesterday = str((date.today() - timedelta(1)).strftime('%Y%m%d'))
 afterday1 = (date.today() + timedelta(1)).strftime('%Y%m%d')
 afterday2 = (date.today() + timedelta(2)).strftime('%Y%m%d')
 afterday3 = (date.today() + timedelta(3)).strftime('%Y%m%d')
@@ -33,24 +34,39 @@ dir1 = './Result/'+today
 #[Model Data path] =======================================================================================
 MPATH = './Model_Data/'
 ROMS_FNAME = 'YES3K_'+ str(today) + '00.nc'      # YES3K - KHOA
+MOHID_FNAME = 'L4_OC_' + str(yesterday) + '12.nc'    # MOHID - KHOA : 0step - 전날 12UTC
 WRF_FNAME = 'WRF_' + str(today) + '.nc'          # WRF_DM2 - KHOA
 WW3_FNAME = 'WW3_' + str(today) + '00.nc'        # WW3 - KHOA
 CWW3_FNAME = 'CWW3_' + str(today) + '00.nc'      # CWW3 - KMA
-RWW3_FNAME = 'RWW3_' + str(today) + '00.nc'     # RWW3 - KMA
+RWW3_FNAME = 'RWW3_' + str(today) + '00.nc'      # RWW3 - KMA
 
 INFILE_1 = MPATH+ROMS_FNAME
 INFILE_2 = MPATH+WRF_FNAME
 INFILE_3 = MPATH+CWW3_FNAME
 INFILE_4 = MPATH+WW3_FNAME
 INFILE_5 = MPATH+RWW3_FNAME
+INFILE_6 = MPATH+MOHID_FNAME
 
 #[READ Model_Data] =======================================================================================
-#[YES3K]
-DATA = Dataset(INFILE_1, mode='r')
-SST = DATA.variables['temp'][:,:,:]  #[t,y,x]
-U_CURRENT = DATA.variables['u'][:,:,:]  #[t,y,x]
-V_CURRENT = DATA.variables['v'][:,:,:]  #[t,y,x]
-CURRENT= (U_CURRENT**2+V_CURRENT**2)**0.5  #Calculate Current speed
+#[YES3K, MOHID]
+if os.path.isfile(INFILE_6):
+	DATA = Dataset(INFILE_6, mode='r')
+	SST = DATA.variables['temp'][12:,:,:]  #[t,y,x]
+	U_CURRENT = DATA.variables['u'][12:,:,:]  #[t,y,x]
+	V_CURRENT = DATA.variables['v'][12:,:,:]  #[t,y,x]
+	CURRENT= (U_CURRENT**2+V_CURRENT**2)**0.5  #Calculate Current speed
+
+	DATA2 = Dataset(INFILE_1, mode='r')
+	SST2 = DATA2.variables['temp'][:,:,:]  #[t,y,x]
+	U_CURRENT2 = DATA2.variables['u'][:,:,:]  #[t,y,x]
+	V_CURRENT2 = DATA2.variables['v'][:,:,:]  #[t,y,x]
+	CURRENT2= (U_CURRENT2**2+V_CURRENT2**2)**0.5  #Calculate Current speed
+else : 
+	DATA = Dataset(INFILE_1, mode='r')
+	SST = DATA.variables['temp'][:,:,:]  #[t,y,x]
+	U_CURRENT = DATA.variables['u'][:,:,:]  #[t,y,x]
+	V_CURRENT = DATA.variables['v'][:,:,:]  #[t,y,x]
+	CURRENT= (U_CURRENT**2+V_CURRENT**2)**0.5  #Calculate Current speed
 
 #[WRF]
 DATA = Dataset(INFILE_2, mode='r')
@@ -116,19 +132,29 @@ while ii <= INF_LEN-1 :
 	DEV = INF[ii].split(',')
 	STN = DEV[0] ; AREA = DEV[1] ; NAME = DEV[2] ; LON = DEV[3] ; LAT = DEV[4]
 	ROMS_X = int(DEV[5]) ; ROMS_Y = int(DEV[6]) ; WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8])
-	WW3_X = int(DEV[9]) ; WW3_Y = int(DEV[10]) ; CWW3_X = int(DEV[11]) ; CWW3_Y = int(DEV[12]) ; CWW3_LOC = int(DEV[13]) ;
-	RWW3_X = int(DEV[14]) ; RWW3_Y = int(DEV[15]) ; W_AREA = DEV[18] ; FISH_NAME = DEV[27] ; FISH_TYPE = DEV[28]
-
+	WW3_X = int(DEV[9]) ; WW3_Y = int(DEV[10]) ; CWW3_X = int(DEV[11]) ; CWW3_Y = int(DEV[12]) ; CWW3_LOC = int(DEV[13])
+	RWW3_X = int(DEV[14]) ; RWW3_Y = int(DEV[15]) ;  MOHID_X = int(DEV[16]) ; MOHID_Y = int(DEV[17])
+	W_AREA = DEV[20] ; FISH_NAME = DEV[29] ; FISH_TYPE = DEV[30]
+	
 	if today[4:6] == '01' or today[4:6] =='02' or today[4:6] =='03' or today[4:6] =='11' or today[4:6] =='12' : 
 		jj = 0 ; jjj = 0
 		while jj <= 144:
-			SST_2S  = Statistic().min_max_ave('KHOA', 'ampm', SST, ROMS_X, ROMS_Y, jj)
-			SST_S  = Statistic().min_max_ave('KHOA', 'daily', SST, ROMS_X, ROMS_Y, jj)
 			WIND_2S = Statistic().min_max_ave('KHOA', 'ampm', WIND, WRF_X, WRF_Y, jj)
 			WIND_S = Statistic().min_max_ave('KHOA', 'daily', WIND, WRF_X, WRF_Y, jj)
 			TEMP_2S = Statistic().min_max_ave('KHOA', 'ampm', TEMP, WRF_X, WRF_Y, jj)
 			TEMP_S = Statistic().min_max_ave('KHOA', 'daily', TEMP, WRF_X, WRF_Y, jj)
-		
+			
+			if os.path.isfile(INFILE_6):
+				if jj <= 48 : #0~2day
+					SST_2S  = Statistic().min_max_ave('KHOA', 'ampm', SST, MOHID_X, MOHID_Y, jj)
+					SST_S  = Statistic().min_max_ave('KHOA', 'daily', SST, MOHID_X, MOHID_Y, jj)
+				else :        #3~6days
+					SST_2S = Statistic().min_max_ave('KHOA', 'ampm', SST2, ROMS_X, ROMS_Y, jj)
+					SST_S  = Statistic().min_max_ave('KHOA', 'daily', SST2, ROMS_X, ROMS_Y, jj)
+			else : 
+				SST_2S  = Statistic().min_max_ave('KHOA', 'ampm', SST, ROMS_X, ROMS_Y, jj)
+				SST_S  = Statistic().min_max_ave('KHOA', 'daily', SST, ROMS_X, ROMS_Y, jj)
+
 			if os.path.isfile(INFILE_3):
 				if jj <= 48 :
 					jjj = int(jj / 3) #3시간 자료
@@ -190,13 +216,22 @@ while ii <= INF_LEN-1 :
 		else :
 			jj = 0 ; jjj = 0
 			while jj <= 144:
-				SST_2S  = Statistic().min_max_ave('KHOA', 'ampm', SST, ROMS_X, ROMS_Y, jj)
-				SST_S  = Statistic().min_max_ave('KHOA', 'daily', SST, ROMS_X, ROMS_Y, jj)
 				WIND_2S = Statistic().min_max_ave('KHOA', 'ampm', WIND, WRF_X, WRF_Y, jj)
 				WIND_S = Statistic().min_max_ave('KHOA', 'daily', WIND, WRF_X, WRF_Y, jj)
 				TEMP_2S = Statistic().min_max_ave('KHOA', 'ampm', TEMP, WRF_X, WRF_Y, jj)
 				TEMP_S = Statistic().min_max_ave('KHOA', 'daily', TEMP, WRF_X, WRF_Y, jj)
-		
+
+				if os.path.isfile(INFILE_6):
+					if jj <= 48 : #0~2day
+						SST_2S  = Statistic().min_max_ave('KHOA', 'ampm', SST, MOHID_X, MOHID_Y, jj)
+						SST_S  = Statistic().min_max_ave('KHOA', 'daily', SST, MOHID_X, MOHID_Y, jj)
+					else :        #3~6days
+						SST_2S = Statistic().min_max_ave('KHOA', 'ampm', SST2, ROMS_X, ROMS_Y, jj)
+						SST_S  = Statistic().min_max_ave('KHOA', 'daily', SST2, ROMS_X, ROMS_Y, jj)
+				else : 
+					SST_2S  = Statistic().min_max_ave('KHOA', 'ampm', SST, ROMS_X, ROMS_Y, jj)
+					SST_S  = Statistic().min_max_ave('KHOA', 'daily', SST, ROMS_X, ROMS_Y, jj)
+				
 				if os.path.isfile(INFILE_3):
 					if jj <= 48 :
 						jjj = int(jj / 3) #3시간 자료
@@ -257,14 +292,23 @@ while ii <= INF_LEN-1 :
 			print(MSG)
 		else :
 			jj = 0 ; jjj = 0
-			while jj <= 144:
-				SST_2S  = Statistic().min_max_ave('KHOA', 'ampm', SST, ROMS_X, ROMS_Y, jj)
-				SST_S  = Statistic().min_max_ave('KHOA', 'daily', SST, ROMS_X, ROMS_Y, jj)
+			while jj <= 144:				
 				WIND_2S = Statistic().min_max_ave('KHOA', 'ampm', WIND, WRF_X, WRF_Y, jj)
 				WIND_S = Statistic().min_max_ave('KHOA', 'daily', WIND, WRF_X, WRF_Y, jj)
 				TEMP_2S = Statistic().min_max_ave('KHOA', 'ampm', TEMP, WRF_X, WRF_Y, jj)
 				TEMP_S = Statistic().min_max_ave('KHOA', 'daily', TEMP, WRF_X, WRF_Y, jj)
-				
+
+				if os.path.isfile(INFILE_6):
+					if jj <= 48 : #0~2day
+						SST_2S  = Statistic().min_max_ave('KHOA', 'ampm', SST, MOHID_X, MOHID_Y, jj)
+						SST_S  = Statistic().min_max_ave('KHOA', 'daily', SST, MOHID_X, MOHID_Y, jj)
+					else :        #3~6days
+						SST_2S = Statistic().min_max_ave('KHOA', 'ampm', SST2, ROMS_X, ROMS_Y, jj)
+						SST_S  = Statistic().min_max_ave('KHOA', 'daily', SST2, ROMS_X, ROMS_Y, jj)
+				else : 
+					SST_2S  = Statistic().min_max_ave('KHOA', 'ampm', SST, ROMS_X, ROMS_Y, jj)
+					SST_S  = Statistic().min_max_ave('KHOA', 'daily', SST, ROMS_X, ROMS_Y, jj)
+
 				if os.path.isfile(INFILE_3):
 					if jj <= 48 :
 						jjj = int(jj / 3) #3시간 자료
@@ -392,7 +436,7 @@ while ii <= COM_LEN-1:
 COM_LEN = len(COM)
 ii = 0
 while ii <= COM_LEN-1 :
-	#print(ii)
+
                     #0   1     2      3       4       5          6           7            8          9         10         11         12      13         14       15          16           17       18         19         20             21
     #DAY3.append([STN, AREA, W_AREA, NAME, afterday2, AM,  FISH_NAME, FISH_TYPE, AFTERDAY2_MUL, WAVE_S[0], WAVE_S[2], WAVES_[1], SST_S[0], SST_S[2], SST_S[1], TEMP_S[0], TEMP_S[2], TEMP_S[1], WIND_S[0], WIND_S[2], WIND_S[1]], WARN])
 	TIDE_SCRE = IndexScore().tide_score(COM[ii][7],COM[ii][8])

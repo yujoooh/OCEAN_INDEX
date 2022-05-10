@@ -14,6 +14,7 @@ print("#SDEQ FCST_INDEX and SERVICE INDEX CREAT Start==========")
 #[Date set] ==============================================================================================
 #[Auto date set]
 today = str(datetime.today().strftime('%Y%m%d'))
+yesterday = str((date.today() - timedelta(1)).strftime('%Y%m%d'))
 afterday1 = (date.today() + timedelta(1)).strftime('%Y%m%d')
 afterday2 = (date.today() + timedelta(2)).strftime('%Y%m%d')
 afterday3 = (date.today() + timedelta(3)).strftime('%Y%m%d')
@@ -88,7 +89,7 @@ for SDT_DATA in SDTIME :
 		while ii <= INF_LEN-1 :
 			DEV = INF[ii].split(',')
 			STN = DEV[0] ; AREA = DEV[1] ; NAME = DEV[2] ; LON = DEV[3] ; LAT = DEV[4]
-			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[18]
+			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[20]
 			
 			if SPLIT_NAME == NAME :
 				if SD_TIME[3] == 'daily' or SD_TIME[3] == 'AM' or SD_TIME[3] =='PM':
@@ -106,7 +107,7 @@ for SDT_DATA in SDTIME :
 		while ii <= INF_LEN-1 :
 			DEV = INF[ii].split(',')
 			STN = DEV[0] ; AREA = DEV[1] ; NAME = DEV[2] ; LON = DEV[3] ; LAT = DEV[4]
-			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[18]
+			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[20]
 			if SPLIT_NAME == NAME :
 				if SD_TIME[3] == 'daily' or SD_TIME[3] == 'AM' or SD_TIME[3] =='PM':
 					WIND_S  = Statistic().min_max_ave('KHOA', 'daily', WIND, WRF_X, WRF_Y, 24)
@@ -121,7 +122,7 @@ for SDT_DATA in SDTIME :
 		while ii <= INF_LEN-1 :
 			DEV = INF[ii].split(',')
 			STN = DEV[0] ; AREA = DEV[1] ; NAME = DEV[2] ; LON = DEV[3] ; LAT = DEV[4]
-			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[18]
+			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[20]
 			if SPLIT_NAME == NAME :
 				if SD_TIME[3] == 'daily' or SD_TIME[3] == 'AM' or SD_TIME[3] =='PM':
 					WIND_S  = Statistic().min_max_ave('KHOA', 'daily', WIND, WRF_X, WRF_Y, 48)
@@ -136,7 +137,7 @@ for SDT_DATA in SDTIME :
 		while ii <= INF_LEN-1 :
 			DEV = INF[ii].split(',')
 			STN = DEV[0] ; AREA = DEV[1] ; NAME = DEV[2] ; LON = DEV[3] ; LAT = DEV[4]
-			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[18]
+			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[20]
 			if SPLIT_NAME == NAME :
 				if SD_TIME[3] == 'daily' or SD_TIME[3] == 'AM' or SD_TIME[3] =='PM':
 					WIND_S  = Statistic().min_max_ave('KHOA', 'daily', WIND, WRF_X, WRF_Y, 72)
@@ -151,7 +152,7 @@ for SDT_DATA in SDTIME :
 		while ii <= INF_LEN-1 :
 			DEV = INF[ii].split(',')
 			STN = DEV[0] ; AREA = DEV[1] ; NAME = DEV[2] ; LON = DEV[3] ; LAT = DEV[4]
-			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[18]
+			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[20]
 			if SPLIT_NAME == NAME :
 				if SD_TIME[3] == 'daily' or SD_TIME[3] == 'AM' or SD_TIME[3] =='PM':
 					WIND_S  = Statistic().min_max_ave('KHOA', 'daily', WIND, WRF_X, WRF_Y, 96)
@@ -166,7 +167,7 @@ for SDT_DATA in SDTIME :
 		while ii <= INF_LEN-1 :
 			DEV = INF[ii].split(',')
 			STN = DEV[0] ; AREA = DEV[1] ; NAME = DEV[2] ; LON = DEV[3] ; LAT = DEV[4]
-			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[18]
+			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[20]
 			if SPLIT_NAME == NAME :
 				if SD_TIME[3] == 'daily' or SD_TIME[3] == 'AM' or SD_TIME[3] =='PM':
 					WIND_S  = Statistic().min_max_ave('KHOA', 'daily', WIND, WRF_X, WRF_Y, 120)
@@ -181,7 +182,7 @@ for SDT_DATA in SDTIME :
 		while ii <= INF_LEN-1 :
 			DEV = INF[ii].split(',')
 			STN = DEV[0] ; AREA = DEV[1] ; NAME = DEV[2] ; LON = DEV[3] ; LAT = DEV[4]
-			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[18]
+			WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8]) ; W_AREA = DEV[20]
 			if SPLIT_NAME == NAME :
 				WIND_S  = Statistic().min_max_ave('KHOA', 'daily', WIND, WRF_X, WRF_Y, 144)
 				TEMP_S  = Statistic().min_max_ave('KHOA', 'daily', TEMP, WRF_X, WRF_Y, 144)

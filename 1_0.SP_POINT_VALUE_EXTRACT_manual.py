@@ -57,9 +57,9 @@ for LIST in INDEX_LIST:
 		STN = DEV[0] ; AREA = DEV[1] ; NAME = DEV[2] ; LON = DEV[3] ; LAT = DEV[4]
 		ROMS_X = int(DEV[5]) ; ROMS_Y = int(DEV[6]) ; WRF_X = int(DEV[7]) ; WRF_Y = int(DEV[8])
 		WW3_X = int(DEV[9]) ; WW3_Y = int(DEV[10]) ; CWW3_X = int(DEV[11]) ; CWW3_Y = int(DEV[12]) ; CWW3_LOC = int(DEV[13])
-		RWW3_X = int(DEV[14]) ; RWW3_Y = int(DEV[15]) ; W_AREA = DEV[18]
-		AGY1 = DEV[19]; MWHT_STN1 = DEV[20]; AGY2 = DEV[21]; MWHT_STN2 = DEV[22]
-		AGY3 = DEV[23]; SST_STN1 = DEV[24]; AGY4 = DEV[25]; SST_STN2 = DEV[26]
+		RWW3_X = int(DEV[14]) ; RWW3_Y = int(DEV[15]) ; MOHID_X = int(DEV[16]) ; MOHID_Y = int(DEV[17]) ; W_AREA = DEV[20]
+		AGY1 = DEV[21]; MWHT_STN1 = DEV[22]; AGY2 = DEV[23]; MWHT_STN2 = DEV[24]
+		AGY3 = DEV[25]; SST_STN1 = DEV[26]; AGY4 = DEV[27]; SST_STN2 = DEV[28]
 		#print(AGY1, MWHT_STN1, AGY2, MWHT_STN2)
 		# 1/2순위를 결픅 값으로 초기화
 		MWHT1 = '-999.0' ; MWHT2 = '-999.0' ; SST1 = '-999.0' ; SST2 = '-999.0'

@@ -88,7 +88,7 @@ elif CHECK3 == '00' :
 		ii = 1
 		while ii <= INF_LEN-1 :
 			DEV = INF[ii].split(',')
-			FC_AREA = DEV[0]; STN = DEV[1] ; AREA = DEV[2]; NAME = DEV[3] ; CITY_X = int(DEV[17]) ; CITY_Y = int(DEV[18])
+			FC_AREA = DEV[0]; STN = DEV[1] ; AREA = DEV[2]; NAME = DEV[3] ; CITY_X = int(DEV[19]) ; CITY_Y = int(DEV[20])
 			
 			#-----------------------------------[동네예보 자료수집]----------------------------------------------------
 			CURL2 = CITY_URL + API_KEY +"&numOfRows=809&pageNo=1&dataType=JSON"+"&base_date=" + yesterday + "&base_time=2300&nx=" + str(CITY_X) + "&ny=" + str(CITY_Y) #어제 20시 예보자료, 금일 00시 03시 자료 수집을 위함

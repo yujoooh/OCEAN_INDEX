@@ -25,7 +25,7 @@ class Statistic:
 			if VAR_PM_AVERAGE < 0.1 and VAR_PM_AVERAGE >= 0: VAR_PM_AVERAGE = 0.1
 			if VAR_PM_MAX < 0.1 and VAR_PM_MAX >= 0: VAR_PM_MAX = 0.1
 			
-			return VAR_AM_MIN, VAR_AM_MAX, VAR_AM_AVERAGE, VAR_PM_MIN, VAR_PM_MAX, VAR_PM_AVERAGE
+			return VAR_AM_MIN, VAR_AM_MAX, VAR_AM_AVERAGE, VAR_PM_MIN, VAR_PM_MAX, VAR_PM_AVERAGE, X, Y, T
 
 		#KHOA 모델 일자료 추출
 		elif model == 'KHOA' and fcst_time == 'daily' : 
@@ -37,7 +37,7 @@ class Statistic:
 			if VAR_DAY_AVERAGE < 0.1 and VAR_DAY_AVERAGE >= 0 : VAR_DAY_AVERAGE = 0.1
 			if VAR_DAY_MAX < 0.1 and VAR_DAY_MAX >= 0 : VAR_DAY_MAX = 0.1
 			
-			return VAR_DAY_MIN, VAR_DAY_MAX, VAR_DAY_AVERAGE
+			return VAR_DAY_MIN, VAR_DAY_MAX, VAR_DAY_AVERAGE, X, Y, T
 
 		#KMA 모델 오전/오후 추출
 		elif model == 'KMA' and fcst_time == 'ampm' :
@@ -67,5 +67,5 @@ class Statistic:
 			if VAR_DAY_MIN < 0.1 : VAR_DAY_MIN = 0.1
 			if VAR_DAY_AVERAGE < 0.1 : VAR_DAY_AVERAGE = 0.1
 			if VAR_DAY_MAX < 0.1 : VAR_DAY_MAX = 0.1
-			return VAR_DAY_MIN, VAR_DAY_MAX, VAR_DAY_AVERAGE
+			return VAR_DAY_MIN, VAR_DAY_MAX, VAR_DAY_AVERAGE, X, Y, T
 	

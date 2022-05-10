@@ -15,6 +15,7 @@ print("#Sea Travel FCST_INDEX CREAT Start==========")
 #[Date set] ==============================================================================================
 #[Auto date set]
 today = str(datetime.today().strftime('%Y%m%d'))
+yesterday = str((date.today() - timedelta(1)).strftime('%Y%m%d'))
 afterday1 = (date.today() + timedelta(1)).strftime('%Y%m%d')
 afterday2 = (date.today() + timedelta(2)).strftime('%Y%m%d')
 afterday3 = (date.today() + timedelta(3)).strftime('%Y%m%d')
@@ -37,25 +38,40 @@ dir1 = './Result/'+today
 
 #[Model Data path] =======================================================================================
 MPATH = './Model_Data/'
-ROMS_FNAME = 'YES3K_'+ str(today) + '00.nc'      # YES3K   - KHOA
+ROMS_FNAME = 'YES3K_'+ str(today) + '00.nc'      # YES3K - KHOA
+MOHID_FNAME = 'L4_OC_' + str(yesterday) + '12.nc'    # MOHID - KHOA : 0step - 전날 12UTC
 WRF_FNAME = 'WRF_' + str(today) + '.nc'          # WRF_DM2 - KHOA
-WW3_FNAME = 'WW3_' + str(today) + '00.nc'        # WW3     - KHOA
-CWW3_FNAME = 'CWW3_' + str(today) + '00.nc'      # CWW3    - KMA
-RWW3_FNAME = 'RWW3_' + str(today) + '00.nc'      # RWW3    - KMA
+WW3_FNAME = 'WW3_' + str(today) + '00.nc'        # WW3 - KHOA
+CWW3_FNAME = 'CWW3_' + str(today) + '00.nc'      # CWW3 - KMA
+RWW3_FNAME = 'RWW3_' + str(today) + '00.nc'      # RWW3 - KMA
 
 INFILE_1 = MPATH+ROMS_FNAME #7day forecast data
 INFILE_2 = MPATH+WRF_FNAME  #7day forecast data
 INFILE_3 = MPATH+CWW3_FNAME #3day forecast data
 INFILE_4 = MPATH+WW3_FNAME  #7day forecast data
 INFILE_5 = MPATH+RWW3_FNAME #5day forecast data ---  not used
+INFILE_6 = MPATH+MOHID_FNAME
 
 #[READ Model_Data] =======================================================================================
-#[YES3K]
-DATA = Dataset(INFILE_1, mode='r')
-SST = DATA.variables['temp'][:,:,:]  #[t,y,x]
-U_CURRENT = DATA.variables['u'][:,:,:]  #[t,y,x]
-V_CURRENT = DATA.variables['v'][:,:,:]  #[t,y,x]
-CURRENT= (U_CURRENT**2+V_CURRENT**2)**0.5  #Calculate Current speed
+#[YES3K, MOHID]
+if os.path.isfile(INFILE_6):
+	DATA = Dataset(INFILE_6, mode='r')
+	SST = DATA.variables['temp'][12:,:,:]  #[t,y,x]
+	U_CURRENT = DATA.variables['u'][12:,:,:]  #[t,y,x]
+	V_CURRENT = DATA.variables['v'][12:,:,:]  #[t,y,x]
+	CURRENT= (U_CURRENT**2+V_CURRENT**2)**0.5  #Calculate Current speed
+
+	DATA2 = Dataset(INFILE_1, mode='r')
+	SST2 = DATA2.variables['temp'][:,:,:]  #[t,y,x]
+	U_CURRENT2 = DATA2.variables['u'][:,:,:]  #[t,y,x]
+	V_CURRENT2 = DATA2.variables['v'][:,:,:]  #[t,y,x]
+	CURRENT2= (U_CURRENT2**2+V_CURRENT2**2)**0.5  #Calculate Current speed
+else : 
+	DATA = Dataset(INFILE_1, mode='r')
+	SST = DATA.variables['temp'][:,:,:]  #[t,y,x]
+	U_CURRENT = DATA.variables['u'][:,:,:]  #[t,y,x]
+	V_CURRENT = DATA.variables['v'][:,:,:]  #[t,y,x]
+	CURRENT= (U_CURRENT**2+V_CURRENT**2)**0.5  #Calculate Current speed
 
 #[WRF]
 DATA = Dataset(INFILE_2, mode='r')
@@ -112,18 +128,27 @@ for FCST_AREA in FORECAST_AREA :
 		FC_AREA = DEV[0] ; STN = DEV[1] ; AREA = DEV[2] ; NAME = DEV[3] ; LON = DEV[4] ; LAT = DEV[5]
 		ROMS_X = int(DEV[6]) ; ROMS_Y = int(DEV[7]) ; WRF_X = int(DEV[8]) ; WRF_Y = int(DEV[9])
 		WW3_X = int(DEV[10]) ; WW3_Y = int(DEV[11]) ; CWW3_X = int(DEV[12]) ; CWW3_Y = int(DEV[13]) ; CWW3_LOC = int(DEV[14])
-		RWW3_X = int(DEV[15]) ; RWW3_Y = int(DEV[16]) ; SEA_W_AREA = DEV[19] ; LAND_W_AREA = DEV[20]
-		TRAVEL1 = DEV[21] ; TRAVEL2 = DEV[22] ; TRAVEL3 = DEV[23] ; TRAVEL4 = DEV[24] ; TRAVEL5 = DEV[25]
+		RWW3_X = int(DEV[15]) ; RWW3_Y = int(DEV[16]) ; MOHID_X = int(DEV[17]) ; MOHID_Y = int(DEV[18]) ; SEA_W_AREA = DEV[21] ; LAND_W_AREA = DEV[22]
+		TRAVEL1 = DEV[23] ; TRAVEL2 = DEV[24] ; TRAVEL3 = DEV[25] ; TRAVEL4 = DEV[26] ; TRAVEL5 = DEV[27]
 
 		jj = 0
 		while jj <= 158:
-			SST_S  = SST[jj, ROMS_Y, ROMS_X]
 			WIND_S = WIND[jj, WRF_Y, WRF_X]
 			UWIND_S =  U_WIND[jj, WRF_Y, WRF_X]
 			VWIND_S =  V_WIND[jj, WRF_Y, WRF_X]
 			TEMP_S = TEMP[jj, WRF_Y, WRF_X]
 			WIND_DIR = 180+180/math.pi*math.atan2(UWIND_S, VWIND_S) # 풍향 계산 // 유향은 atna2 요소 반전시킬것
-			CURRENT_S  = CURRENT[jj, ROMS_Y, ROMS_X]
+			
+			if os.path.isfile(INFILE_6): # MOHID 우선적용. 없을경우 ROMS로 일괄적용
+				if jj <= 48 : 
+					SST_S  = SST[jj, MOHID_Y, MOHID_X]
+					CURRENT_S  = CURRENT[jj, MOHID_Y, MOHID_X]
+				else :
+					SST_S  = SST2[jj, ROMS_Y, ROMS_X]
+					CURRENT_S  = CURRENT2[jj, ROMS_Y, ROMS_X]
+			else :
+				SST_S  = SST[jj, ROMS_Y, ROMS_X]
+				CURRENT_S  = CURRENT[jj, ROMS_Y, ROMS_X]
 
 			if os.path.isfile(INFILE_3): # CWW3 우선적용. 없을경우 WW3로 일괄적용
 				if jj <= 57 : # CWW3 최대 예측기간 3일 18시 까지..

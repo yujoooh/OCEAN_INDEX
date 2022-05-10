@@ -90,11 +90,11 @@ elif CHECK3 == '00' :
 		ii = 1
 		while ii <= INF_LEN-1 :
 			DEV = INF[ii].split(',')
-			STN = DEV[0] ; AREA = DEV[1]; NAME = DEV[2] ; CITY_X = int(DEV[16]) ; CITY_Y = int(DEV[17])
-			if LIST == 'SP' or LIST == 'SK' or LIST == 'SS' : Region_code = DEV[27]
-			if LIST == 'SF' : Region_code = DEV[29]
-			if LIST == 'SD' : Region_code = DEV[19]
-			if LIST == 'TL' : Region_code = DEV[20]
+			STN = DEV[0] ; AREA = DEV[1]; NAME = DEV[2] ; CITY_X = int(DEV[18]) ; CITY_Y = int(DEV[19])
+			if LIST == 'SP' or LIST == 'SK' or LIST == 'SS' : Region_code = DEV[29]
+			if LIST == 'SF' : Region_code = DEV[31]
+			if LIST == 'SD' : Region_code = DEV[21]
+			if LIST == 'TL' : Region_code = DEV[22]
 
 			#-----------------------------------[동네예보 자료수집]----------------------------------------------------
 			CURL2 = CITY_URL + API_KEY +"&numOfRows=809&pageNo=1&dataType=JSON"+"&base_date=" + yesterday + "&base_time=2300&nx=" + str(CITY_X) + "&ny=" + str(CITY_Y) #어제 20시 예보자료, 금일 00시 03시 자료 수집을 위함

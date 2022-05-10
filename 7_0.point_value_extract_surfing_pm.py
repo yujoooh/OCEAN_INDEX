@@ -41,9 +41,9 @@ for LIST in INDEX_LIST:
 	while ii <= INF_LEN-1 :
 	#while ii <= 1 :
 		DEV = INF[ii].split(',')
-		STN = DEV[1] ; AREA = DEV[2] ; NAME = DEV[3] ; W_AREA = DEV[19];
-		AGY1 = DEV[20]; MWHT_STN1 = DEV[21]; AGY2 = DEV[22]; MWHT_STN2 = DEV[23]
-		AGY3 = DEV[25]; SST_STN1 = DEV[26]; AGY4 = DEV[27]; SST_STN2 = DEV[28]
+		STN = DEV[1] ; AREA = DEV[2] ; NAME = DEV[3] ; W_AREA = DEV[21]
+		AGY1 = DEV[22]; MWHT_STN1 = DEV[23]; AGY2 = DEV[24]; MWHT_STN2 = DEV[25]
+		AGY3 = DEV[26]; SST_STN1 = DEV[27]; AGY4 = DEV[28]; SST_STN2 = DEV[29]
 		#print(AGY1, MWHT_STN1, AGY2, MWHT_STN2)
 		# 1/2순위를 결픅 값으로 초기화
 		MWHT1 = '-999.0' ; MWHT2 = '-999.0' ; SST1 = '-999.0' ; SST2 = '-999.0'

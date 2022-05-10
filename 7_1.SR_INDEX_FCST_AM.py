@@ -14,6 +14,7 @@ startTime = checktime.time()
 
 #auto date set
 today = str(datetime.today().strftime('%Y%m%d'))
+yesterday = str((date.today() - timedelta(1)).strftime('%Y%m%d'))
 afterday1 = (date.today() + timedelta(1)).strftime('%Y%m%d')
 afterday2 = (date.today() + timedelta(2)).strftime('%Y%m%d')
 afterday3 = (date.today() + timedelta(3)).strftime('%Y%m%d')
@@ -38,6 +39,7 @@ dir_result = './Result/'+today
 #모델데이터 불러오기, WW3만 써서 일단 나머지 주석처리
 MPATH = './Model_Data/'
 ROMS_FNAME = 'YES3K_'+ str(today) + '00.nc'      # YES3K   - KHOA
+MOHID_FNAME = 'L4_OC_' + str(yesterday) + '12.nc'      # MOHID - KHOA
 WRF_FNAME = 'WRF_' + str(today) + '.nc'          # WRF_DM2 - KHOA
 WW3_FNAME = 'WW3_' + str(today) + '00.nc'        # WW3     - KHOA
 CWW3_FNAME = 'CWW3_' + str(today) + '00.nc'      # CWW3    - KMA
@@ -51,13 +53,29 @@ INFILE_3 = MPATH+CWW3_FNAME #3day forecast data
 INFILE_4 = MPATH+WW3_FNAME  #7day forecast data
 INFILE_5 = MPATH+RWW3_FNAME #5day forecast data ---  not used
 INFILE_6 = MPATH+CWW3_WAVPRD_FNAME #파주기데이터
+INFILE_7 = MPATH+MOHID_FNAME
 
-#[YES3K]
-DATA = Dataset(INFILE_1, mode='r')
-SST = DATA.variables['temp'][:,:,:]  #[t,y,x]
-#U_CURRENT = DATA.variables['u'][:,:,:]  #[t,y,x]
-#V_CURRENT = DATA.variables['v'][:,:,:]  #[t,y,x]
-#CURRENT= (U_CURRENT**2+V_CURRENT**2)**0.5  #Calculate Current speed
+#[READ Model_Data] =======================================================================================
+#[YES3K, MOHID]
+if os.path.isfile(INFILE_7):
+	DATA = Dataset(INFILE_7, mode='r')
+	SST = DATA.variables['temp'][12:,:,:]  #[t,y,x]
+	# U_CURRENT = DATA.variables['u'][12:,:,:]  #[t,y,x]
+	# V_CURRENT = DATA.variables['v'][12:,:,:]  #[t,y,x]
+	# CURRENT= (U_CURRENT**2+V_CURRENT**2)**0.5  #Calculate Current speed
+
+	DATA2 = Dataset(INFILE_1, mode='r')
+	SST2 = DATA2.variables['temp'][:,:,:]  #[t,y,x]
+	# U_CURRENT2 = DATA2.variables['u'][:,:,:]  #[t,y,x]
+	# V_CURRENT2 = DATA2.variables['v'][:,:,:]  #[t,y,x]
+	# CURRENT2= (U_CURRENT2**2+V_CURRENT2**2)**0.5  #Calculate Current speed
+else : 
+    DATA = Dataset(INFILE_1, mode='r')
+    SST = DATA.variables['temp'][:,:,:]  #[t,y,x]
+	# U_CURRENT = DATA.variables['u'][:,:,:]  #[t,y,x]
+	# V_CURRENT = DATA.variables['v'][:,:,:]  #[t,y,x]
+	# CURRENT= (U_CURRENT**2+V_CURRENT**2)**0.5  #Calculate Current speed
+
 
 #[WRF]
 DATA = Dataset(INFILE_2, mode='r')
@@ -208,6 +226,9 @@ for i in range(len(POINT_df)):
     WRF_Y = int(POINT_df['WRF_Y'][i])
     ROMS_X = int(POINT_df['ROMS_X'][i])
     ROMS_Y = int(POINT_df['ROMS_Y'][i])
+    MOHID_X = int(POINT_df['MOHID_X'][i])
+    MOHID_Y = int(POINT_df['MOHID_Y'][i])
+
     for time in timestep:
         #추가하기 원하는 요소들 추가..
         if os.path.isfile(INFILE_3):
@@ -253,8 +274,14 @@ for i in range(len(POINT_df)):
         WIND_S = WIND[time, WRF_Y, WRF_X]  #Calculate Wind speed
         WIND_DIR = WDEG[time, WRF_Y, WRF_X]
 
-        #[YES3K]
-        TEMP = SST[time, ROMS_Y, ROMS_X]
+        #[YES3K, MOHID]
+        if os.path.isfile(INFILE_7):
+            if time <= 48 :
+                TEMP = SST[time, MOHID_Y, MOHID_X]
+            else : 
+                TEMP = SST2[time, ROMS_Y, ROMS_X]
+        else:
+            TEMP = SST[time, ROMS_Y, ROMS_X]
 
         row = [today, FCST_AREA, NAME, WARN_AREA , (today_date + timedelta(divmod(time+9,24)[0])).strftime('%Y%m%d') , \
                divmod(time+9, 24)[1] , WAVE_S, WAVE_DIR ,WAVE_X, WAVE_Y, RPEAK, WIND_S, WIND_DIR, TEMP, np.nan, np.nan, np.nan, np.nan, np.nan]
